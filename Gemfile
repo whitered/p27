@@ -29,3 +29,16 @@ gem 'sqlite3'
 # group :development, :test do
 #   gem 'webrat'
 # end
+
+gem 'win32console' if PLATFORM =~ /win32/
+gem 'devise'
+gem 'russian'
+
+group :test, :development do
+  gem 'rspec-rails'
+  gem 'steak'
+  gem 'capybara'
+  gem 'machinist', '>= 2.0.0.beta2'
+  gem 'launchy'
+  gem 'database_cleaner'
+end
