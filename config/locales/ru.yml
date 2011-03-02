@@ -1,4 +1,10 @@
 ru:
+  activerecord:
+    attributes:
+      user:
+        username: 'Логин'
+        password: 'Пароль'
+        password_confirmation: 'Подтверждение'
   home:
     index:
       welcome: 'Проект 27'
