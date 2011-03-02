@@ -8,6 +8,13 @@
 </head>
 <body>
 
+  <% unless flash.empty? %>
+    <div id="notifications">
+      <%= content_tag(:div, flash[:notice], :class => 'notice') if flash[:notice] %>
+      <%= content_tag(:div, flash[:alert], :class => 'alert') if flash[:alert] %>
+    </div>
+  <% end %>
+
 <%= yield %>
 
 </body>
