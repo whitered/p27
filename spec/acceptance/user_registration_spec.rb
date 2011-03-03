@@ -11,7 +11,7 @@ feature "User Registration" do
         fill_in t('activerecord.attributes.user.email'), :with => 'john_doe@mail.com'
         fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
         fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-        click_link_or_button t('session.signup.submit')
+        click_link_or_button t('devise.registrations.new.submit')
       end.should change(User, :count).by(1)
       page.should have_content(t('devise.registrations.signed_up'))
     end
@@ -26,7 +26,7 @@ feature "User Registration" do
         fill_in t('activerecord.attributes.user.email'), :with => 'john_doe@mail.com'
         fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
         fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-        click_link_or_button t('session.signup.submit')
+        click_link_or_button t('devise.registrations.new.submit')
       end.should_not change(User, :count)
       
       page.should have_content(t_error(User, :username, :taken))

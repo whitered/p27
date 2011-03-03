@@ -3,8 +3,15 @@ ru:
     attributes:
       user:
         username: 'Логин'
+        email: 'Емейл'
         password: 'Пароль'
         password_confirmation: 'Подтверждение'
+  devise:
+    registrations:
+      new:
+        title: 'Регистрация'
+        submit: 'Зарегистрироваться'
+      signed_up: 'На ваш емейл выслано письмо со ссылкой для активации аккаунта'
   home:
     index:
       welcome: 'Проект 27'
