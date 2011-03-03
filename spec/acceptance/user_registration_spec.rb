@@ -1,8 +1,5 @@
 require File.expand_path(File.dirname(__FILE__) + '/acceptance_helper')
 
-include Devise::TestHelpers
-include Devise::Controllers::UrlHelpers
-
 feature "User Registration" do
 
   context 'guest' do
@@ -37,12 +34,11 @@ feature "User Registration" do
 
     scenario 'should receive confirmation email after registration' do
       do_register
-      user = User.last
-      url = confirmation_url(user, :confirmation_token => user.confirmation_token)
-      email = ActionMailer::Base.deliveries.first
-      email_body = Capybara.string email.body.to_s
+      user = User.find_by_username 'john_doe'
+      url = user_confirmation_url(:confirmation_token => user.confirmation_token, :host => 'localhost:3000')
+      email = ActionMailer::Base.deliveries.last
       email.to.should eq(['john_doe@mail.com'])
-      email_body.should have_selector('a', :href => url)
+      email.body.raw_source.should include(url)
     end
 
   end
