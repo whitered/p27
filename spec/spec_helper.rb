@@ -7,6 +7,18 @@ require 'rspec/rails'
 # in spec/support/ and its subdirectories.
 Dir[Rails.root.join("spec/support/**/*.rb")].each {|f| require f}
 
+def t(*args)
+  I18n.t(*args)
+end
+
+def l(object, options = {})
+  I18n.l(object, options)
+end
+
+def t_error(klass, attribute, type = :invalid, options = {})
+  ActiveModel::Errors.new(klass.new).generate_message(attribute, type, options)
+end 
+
 RSpec.configure do |config|
   # == Mock Framework
   #
@@ -24,4 +36,17 @@ RSpec.configure do |config|
   # examples within a transaction, remove the following line or assign false
   # instead of true.
   config.use_transactional_fixtures = true
+
+  config.before(:suite) do
+    DatabaseCleaner.strategy = :truncation
+    DatabaseCleaner.clean_with(:truncation)
+  end
+  
+  config.before(:each) do
+    DatabaseCleaner.start
+  end
+  
+  config.after(:each) do
+    DatabaseCleaner.clean
+  end
 end
