@@ -56,4 +56,9 @@ describe User do
 
   end
 
+  it 'should have login' do
+    User.make.should respond_to(:login)
+  end
+
+
 end
