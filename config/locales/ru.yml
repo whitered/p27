@@ -2,6 +2,7 @@ ru:
   activerecord:
     attributes:
       user:
+        login: 'Логин или емейл'
         username: 'Логин'
         email: 'Емейл'
         password: 'Пароль'
@@ -11,6 +12,10 @@ ru:
       new:
         title: 'Регистрация'
         submit: 'Зарегистрироваться'
+    sessions:
+      new:
+        title: 'Вход'
+        submit: 'Войти'
   home:
     index:
       welcome: 'Проект 27'
