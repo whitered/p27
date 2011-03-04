@@ -1,9 +1,17 @@
 P27::Application.routes.draw do
 
-  devise_for :users
-
   root :to => 'home#index'
 
+  devise_for :users, :skip => [:sessions, :registrations] do
+    get '/login' => 'devise/sessions#new', :as => :new_user_session
+    post '/login' => 'devise/sessions#create', :as => :user_session
+    get '/logout' => 'devise/sessions#destroy', :as => :destroy_user_session
+    
+    get '/registration' => 'devise/registrations#new', :as => :new_user_registration
+    post '/registration' => 'devise/registrations#create', :as => :user_registration
+    get '/profile' => 'devise/registrations#edit', :as => :edit_user_registration
+  end
+ 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

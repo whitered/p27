@@ -1,0 +1,6 @@
+ru:
+  mail:
+    registration_confirmation: 
+      title: 'Приветствуем вас на портале 27, %{username}!'
+      body: 'Для подтверждения регистрации пройдите по ссылке:'
+
