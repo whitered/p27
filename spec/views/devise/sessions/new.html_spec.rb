@@ -16,7 +16,6 @@ describe 'devise/sessions/new.html.erb' do
   let(:page) { Capybara.string rendered }
 
   before do
-    @resource = User.new
     render
   end
 
