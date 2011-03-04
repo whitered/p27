@@ -16,6 +16,10 @@ ru:
       new:
         title: 'Вход'
         submit: 'Войти'
+  authentication:
+    registration: 'Регистрация'
+    login: 'Вход'
+    logout: 'Выход'
   home:
     index:
       welcome: 'Проект 27'
