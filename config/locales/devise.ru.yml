@@ -1,7 +1,7 @@
 ru:
   errors:
     messages:
-      not_found: "не найдена"
+      not_found: "не найден"
       already_confirmed: "уже подтверждена"
       not_locked: "не заблокирована"
 

@@ -33,6 +33,7 @@ gem 'sqlite3'
 gem 'win32console' if PLATFORM =~ /win32/
 gem 'devise'
 gem 'russian'
+gem 'formtastic'
 
 group :test, :development do
   gem 'rspec-rails'
