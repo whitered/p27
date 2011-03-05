@@ -17,5 +17,13 @@ describe 'layouts/application' do
   it 'should render _authentication template' do
     page.should render_template('layouts/_authentication')
   end
- 
+
+  describe 'stylesheets' do
+
+    it 'should include formstatic' do
+      page.should have_xpath("//head//link[contains(@href, 'formstatic')]")
+    end
+
+  end
+
 end

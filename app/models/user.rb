@@ -10,6 +10,7 @@ class User < ActiveRecord::Base
 
   attr_accessor :login
 
+  validates_presence_of :username
   validates_uniqueness_of :username, :case_sensitive => false
   validates_format_of :username, :with => /\A[\w\d]{3,16}\Z/
 
