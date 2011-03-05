@@ -44,4 +44,23 @@ describe 'devise/registrations/new.html.erb' do
     page.should have_button(t('devise.registrations.new.submit'))
   end
 
+  it 'should render error for wrong email' do
+    user.errors.add(:email)
+    render
+    page.should have_content(t_error(User, :email))
+  end
+
+  it 'should render error for wrong username' do
+    user.errors.add(:username)
+    render
+    page.should have_content(t_error(User, :username))
+  end
+
+  it 'should render error for wrong password' do
+    user.errors.add(:password)
+    render
+    page.should have_content(t_error(User, :password))
+  end
+
+
 end
