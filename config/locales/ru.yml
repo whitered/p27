@@ -24,3 +24,6 @@ ru:
   home:
     index:
       welcome: 'Проект 27'
+  groups:
+    new:
+      link: 'Создать новую группу'

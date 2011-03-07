@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe 'layouts/_authentication' do
 
-  include Devise::TestHelpers
-
   let(:page) { Capybara.string rendered }
   let(:authentication) { page.find '#authentication' }
 
