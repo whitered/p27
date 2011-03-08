@@ -60,5 +60,9 @@ describe User do
     User.make.should respond_to(:login)
   end
 
+  it 'should have groups' do
+    User.make.should respond_to(:groups)
+  end
+
 
 end

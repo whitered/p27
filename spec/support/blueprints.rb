@@ -11,3 +11,8 @@ end
 Group.blueprint do
   name { "Group #{sn}" }
 end
+
+Membership.blueprint do
+  user_id { 1 }
+  group_id { 1 }
+end

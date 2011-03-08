@@ -15,4 +15,8 @@ describe Group do
     Group.make.should respond_to(:name)
   end
 
+  it 'should have users' do
+    Group.make.should respond_to(:users)
+  end
+
 end
