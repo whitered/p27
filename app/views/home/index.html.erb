@@ -1,1 +1,5 @@
 <p><%= t 'home.index.welcome' %></p>
+
+<% if user_signed_in? %>
+  <%= link_to t('groups.new.link'), new_group_path %>
+<% end %>
