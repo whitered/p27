@@ -7,3 +7,7 @@ User.blueprint do
   username { "john_#{sn}" }
   confirmed_at { Date.today } 
 end
+
+Group.blueprint do
+  name { "Group #{sn}" }
+end
