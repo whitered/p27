@@ -8,6 +8,8 @@ ru:
         password: 'Пароль'
         password_confirmation: 'Подтверждение'
         remember_me: 'Запомнить меня'
+      group:
+        name: 'Название'
   devise:
     registrations:
       new:
@@ -27,3 +29,5 @@ ru:
   groups:
     new:
       link: 'Создать новую группу'
+      title: 'Новая группа'
+      submit: 'Создать группу'

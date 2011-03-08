@@ -5,4 +5,5 @@ User.blueprint do
   password { 'qwerty' }
   password_confirmation { 'qwerty' }
   username { "john_#{sn}" }
+  confirmed_at { Date.today } 
 end
