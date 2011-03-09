@@ -30,7 +30,9 @@ describe Membership do
 
   describe 'is_admin' do
     it 'should be false by default' do
-      Membership.new.is_admin?.should be_false
+      m = Membership.new
+      m.is_admin?.should_not be_nil
+      m.is_admin?.should be_false
     end
   end
 

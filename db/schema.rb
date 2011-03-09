@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110308021723) do
+ActiveRecord::Schema.define(:version => 20110309100547) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -21,7 +21,7 @@ ActiveRecord::Schema.define(:version => 20110308021723) do
   create_table "memberships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "group_id"
-    t.boolean  "is_admin"
+    t.boolean  "is_admin",   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
   end

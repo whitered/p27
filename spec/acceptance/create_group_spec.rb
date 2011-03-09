@@ -11,7 +11,7 @@ feature "Create Group" do
     page.should have_content('Alpha Group')
   end
 
-  scenario 'group creator should become an admin', :focus => true do
+  scenario 'group creator should become an admin' do
     login User.make!(:username => 'Bill_C')
     visit new_group_path
     fill_in t('activerecord.attributes.group.name'), :with => 'Alpha Group'
