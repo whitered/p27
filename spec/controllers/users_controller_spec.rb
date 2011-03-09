@@ -24,6 +24,15 @@ describe UsersController do
       end
 
     end
+
+    context 'with not existant username' do
+
+      it 'should raise NotFound error' do
+        lambda {
+          get :show, :id => 'wrong_name'
+        }.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+    end
   end
 
 end
