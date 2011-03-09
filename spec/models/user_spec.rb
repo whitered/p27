@@ -60,5 +60,17 @@ describe User do
     User.make.should respond_to(:login)
   end
 
+  it 'should have groups' do
+    User.make.should respond_to(:groups)
+  end
+
+  describe 'to_param' do
+
+    it 'should return downcased username' do
+      user = User.make!(:username => 'Bobby')
+      user.to_param.should eq('bobby')
+    end
+
+  end
 
 end
