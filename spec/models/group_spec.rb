@@ -31,7 +31,7 @@ describe Group do
       @group = Group.make!
       @member, @admin, @outsider = User.make!(3)
       @group.users << @member << @admin
-      @group.memberships.find_by_user_id(@admin.id).is_admin = true
+      @group.memberships.find_by_user_id(@admin.id).update_attribute(:is_admin, true)
     end
 
     it 'should turn regular user to admin' do
@@ -58,5 +58,31 @@ describe Group do
 
   end
 
+  it 'should have user_is_admin? method' do
+    group.should respond_to(:user_is_admin?)
+  end
+
+  describe 'user_is_admin?' do
+
+    before do
+      @group = Group.make!
+      @member, @admin, @outsider = User.make!(3)
+      @group.users << @member << @admin
+      @group.memberships.find_by_user_id(@admin.id).update_attribute(:is_admin, true)
+   end
+
+    it 'should return true if user is admin' do
+      @group.user_is_admin?(@admin).should be_true
+    end
+
+    it 'should return false if user is regular admin' do
+      @group.user_is_admin?(@member).should be_false
+    end
+
+    it 'should return false if user is not a member of the group' do
+      @group.user_is_admin?(@outsider).should be_false
+    end
+
+  end
 
 end

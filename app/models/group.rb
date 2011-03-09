@@ -6,4 +6,9 @@ class Group < ActiveRecord::Base
     membership = memberships.find_by_user_id(user.id)
     membership && membership.update_attribute(:is_admin, status)
   end
+
+  def user_is_admin? user
+    membership = memberships.find_by_user_id(user.id)
+    membership && membership.is_admin?
+  end
 end

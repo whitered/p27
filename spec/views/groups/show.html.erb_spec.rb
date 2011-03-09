@@ -3,10 +3,10 @@ require 'spec_helper'
 describe "groups/show.html.erb" do
 
   let(:page) { Capybara.string rendered }
-  let(:group_users) { page.find_selector('#group_users') }
+  let(:group_users) { page.find('#group_users') }
 
   before do
-    @group = Group.make
+    @group = Group.make!
   end
 
   it 'should render group name' do
@@ -23,22 +23,25 @@ describe "groups/show.html.erb" do
 
     it 'should render all the users' do
       names = %w( John Mark Bob )
-      names.each { |name| @group.users << User.make(:username => name) }
+      names.each { |name| @group.users.create(:username => name) }
       render
       names.each do |name|
-        group_users.should have_link(name)
+        group_users.should have_link(name, :href => user_path(name))
       end
     end
 
     it 'should mark admins' do
-      @group.users << User.make(:username => 'Bob')
-      @group.admins << User.make(:username => 'Ivan')
+      member, admin = User.make!(2)
+      @group.users << member << admin
+      @group.set_admin_status admin, true
+
       render
-      group_users.should have_link('Bob')
-      group_users.should have_link('Ivan')
-      group_admins = group_users.find_selector('.admin')
-      group_admins.should have_content('Ivan')
-      group_admins.should have_no_content('Bob')
+
+      group_users.should have_link(member.username)
+      group_users.should have_link(admin.username)
+      group_admins = group_users.find('.admin')
+      group_admins.should have_content(admin.username)
+      group_admins.should have_no_content(member.username)
     end
 
   end
