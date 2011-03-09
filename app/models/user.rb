@@ -17,6 +17,10 @@ class User < ActiveRecord::Base
   validates_uniqueness_of :username, :case_sensitive => false
   validates_format_of :username, :with => /\A[\w\d]{3,16}\Z/
 
+  def to_param
+    username.downcase
+  end
+
 protected
   
   def self.find_for_database_authentication(conditions)
