@@ -13,6 +13,7 @@ P27::Application.routes.draw do
   end
 
   resources :groups, :only => [:new, :create, :show]
+  resources :users, :only => [:show]
  
   # The priority is based upon order of creation:
   # first created -> highest priority.
