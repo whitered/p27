@@ -1,0 +1,5 @@
+<%= form_tag(add_user_group_path(@group)) do %>
+  <%= label_tag :name, t('groups.add_user.name') %>
+  <%= text_field_tag :name %>
+  <%= submit_tag t('groups.add_user.commit') %>
+<% end %>

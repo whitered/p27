@@ -35,7 +35,9 @@ RSpec.configure do |config|
   # If you're not using ActiveRecord, or you'd prefer not to run each of your
   # examples within a transaction, remove the following line or assign false
   # instead of true.
-  config.use_transactional_fixtures = true
+  #
+  # This option causes the SQLite3::BusyException
+  # config.use_transactional_fixtures = true
 
   config.filter_run :focus => true
   config.run_all_when_everything_filtered = true

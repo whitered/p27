@@ -18,5 +18,11 @@ describe GroupsController do
                                             :id => '2')
   end
 
+  it 'should route add_user' do
+    { :post => '/groups/4/add_user' }.should route_to(:controller => 'groups',
+                                                      :action => 'add_user',
+                                                      :id => '4')
+  end
+
 end
 

@@ -5,3 +5,5 @@
     <li><%= link_to user.username, user_path(user.username), :class => (@group.user_is_admin?(user) ? 'admin' : nil) %></li>
   <% end %>
 </ul>
+
+<%= render 'groups/add_user_form' if @group.user_is_admin?(current_user) %>

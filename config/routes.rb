@@ -12,7 +12,9 @@ P27::Application.routes.draw do
     get '/profile' => 'devise/registrations#edit', :as => :edit_user_registration
   end
 
-  resources :groups, :only => [:new, :create, :show]
+  resources :groups, :only => [:new, :create, :show] do
+    post :add_user, :on => :member
+  end
   resources :users, :only => [:show]
  
   # The priority is based upon order of creation:
