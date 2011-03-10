@@ -64,6 +64,15 @@ describe "groups/show.html.erb" do
         page.should have_button(t('groups.add_user.commit'))
       end
 
+      it 'should have links to remove any user from the group' do
+        render
+        group_users.all(:xpath, ".//a[. = '#{t('groups.remove_user.link')}']").count.should eq(@group.users.count)
+        group_users.all('li').each do |node|
+          username = node.first('a').text
+          node.should have_link(t('groups.remove_user.link'), :href => remove_user_group_path(@group, :username => username))
+        end
+      end
+
     end
 
   end

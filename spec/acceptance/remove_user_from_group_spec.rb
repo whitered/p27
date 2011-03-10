@@ -20,7 +20,7 @@ feature "Remove User From Group" do
 
       group_members = page.find('#group_users')
       group_members.should have_no_content(victim.username)
-      page.should have_content(t('groups.remove_user.successful', :name => victim.username))
+      page.should have_content(t('groups.remove_user.successful', :username => victim.username))
     end
 
   end
