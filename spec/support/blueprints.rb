@@ -4,7 +4,7 @@ User.blueprint do
   email { "john_#{sn}@gmail.com" }
   password { 'qwerty' }
   password_confirmation { 'qwerty' }
-  username { "john_#{sn}" }
+  username { "John_#{sn}" }
   confirmed_at { Date.today } 
 end
 

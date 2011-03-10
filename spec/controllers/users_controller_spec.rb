@@ -4,6 +4,13 @@ describe UsersController do
 
   describe 'show' do
 
+    it 'should ignore username case' do
+      @user = User.make!(:username => 'vaSYA')
+      get :show, :id => 'VASya'
+      response.should be_successful
+      assigns[:user].should eq(@user)
+    end
+
     context 'with existant username' do
 
       before do
