@@ -13,8 +13,12 @@ P27::Application.routes.draw do
   end
 
   resources :groups, :only => [:new, :create, :show] do
-    post :add_user, :on => :member
+    member do
+      post :add_user
+      post :remove_user
+    end
   end
+
   resources :users, :only => [:show]
  
   # The priority is based upon order of creation:

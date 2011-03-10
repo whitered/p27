@@ -24,5 +24,11 @@ describe GroupsController do
                                                       :id => '4')
   end
 
+  it 'should route remove_user' do
+    { :post => '/groups/4/remove_user' }.should route_to(:controller => 'groups',
+                                                         :action => 'remove_user',
+                                                         :id => '4')
+  end
+
 end
 

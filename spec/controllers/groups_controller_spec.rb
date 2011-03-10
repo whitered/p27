@@ -157,8 +157,9 @@ describe GroupsController do
 
     it 'should require user to be an admin' do
       sign_in user
-      post :add_user, :id => group.id, :name => User.make!.username
-      response.should_not be_successful
+      lambda {
+        post :add_user, :id => group.id, :name => User.make!.username
+      }.should_not change(group.users, :count)
       flash[:error].should eq(t('groups.add_user.errors.not_permitted'))
     end
 
@@ -214,5 +215,74 @@ describe GroupsController do
 
     end
 
+  end
+
+
+  describe 'remove_user' do
+
+    let(:group) { Group.make! }
+    let(:member) { User.make! }
+
+    before do
+      group.users << user << member
+    end
+
+    it 'should require user authentication' do
+      post :remove_user, :id => group.id, :username => member.username
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should require user to be admin' do
+      sign_in user
+      lambda {
+        post :remove_user, :id => group.id, :username => member.username
+      }.should_not change(group.users, :count)
+      flash[:error].should eq(t('groups.remove_user.errors.not_permitted'))
+    end
+
+    context 'group admin' do
+
+      def do_remove_user username
+        post :remove_user, :id => group.id, :username => username
+      end
+
+      before do
+        group.set_admin_status user, true
+        sign_in user
+      end
+
+      it 'should remove specified user' do
+        lambda do
+          do_remove_user member.username
+        end.should change(group.users, :count).by(-1)
+      end
+
+      it 'should redirect to the group page' do
+        do_remove_user member.username
+        response.should redirect_to(group)
+      end
+
+      it 'should have success notification' do
+        do_remove_user member.username
+        flash[:notice].should eq(t('groups.remove_user.successful', :username => member.username))
+      end
+
+      it 'should render error if no username given' do
+        do_remove_user nil
+        flash[:error].should eq(t('groups.remove_user.errors.no_name_given'))
+      end
+
+      it 'should not remove not existant user' do
+        lambda do
+          do_remove_user 'Somebody_else'
+        end.should_not change(group.users, :count)
+      end
+
+      it 'should display error message if requested user not found' do
+        do_remove_user 'somebody_else'
+        flash[:error].should eq(t('groups.remove_user.errors.user_not_found', :username => 'somebody_else'))
+      end
+
+    end
   end
 end
