@@ -141,4 +141,78 @@ describe GroupsController do
     end
 
   end
+
+  describe 'add_user' do
+
+    let(:group) { Group.make! }
+
+    before do
+      group.users << user
+    end
+
+    it 'should require user authentication' do
+      post :add_user, :id => group.id, :name => 'John'
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should require user to be an admin' do
+      sign_in user
+      post :add_user, :id => group.id, :name => User.make!.username
+      response.should_not be_successful
+      flash[:error].should eq(t('groups.add_user.errors.not_permitted'))
+    end
+
+    context 'as admin' do
+
+      before do
+        sign_in user
+        group.set_admin_status user, true
+      end
+
+      def do_add_user name
+        post :add_user, :id => group.id, :name => name
+      end
+
+       it 'should add multiple users to the group' do
+        ivanov = User.make!(:username => 'Ivanov')
+        petrov = User.make!(:username => 'Petrov')
+        do_add_user 'Ivanov, Petrov'
+        group.users.should include(ivanov)
+        group.users.should include(petrov)
+      end
+
+      it 'should ignore case in usernames' do
+        ivanov = User.make!(:username => 'Ivanov')
+        petrov = User.make!(:username => 'Petrov')
+        do_add_user 'ivanov, pEtRoV'
+        group.users.should include(ivanov)
+        group.users.should include(petrov)
+      end
+
+      it 'should ignore not existant users' do
+        User.make!(:username => 'Ivanov')
+        lambda {
+          do_add_user 'Ivanov, Petrov'
+        }.should change(group.users, :count).by(1)
+      end
+
+      it 'should redirect to the group page' do
+        do_add_user User.make!.username
+        response.should redirect_to(group)
+      end
+
+      it 'should show error message if no names are given' do
+        do_add_user nil
+        flash[:error].should eq(t('groups.add_user.errors.no_name_given'))
+      end
+      
+      it 'should show error message for not existant users' do
+        User.make!(:username => 'Petrov')
+        do_add_user 'Ivanov, Petrov Sidorov'
+        flash[:error].should eq(t('groups.add_user.errors.wrong_names', :names => 'Ivanov, Sidorov'))
+      end
+
+    end
+
+  end
 end

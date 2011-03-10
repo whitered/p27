@@ -15,11 +15,13 @@ feature "Add User To Group" do
 
     scenario 'should be able to add several users to the group by their usernames' do
       visit group_path(@group.id)
-      fill_in t('groups.add_user.field'), :with => @users.map{ |u| u.username }.join(' ')
+      fill_in t('groups.add_user.name'), :with => @users.map{ |u| u.username }.join(' ')
       click_link_or_button t('groups.add_user.commit')
 
       group_members = page.find('#group_users')
-      group_members.should have_link(@user.username, :href => user_path(@user.username))
+      @users.each do |user|
+        group_members.should have_link(user.username, :href => user_path(user.username))
+      end
 
     end
   end
