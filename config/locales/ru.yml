@@ -45,3 +45,13 @@ ru:
         not_permitted: 'Только администратор группы может удалять других пользователей'
         no_name_given: 'Не указано имя пользователя'
         user_not_found: 'Пользователь %{username} не состоит в группе'
+    manage_admins:
+      set_link:
+        name: '[+A]'
+      unset_link:
+        name: '[-A]'
+      errors:
+        user_not_found: 'Пользователь %{username} не состоит в группе'
+        not_permitted: 'Только владелец группы может назначить администратора'
+        no_name_given: 'Не указано имя пользователя'
+
