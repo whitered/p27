@@ -1,6 +1,7 @@
 class Group < ActiveRecord::Base
   has_many :memberships
   has_many :users, :through => :memberships
+  belongs_to :owner, :class_name => 'User'
 
   def set_admin_status user, status
     membership = memberships.find_by_user_id(user.id)
