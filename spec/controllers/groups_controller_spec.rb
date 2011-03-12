@@ -285,4 +285,108 @@ describe GroupsController do
 
     end
   end
+
+
+  describe 'manage_admins' do
+
+    def do_manage_admins options
+      post :manage_admins, :id => @group.id, :set => options[:set], :unset => options[:unset]
+    end
+
+    before do
+      @group = Group.make!
+      @member, @admin, @owner = User.make!(3)
+      @group.users << @member << @admin
+      @group.owner = @owner
+      @group.save!
+      @group.set_admin_status @admin, true
+    end
+
+    it 'should require user authentication' do
+      do_manage_admins :set => @member.username
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should require user to be group owner' do
+      sign_in @admin
+      do_manage_admins :set => @member.username
+      response.should redirect_to(@group)
+      flash[:error].should eq(t('groups.manage_admins.errors.not_permitted'))
+    end
+
+    it 'should raise NotFound exception for outsider' do
+      sign_in User.make!
+      lambda do
+        do_manage_admins :set => @member.username
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+      
+
+    context 'for group owner' do
+
+      before do
+        sign_in @owner
+      end
+
+      it 'should turn regular user to admin' do
+        lambda do
+          do_manage_admins :set => @member.username
+        end.should change{ @group.user_is_admin? @member }.from(false).to(true)
+      end
+
+      it 'should turn admin to regular user' do
+        lambda do
+          do_manage_admins :unset => @admin.username
+        end.should change{ @group.user_is_admin? @admin }.from(true).to(false)
+      end
+
+      it 'should show error message if some users are not group members' do
+        outsider = User.make!
+        do_manage_admins :set => [@member.username, outsider.username].join(' ')
+        flash[:error].should eq(t('groups.manage_admins.errors.wrong_names', :names => outsider.username))
+      end
+
+      it 'should change member status ignoring outsiders' do
+        outsider = User.make!
+        lambda do
+          do_manage_admins :unset => [@admin.username, outsider.username].join(',')
+        end.should change{ @group.user_is_admin? @admin }.from(true).to(false)
+      end
+
+      it 'should redirect to group page' do
+        do_manage_admins :set => @member.username
+        response.should redirect_to(@group)
+      end
+
+      it 'should show error message if no names were given' do
+        do_manage_admins :set => nil
+        flash[:error].should eq(t('groups.manage_admins.errors.no_name_given'))
+      end
+
+      it 'should show error message if empty names were given' do
+        do_manage_admins :unset => ''
+        flash[:error].should eq(t('groups.manage_admins.errors.no_name_given'))
+      end
+
+      it 'should not change member status if it equals requested one' do
+        lambda do
+          do_manage_admins :unset => @member.username
+        end.should_not change{ @group.user_is_admin? @member }
+      end
+
+      it 'should not change admin status if it equals requested one' do
+        lambda do
+          do_manage_admins :set => @admin.username
+        end.should_not change{ @group.user_is_admin? @admin }
+      end
+
+      it 'should be able to make different actions at same time' do
+        do_manage_admins :set => @member.username, :unset => @admin.username
+        @group.user_is_admin?(@member).should be_true
+        @group.user_is_admin?(@admin).should be_false
+      end
+
+    end
+
+  end
 end
