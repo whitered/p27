@@ -26,6 +26,10 @@ describe "groups/show.html.erb" do
 
     let(:group_users) { page.find('#group_users') }
 
+    def find_user_item name
+      group_users.find(:xpath, ".//li[contains(.,'#{name}')]")
+    end
+
     it 'should render all the users' do
       render
       [@user, @admin, @member].each do |user|
@@ -50,7 +54,19 @@ describe "groups/show.html.erb" do
         page.should have_no_field(t('groups.add_user.name'))
         page.should have_no_button(t('groups.add_user.commit'))
       end
+
+      it 'should not have links to set admin' do
+        render
+        group_users.should have_no_link(t('groups.manage_admins.set_link.name'))
+      end
+
+      it 'should not have links to unset admin' do
+        render
+        group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
+      end
+
     end
+
 
     context 'for an admin' do
 
@@ -72,6 +88,45 @@ describe "groups/show.html.erb" do
           node.should have_link(t('groups.remove_user.link'), :href => remove_user_group_path(@group, :username => username))
         end
       end
+
+      it 'should not have links to set admin' do
+        render
+        group_users.should have_no_link(t('groups.manage_admins.set_link.name'))
+      end
+
+      it 'should not have links to unset admin' do
+        render
+        group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
+      end
+
+   end
+
+    context 'for owner' do
+
+      before do
+        @group.owner = @user
+      end
+
+      it 'should have links to set admin for regular members' do
+        render
+        find_user_item(@member.username).should have_link(t('groups.manage_admins.set_link.name'), :href => manage_admins_group_path(@group, :set => @member.username))
+      end
+
+      it 'should have links to unset admin for admins' do
+        render
+        find_user_item(@admin.username).should have_link(t('groups.manage_admins.unset_link.name'), :href => manage_admins_group_path(@group, :unset => @admin.username))
+      end
+
+      it 'should not have link to set admin for admin' do
+        render
+        find_user_item(@admin.username).should have_no_link(t('groups.manage_admins.set_link.name'))
+      end
+
+      it 'should not have link to unset admin for regular member' do
+        render
+        find_user_item(@member.username).should have_no_link(t('groups.manage_admins.unset_link.name'))
+      end
+
 
     end
 

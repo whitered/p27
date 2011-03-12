@@ -85,4 +85,8 @@ describe Group do
 
   end
 
+  it 'should have owner' do
+    group.should respond_to(:owner)
+  end
+
 end

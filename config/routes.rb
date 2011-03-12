@@ -16,6 +16,7 @@ P27::Application.routes.draw do
     member do
       post :add_user
       post :remove_user
+      post :manage_admins
     end
   end
 

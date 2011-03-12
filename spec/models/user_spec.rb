@@ -73,4 +73,8 @@ describe User do
 
   end
 
+  it 'should have own_groups' do
+    User.make.should respond_to(:own_groups)
+  end
+
 end

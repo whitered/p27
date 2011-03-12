@@ -4,7 +4,14 @@
   <% @group.users.each do |user| %>
     <li>
     <%= link_to user.username, user_path(user.username), :class => (@group.user_is_admin?(user) ? 'admin' : nil) %>
-    <%= link_to_if @group.user_is_admin?(current_user), t('groups.remove_user.link'), remove_user_group_path(@group, :username => user.username), :method => :post %>
+    <%= link_to t('groups.remove_user.link'), remove_user_group_path(@group, :username => user.username), :method => :post if @group.user_is_admin?(current_user) %>
+    <% if @group.owner == current_user %>
+      <% if @group.user_is_admin?(user) %>
+        <%= link_to t('groups.manage_admins.unset_link.name'), manage_admins_group_path(@group, :unset => user.username), :method => :post %>
+      <% else %>
+        <%= link_to t('groups.manage_admins.set_link.name'), manage_admins_group_path(@group, :set => user.username), :method => :post %>
+      <% end %>
+    <% end %>
     </li>
   <% end %>
 </ul>
