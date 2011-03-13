@@ -17,8 +17,8 @@ feature 'Manage Group Members' do
     scenario 'should be able to add several users to the group by their usernames' do
       users = User.make!(3)
       visit group_path(@group)
-      fill_in t('groups.add_user.name'), :with => users.map{ |u| u.username }.join(' ')
-      click_link_or_button t('groups.add_user.commit')
+      fill_in t('groups.manage_members.add.name'), :with => users.map{ |u| u.username }.join(' ')
+      click_link_or_button t('groups.manage_members.add.commit')
 
       users.each do |user|
         group_users.should have_link(user.username, :href => user_path(user.username))
@@ -30,15 +30,15 @@ feature 'Manage Group Members' do
       member = User.make!
       @group.users << member
 
-      visit group_path(group)
+      visit group_path(@group)
       within '#group_users' do
         within(:xpath, ".//li[contains(.,'#{member.username}')]") do
-          click_link_or_button t('groups.remove_user.link')
+          click_link_or_button t('groups.manage_members.remove.link')
         end
       end
 
       group_users.should have_no_content(member.username)
-      page.should have_content(t('groups.remove_user.successful', :username => member.username))
+      page.should have_content(t('groups.manage_members.remove.successful', :names => member.username))
     end
 
   end
