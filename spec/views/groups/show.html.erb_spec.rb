@@ -51,8 +51,8 @@ describe "groups/show.html.erb" do
 
       it 'should not have invite_to_group form' do
         render
-        page.should have_no_field(t('groups.add_user.name'))
-        page.should have_no_button(t('groups.add_user.commit'))
+        page.should have_no_field(t('groups.manage_members.add.name'))
+        page.should have_no_button(t('groups.manage_members.add.commit'))
       end
 
       it 'should not have links to set admin' do
@@ -76,16 +76,16 @@ describe "groups/show.html.erb" do
 
       it 'should have form to invite new users to the group' do
         render
-        page.should have_field(t('groups.add_user.name'))
-        page.should have_button(t('groups.add_user.commit'))
+        page.should have_field(t('groups.manage_members.add.name'))
+        page.should have_button(t('groups.manage_members.add.commit'))
       end
 
       it 'should have links to remove any user from the group' do
         render
-        group_users.all(:xpath, ".//a[. = '#{t('groups.remove_user.link')}']").count.should eq(@group.users.count)
+        group_users.all(:xpath, ".//a[. = '#{t('groups.manage_members.remove.link')}']").count.should eq(@group.users.count)
         group_users.all('li').each do |node|
           username = node.first('a').text
-          node.should have_link(t('groups.remove_user.link'), :href => remove_user_group_path(@group, :username => username))
+          node.should have_link(t('groups.manage_members.remove.link'), :href => manage_members_group_path(@group, :remove => username))
         end
       end
 
