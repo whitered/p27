@@ -142,147 +142,131 @@ describe GroupsController do
 
   end
 
-  describe 'add_user' do
 
-    let(:group) { Group.make! }
+  describe 'manage_members' do
 
     before do
-      group.users << user
+      @group = Group.make!
+      @member, @admin, @outsider = User.make!(3)
+      @group.users << @member << @admin
+      @group.set_admin_status @admin, true
+    end
+
+    def do_manage_members options={}
+      options[:id] = @group.id
+      post :manage_members, options
     end
 
     it 'should require user authentication' do
-      post :add_user, :id => group.id, :name => 'John'
+      do_manage_members :add => @outsider.username
       response.should redirect_to(new_user_session_path)
     end
 
-    it 'should require user to be an admin' do
-      sign_in user
-      lambda {
-        post :add_user, :id => group.id, :name => User.make!.username
-      }.should_not change(group.users, :count)
-      flash[:error].should eq(t('groups.add_user.errors.not_permitted'))
+    it 'should not admit outsiders' do
+      sign_in @outsider
+      lambda do
+        do_manage_members :remove => @member.username
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+      
+    it 'should not admit regular members' do
+      sign_in @member
+      lambda do
+        do_manage_members :add => @outsider.username
+      end.should_not change{ @group.users.exists? @outsider }
+      flash[:error].should eq(t('groups.manage_members.errors.not_permitted'))
+      response.should redirect_to(@group)
     end
 
-    context 'as admin' do
+    it 'should admit group owner' do
+      owner = User.make!
+      owner.own_groups << @group
+      sign_in owner
+      lambda do
+        do_manage_members :add => @outsider.username
+      end.should change{ @group.users.exists? @outsider }.from(false).to(true)
+      flash[:error].should be_nil
+      response.should redirect_to(@group)
+    end
 
+    describe 'group admin' do
+      
       before do
-        sign_in user
-        group.set_admin_status user, true
+        sign_in @admin
       end
 
-      def do_add_user name
-        post :add_user, :id => group.id, :name => name
+      it 'should be able to add new user to the group' do
+        lambda do
+          do_manage_members :add => @outsider.username
+        end.should change{ @group.users.exists? @outsider }.from(false).to(true)
       end
 
-       it 'should add multiple users to the group' do
-        ivanov = User.make!(:username => 'Ivanov')
-        petrov = User.make!(:username => 'Petrov')
-        do_add_user 'Ivanov, Petrov'
-        group.users.should include(ivanov)
-        group.users.should include(petrov)
+      it 'should be able to add several users to the group' do
+        lambda do
+          do_manage_members :add => [@outsider.username, User.make!.username].join(' ')
+        end.should change{ @group.users.count }.by(2)
+      end
+
+      it 'should be able to remove some users from the group' do
+        lambda do
+          do_manage_members :remove => @member.username
+        end.should change{ @group.users.exists? @member }.from(true).to(false)
+      end
+
+      it 'should be able to add and remove users from the group same time' do
+        do_manage_members :add => @outsider.username, :remove => @member.username
+        @group.users.exists?(@outsider).should be_true
+        @group.users.exists?(@member).should be_false
       end
 
       it 'should ignore case in usernames' do
-        ivanov = User.make!(:username => 'Ivanov')
-        petrov = User.make!(:username => 'Petrov')
-        do_add_user 'ivanov, pEtRoV'
-        group.users.should include(ivanov)
-        group.users.should include(petrov)
+        do_manage_members :add => @outsider.username.swapcase, :remove => @member.username.swapcase
+        @group.users.exists?(@outsider).should be_true
+        @group.users.exists?(@member).should be_false
       end
 
-      it 'should ignore not existant users' do
-        User.make!(:username => 'Ivanov')
-        lambda {
-          do_add_user 'Ivanov, Petrov'
-        }.should change(group.users, :count).by(1)
+      it 'should ignore not existant users requested to be added' do
+        lambda do
+          do_manage_members :add => 'Who_is_it'
+        end.should_not change{ @group.users.count }
       end
 
-      it 'should redirect to the group page' do
-        do_add_user User.make!.username
-        response.should redirect_to(group)
+      it 'should not add users iteratively' do
+        lambda do
+          do_manage_members :add => @member.username
+        end.should_not change{ @group.users.count }
       end
 
-      it 'should show error message if no names are given' do
-        do_add_user nil
-        flash[:error].should eq(t('groups.add_user.errors.no_name_given'))
+      it 'should ignore not member users requested to be removed' do
+        lambda do
+          do_manage_members :remove => 'mr_nobody'
+        end.should_not change{ @group.users.count }
+      end
+
+      it 'should redirect to group page' do
+        do_manage_members :remove => @admin.username
+        response.should redirect_to(@group)
+      end
+
+      it 'should show notice when a member is removed' do
+        do_manage_members :remove => @admin.username
+        flash[:notice].should eq(t('groups.manage_members.remove.successful', :names => @admin.username))
       end
       
-      it 'should show error message for not existant users' do
-        User.make!(:username => 'Petrov')
-        do_add_user 'Ivanov, Petrov Sidorov'
-        flash[:error].should eq(t('groups.add_user.errors.wrong_names', :names => 'Ivanov, Sidorov'))
+      it 'should set error message if no names given' do
+        do_manage_members
+        flash[:error].should eq(t('groups.manage_members.errors.no_name_given'))
       end
 
-    end
-
-  end
-
-
-  describe 'remove_user' do
-
-    let(:group) { Group.make! }
-    let(:member) { User.make! }
-
-    before do
-      group.users << user << member
-    end
-
-    it 'should require user authentication' do
-      post :remove_user, :id => group.id, :username => member.username
-      response.should redirect_to(new_user_session_path)
-    end
-
-    it 'should require user to be admin' do
-      sign_in user
-      lambda {
-        post :remove_user, :id => group.id, :username => member.username
-      }.should_not change(group.users, :count)
-      flash[:error].should eq(t('groups.remove_user.errors.not_permitted'))
-    end
-
-    context 'group admin' do
-
-      def do_remove_user username
-        post :remove_user, :id => group.id, :username => username
+      it 'should set error message if wrong names were given to be added' do
+        do_manage_members :add => 'somebody_not_existant'
+        flash[:error].should eq(t('groups.manage_members.errors.users_not_found', :names => 'somebody_not_existant'))
       end
 
-      before do
-        group.set_admin_status user, true
-        sign_in user
+      it 'should set error message if wrong names were requested to be removed' do
+        do_manage_members :remove => 'mr_wrong'
+        flash[:error].should eq(t('groups.manage_members.errors.users_not_members', :names => 'mr_wrong'))
       end
-
-      it 'should remove specified user' do
-        lambda do
-          do_remove_user member.username
-        end.should change(group.users, :count).by(-1)
-      end
-
-      it 'should redirect to the group page' do
-        do_remove_user member.username
-        response.should redirect_to(group)
-      end
-
-      it 'should have success notification' do
-        do_remove_user member.username
-        flash[:notice].should eq(t('groups.remove_user.successful', :username => member.username))
-      end
-
-      it 'should render error if no username given' do
-        do_remove_user nil
-        flash[:error].should eq(t('groups.remove_user.errors.no_name_given'))
-      end
-
-      it 'should not remove not existant user' do
-        lambda do
-          do_remove_user 'Somebody_else'
-        end.should_not change(group.users, :count)
-      end
-
-      it 'should display error message if requested user not found' do
-        do_remove_user 'somebody_else'
-        flash[:error].should eq(t('groups.remove_user.errors.user_not_found', :username => 'somebody_else'))
-      end
-
     end
   end
 
