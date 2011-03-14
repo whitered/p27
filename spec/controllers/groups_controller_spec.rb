@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe GroupsController do
 
-  let(:user) { User.make! }
-
   describe 'new' do
 
     it 'should require user authentication' do
@@ -14,7 +12,7 @@ describe GroupsController do
     context 'for user' do
 
       before do
-        sign_in user
+        sign_in User.make!
         get :new
       end
 
@@ -44,7 +42,8 @@ describe GroupsController do
     context 'for logged in user with correct params' do
 
       before do
-        sign_in user
+        @user = User.make!
+        sign_in @user
       end
 
       def do_create
@@ -70,74 +69,100 @@ describe GroupsController do
       it 'should make user admin of the group' do
         do_create
         m = Membership.last
-        m.user.should eq(user)
+        m.user.should eq(@user)
         m.group.should eq(Group.last)
         m.is_admin?.should be_true
+      end
+
+      it "should set user group\'s owner" do
+        do_create
+        Group.last.owner.should eq(@user)
       end
 
     end
   end
 
+
   describe 'show' do
 
+    before do
+      @group = Group.make!
+      @user = User.make!
+    end
+
+    def do_show id
+      get :show, :id => id
+    end
+
     it 'should require user authentication' do
-      get :show, :id => Group.make!.id
+      do_show @group.id
       response.should redirect_to(new_user_session_path)
     end
 
-    context 'for logged in user' do
+    context "user's group" do
 
       before do
-        sign_in user
+        @group.users << @user
+        sign_in @user
       end
 
-      context "show user's group" do
-
-        let(:group) { Group.make! }
-
-        before do
-          group.users << user
-          get :show, :id => group.id
-        end
-
-        it 'should be successful' do
-          response.should be_successful
-        end
-
-        it 'should assign :group' do
-          assigns[:group].should eq(group)
-        end
-
+      it 'should be successful' do
+        do_show @group.id
+        response.should be_successful
       end
 
-      context "show another's group" do
-        
-        def do_show
-          group = Group.make!
-          get :show, :id => group.id
-        end
-
-        it 'should raise NotFound error' do
-          lambda {
-            do_show
-          }.should raise_error(ActiveRecord::RecordNotFound)
-        end
-
+      it 'should assign :group' do
+        do_show @group.id
+        assigns[:group].should eq(@group)
       end
 
-      context "show non-existent group" do
+    end
 
-        def do_show
-          get :show, :id => '0'
-        end
-
-        it 'should raise NotFound error' do
-          lambda {
-            do_show
-          }.should raise_error(ActiveRecord::RecordNotFound)
-        end
+    context "owner's group" do
+      
+      before do
+        @group.owner = @user
+        @group.save!
+        sign_in @user
       end
 
+      it 'should be successful' do
+        do_show @group.id
+        response.should be_successful
+      end
+
+      it 'should assign :group' do
+        do_show @group.id
+        assigns[:group].should eq(@group)
+      end
+
+    end
+
+    context "another's group" do
+
+      before do
+        sign_in @user
+      end
+      
+      it 'should raise NotFound error' do
+        lambda do
+          do_show @group.id
+        end.should raise_error(ActiveRecord::RecordNotFound)
+      end
+
+    end
+
+    context 'non-existent group' do
+
+      before do
+        sign_in @user
+      end
+
+      it 'should raise NotFound error' do
+        lambda do
+          do_show 0
+        end.should raise_error(ActiveRecord::RecordNotFound)
+      end
     end
 
   end
