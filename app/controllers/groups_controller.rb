@@ -7,13 +7,15 @@ class GroupsController < ApplicationController
   end
 
   def create
+    params[:group][:owner_id] = current_user.id
     @group = current_user.groups.create(params[:group])
     @group.set_admin_status current_user, true
     redirect_to @group
   end
 
   def show
-    @group = current_user.groups.find(params[:id])
+    @group = current_user.groups.find_by_id(params[:id]) || current_user.own_groups.find_by_id(params[:id])
+    raise ActiveRecord::RecordNotFound if @group.nil?
   end
 
   def manage_members
