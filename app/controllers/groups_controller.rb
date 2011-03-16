@@ -15,7 +15,7 @@ class GroupsController < ApplicationController
 
   def show
     @group = Group.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless @group.public? || (user_signed_in? && current_user.is_insider_of(@group))
+    raise ActiveRecord::RecordNotFound unless @group.public? || (user_signed_in? && current_user.is_insider_of?(@group))
   end
 
   def manage_members

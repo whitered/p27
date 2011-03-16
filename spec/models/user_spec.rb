@@ -77,11 +77,11 @@ describe User do
     User.make.should respond_to(:own_groups)
   end
 
-  it 'should have is_insider_of method' do
-    User.make.should respond_to(:is_insider_of)
+  it 'should have is_insider_of? method' do
+    User.make.should respond_to(:is_insider_of?)
   end
 
-  describe 'is_insider_of' do
+  describe 'is_insider_of?' do
 
     before do
       @group = Group.make!
@@ -90,17 +90,17 @@ describe User do
 
     it 'should be true if user is a member of the group' do
       @group.users << @user
-      @user.is_insider_of(@group).should be_true
+      @user.is_insider_of?(@group).should be_true
     end
 
     it 'should be true if user is an owner of the group' do
       @group.owner = @user
       @group.save!
-      @user.is_insider_of(@group).should be_true
+      @user.is_insider_of?(@group).should be_true
     end
 
     it 'should be false if user is not a member or owner of the group' do
-      @user.is_insider_of(@group).should be_false
+      @user.is_insider_of?(@group).should be_false
     end
 
   end
