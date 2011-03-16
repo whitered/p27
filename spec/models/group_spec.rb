@@ -83,6 +83,10 @@ describe Group do
       @group.user_is_admin?(@outsider).should be_false
     end
 
+    it 'should return false if user is nil' do
+      @group.user_is_admin?(nil).should be_false
+    end
+
   end
 
   it 'should have owner' do
