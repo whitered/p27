@@ -30,5 +30,11 @@ describe GroupsController do
                                                            :id => '3')
   end
 
+  it 'should route leave' do
+    { :post => '/groups/1/leave' }.should route_to(:controller => 'groups',
+                                                   :action => 'leave',
+                                                   :id => '1')
+  end
+
 end
 
