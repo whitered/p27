@@ -22,6 +22,10 @@ class User < ActiveRecord::Base
     username.downcase
   end
 
+  def is_insider_of group
+    groups.exists?(group) || own_groups.exists?(group)
+  end
+
 protected
   
   def self.find_for_database_authentication(conditions)
