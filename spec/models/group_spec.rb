@@ -83,10 +83,49 @@ describe Group do
       @group.user_is_admin?(@outsider).should be_false
     end
 
+    it 'should return false if user is nil' do
+      @group.user_is_admin?(nil).should be_false
+    end
+
   end
 
   it 'should have owner' do
     group.should respond_to(:owner)
+  end
+
+  it 'should have private? property' do
+    group.should respond_to(:private?)
+  end
+
+  describe 'private?' do
+    
+    it 'should not be nil' do
+      group = Group.new(:private => nil)
+      group.private?.should_not be_nil
+    end
+
+    it 'should be false by default' do
+      Group.new.private?.should be_false
+    end
+
+  end
+  
+  it 'should have public? property' do
+    group.should respond_to(:public?)
+  end
+
+  describe 'public?' do
+
+    it 'should be true for not private groups' do
+      group = Group.new(:private => false)
+      group.public?.should be_true
+    end
+
+    it 'should be false for private groups' do
+      group = Group.new(:private => true)
+      group.public?.should be_false
+    end
+
   end
 
 end

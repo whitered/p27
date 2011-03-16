@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_filter :authenticate_user!
+  before_filter :authenticate_user!, :except => :show
 
   def new
     @group = Group.new
@@ -14,8 +14,8 @@ class GroupsController < ApplicationController
   end
 
   def show
-    @group = current_user.groups.find_by_id(params[:id]) || current_user.own_groups.find_by_id(params[:id])
-    raise ActiveRecord::RecordNotFound if @group.nil?
+    @group = Group.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless @group.public? || (user_signed_in? && current_user.is_insider_of(@group))
   end
 
   def manage_members
