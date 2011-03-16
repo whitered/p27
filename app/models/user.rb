@@ -22,7 +22,7 @@ class User < ActiveRecord::Base
     username.downcase
   end
 
-  def is_insider_of group
+  def is_insider_of? group
     groups.exists?(group) || own_groups.exists?(group)
   end
 
