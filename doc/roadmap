@@ -1,0 +1,12 @@
+public groups list
+group.free_join
+user can join free_join group
+group owner change group name
+group owner change group privacy
+group owner change group free_join
+invite
+guest can register with invite
+group_admin can send invite to the group
+guest registered with group invite automatically joins group
+guest can enter several invites per registration
+
