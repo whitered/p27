@@ -94,16 +94,10 @@ describe GroupsController do
       get :show, :id => id
     end
 
-    it 'should require user authentication' do
-      do_show @group.id
-      response.should redirect_to(new_user_session_path)
-    end
-
-    context "user's group" do
+    context 'public group' do
 
       before do
-        @group.users << @user
-        sign_in @user
+        @group.update_attribute(:private, false)
       end
 
       it 'should be successful' do
@@ -118,36 +112,70 @@ describe GroupsController do
 
     end
 
-    context "owner's group" do
-      
-      before do
-        @group.owner = @user
-        @group.save!
-        sign_in @user
-      end
-
-      it 'should be successful' do
-        do_show @group.id
-        response.should be_successful
-      end
-
-      it 'should assign :group' do
-        do_show @group.id
-        assigns[:group].should eq(@group)
-      end
-
-    end
-
-    context "another's group" do
+    context 'private group' do
 
       before do
-        sign_in @user
+        @group.update_attribute(:private, true)
       end
-      
-      it 'should raise NotFound error' do
+
+
+      it 'should not be shown to unsigned user' do
         lambda do
           do_show @group.id
-        end.should raise_error(ActiveRecord::RecordNotFound)
+        end.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      context "user's group" do
+
+        before do
+          @group.users << @user
+          sign_in @user
+        end
+
+        it 'should be successful' do
+          do_show @group.id
+          response.should be_successful
+        end
+
+        it 'should assign :group' do
+          do_show @group.id
+          assigns[:group].should eq(@group)
+        end
+
+      end
+
+      context "owner's group" do
+        
+        before do
+          @group.owner = @user
+          @group.save!
+          sign_in @user
+        end
+
+        it 'should be successful' do
+          do_show @group.id
+          response.should be_successful
+        end
+
+        it 'should assign :group' do
+          do_show @group.id
+          assigns[:group].should eq(@group)
+        end
+
+      end
+
+      context "another's group" do
+
+        before do
+          sign_in @user
+        end
+        
+        it 'should raise NotFound error' do
+          lambda do
+            do_show @group.id
+          end.should raise_error(ActiveRecord::RecordNotFound)
+        end
+
       end
 
     end
