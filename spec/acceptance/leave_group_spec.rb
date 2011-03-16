@@ -23,7 +23,6 @@ feature 'Leave Group' do
     @group.update_attribute(:private, true)
     visit group_path(@group)
     click_link_or_button t('groups.leave.link')
-    page.should_not have_content(@group.name)
     page.should have_content(t('groups.leave.successful', :group => @group.name))
   end
 end
