@@ -36,5 +36,10 @@ describe GroupsController do
                                                    :id => '1')
   end
 
+  it 'should route index' do
+    { :get => '/groups' }.should route_to(:controller => 'groups',
+                                          :action => 'index')
+  end
+
 end
 
