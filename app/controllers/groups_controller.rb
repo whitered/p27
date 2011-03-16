@@ -145,4 +145,11 @@ class GroupsController < ApplicationController
     redirect_to group
   end
 
+  def leave
+    group = current_user.groups.find(params[:id])
+    group.users.delete current_user
+    flash[:notice] = t('groups.leave.successful', :group => group.name)
+    redirect_to (group.public? ? group : root_path)
+  end
+
 end

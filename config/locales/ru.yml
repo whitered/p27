@@ -2,45 +2,45 @@ ru:
   activerecord:
     attributes:
       user:
-        login: 'Логин или емейл'
-        username: 'Логин'
-        email: 'Емейл'
-        password: 'Пароль'
-        password_confirmation: 'Подтверждение'
-        remember_me: 'Запомнить меня'
+        login: Логин или емейл
+        username: Логин
+        email: Емейл
+        password: Пароль
+        password_confirmation: Подтверждение
+        remember_me: Запомнить меня
       group:
-        name: 'Название'
+        name: Название
   devise:
     registrations:
       new:
-        title: 'Регистрация'
-        submit: 'Зарегистрироваться'
+        title: Регистрация
+        submit: Зарегистрироваться
     sessions:
       new:
-        title: 'Вход'
-        submit: 'Войти'
+        title: Вход
+        submit: Войти
   authentication:
-    registration: 'Регистрация'
-    login: 'Вход'
-    logout: 'Выход'
+    registration: Регистрация
+    login: Вход
+    logout: Выход
   home:
     index:
-      welcome: 'Проект 27'
+      welcome: Проект 27
   groups:
     new:
-      link: 'Создать новую группу'
-      title: 'Новая группа'
-      submit: 'Создать группу'
+      link: Создать новую группу
+      title: Новая группа
+      submit: Создать группу
     manage_members:
       add:
-        name: 'Пригласить в группу'
-        commit: 'Пригласить'
+        name: Пригласить в группу
+        commit: Пригласить
       remove:
         link: '[x]'
         successful: 'Удалены из группы: %{names}'
       errors:
-        no_name_given: 'Не указано ни одного пользователя'
-        not_permitted: 'Только администратор группы может приглашать новых пользователей'
+        no_name_given: Не указано ни одного пользователя
+        not_permitted: Только администратор группы может приглашать новых пользователей
         users_not_found: 'Таких пользователей не найдено: %{names}'
         users_not_members: 'Таких пользователей нет в группе: %{names}'
     manage_admins:
@@ -50,6 +50,10 @@ ru:
         name: '[-A]'
       errors:
         wrong_names: 'Таких пользователей нет в группе: %{names}'
-        not_permitted: 'Только владелец группы может назначить администратора'
-        no_name_given: 'Не указано имя пользователя'
+        not_permitted: Только владелец группы может назначить администратора
+        no_name_given: Не указано имя пользователя
+    leave:
+      link: Выйти из группы
+      successful: 'Вы вышли из группы %{group}'
+
 

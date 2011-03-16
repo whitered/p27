@@ -1,4 +1,5 @@
 <p><%= @group.name %></p>
+<%= link_to t('groups.leave.link'), leave_group_path(@group), :method => :post if user_signed_in? && @group.users.exists?(current_user) %>
 
 <ul id="group_users">
   <% @group.users.each do |user| %>
