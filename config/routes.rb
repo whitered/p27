@@ -17,6 +17,7 @@ P27::Application.routes.draw do
       post :manage_members
       post :manage_admins
       post :leave
+      post :join
     end
   end
 

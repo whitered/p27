@@ -51,8 +51,8 @@ describe "groups/show.html.erb" do
 
       it 'should not have invite_to_group form' do
         render
-        page.should have_no_field(t('groups.manage_members.add.name'))
-        page.should have_no_button(t('groups.manage_members.add.commit'))
+        group_users.should have_no_field(t('groups.manage_members.add.name'))
+        group_users.should have_no_button(t('groups.manage_members.add.commit'))
       end
 
       it 'should not have links to set admin' do
@@ -67,7 +67,12 @@ describe "groups/show.html.erb" do
 
       it 'should have link to leave group' do
         render
-        page.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+      end
+
+      it 'should not have link to join group' do
+        render
+        group_users.should have_no_link(t('groups.join.link'))
       end
 
     end
@@ -81,8 +86,8 @@ describe "groups/show.html.erb" do
 
       it 'should have form to invite new users to the group' do
         render
-        page.should have_field(t('groups.manage_members.add.name'))
-        page.should have_button(t('groups.manage_members.add.commit'))
+        group_users.should have_field(t('groups.manage_members.add.name'))
+        group_users.should have_button(t('groups.manage_members.add.commit'))
       end
 
       it 'should have links to remove any user from the group' do
@@ -106,7 +111,7 @@ describe "groups/show.html.erb" do
 
       it 'should have link to leave group' do
         render
-        page.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
       end
 
     end
@@ -147,7 +152,33 @@ describe "groups/show.html.erb" do
 
       it 'should not have leave link' do
         render
-        page.should have_no_link(t('groups.leave.link'))
+        group_users.should have_no_link(t('groups.leave.link'))
+      end
+
+      context 'hospitable group' do
+
+        before do
+          @group.update_attribute(:hospitable, true)
+        end
+
+        it 'should have link to join group' do
+          render
+          group_users.should have_link(t('groups.join.link'), :href => join_group_path(@group))
+        end
+
+      end
+
+      context 'not hospitable group' do
+
+        before do
+          @group.update_attribute(:hospitable, false)
+        end
+
+        it 'should not have link to join group' do
+          render
+          group_users.should have_no_link(t('groups.join.link'))
+        end
+
       end
     end
 
