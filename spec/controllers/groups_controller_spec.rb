@@ -648,4 +648,79 @@ describe GroupsController do
     end
 
   end
+
+  describe 'update' do
+
+    before do
+      @group = Group.make!(:name => 'Old name')
+      @user = User.make!
+    end
+
+    def do_update options
+      put :update, :id => @group.id, :group => options
+    end
+
+    it 'should require user authentication' do
+      do_update :name => 'New name'
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'shoudl raise NotFound exception if group is not existant' do
+      sign_in @user
+      lambda do
+        put :update, :id => 0, :group => { :name => 'New name' }
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should raise NotFound exception if user is not owner of the group' do
+      @group.users << @user
+      sign_in @user
+      lambda do
+        do_update :name => 'New name'
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for group owner' do
+
+      before do
+        @group.update_attribute(:owner_id, @user.id)
+        sign_in @user
+      end
+
+      it 'should update group name' do
+        lambda do
+          do_update :name => 'New name'
+        end.should change{ Group.find(@group.id).name }.from('Old name').to('New name')
+      end
+
+      it 'should update group private' do
+        lambda do
+          do_update :private => true
+        end.should change{ Group.find(@group.id).private? }.from(false).to(true)
+      end
+
+      it 'should update group hospitable' do
+        lambda do
+          do_update :hospitable => false
+        end.should change{ Group.find(@group.id).hospitable? }.from(true).to(false)
+      end
+
+      it 'should not update group owner' do
+        new_owner = User.make!
+        lambda do
+          do_update :owner_id => new_owner.id
+        end.should_not change{ Group.find(@group.id).owner_id }
+      end
+
+      it 'should set successful notification' do
+        do_update :name => 'New name'
+        flash[:notice].should eq(t('groups.edit.successful'))
+      end
+
+      it 'should render :edit template' do
+        do_update :name => 'New name'
+        response.should render_template(:edit)
+      end
+    end
+  end
 end

@@ -7,8 +7,8 @@ class GroupsController < ApplicationController
   end
 
   def create
-    params[:group][:owner_id] = current_user.id
     @group = current_user.groups.create(params[:group])
+    @group.update_attribute :owner_id, current_user.id
     @group.set_admin_status current_user, true
     redirect_to @group
   end
@@ -128,6 +128,13 @@ class GroupsController < ApplicationController
 
   def edit
     @group = current_user.own_groups.find(params[:id])
+  end
+
+  def update
+    @group = current_user.own_groups.find(params[:id])
+    @group.update_attributes(params[:group])
+    flash[:notice] = t('groups.edit.successful')
+    render :edit
   end
 
 end
