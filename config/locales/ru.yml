@@ -10,6 +10,8 @@ ru:
         remember_me: Запомнить меня
       group:
         name: Название
+        private: Приватная группа
+        hospitable: Свободная регистрация
   devise:
     registrations:
       new:
@@ -61,5 +63,9 @@ ru:
       successful: 'Вы вышли из группы %{group}'
     index:
       title: Группы
+    edit:
+      title: Настройки группы
+      commit: Сохранить изменения
+      successful: Настройки группы сохранены
 
 
