@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => :show
+  before_filter :authenticate_user!, :except => [:show, :index]
 
   def new
     @group = Group.new
@@ -109,6 +109,10 @@ class GroupsController < ApplicationController
     group.users.delete current_user
     flash[:notice] = t('groups.leave.successful', :group => group.name)
     redirect_to (group.public? ? group : root_path)
+  end
+
+  def index
+    @groups = Group.find(:all, :conditions => { :private => false })
   end
 
 end

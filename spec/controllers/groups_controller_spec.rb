@@ -499,4 +499,38 @@ describe GroupsController do
     end
 
   end
+
+  describe 'index' do
+
+    before do
+      @groups = Group.make!(3)
+      @groups.second.update_attribute(:private, true)
+      get :index
+    end
+
+    it 'should be successful' do
+      response.should be_successful
+    end
+
+    it 'should assign :groups' do
+      assigns[:groups].should be_a(Array)
+    end
+
+    describe '@groups' do
+
+      it 'should contain all public groups' do
+        assigns[:groups].should include(@groups.first)
+        assigns[:groups].should include(@groups.third)
+      end
+
+      it 'should not contain any private groups' do
+        assigns[:groups].should_not include(@groups.second)
+      end
+
+    end
+
+    it 'should render :index template' do
+      response.should render_template(:index)
+    end
+  end
 end
