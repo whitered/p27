@@ -41,5 +41,11 @@ describe GroupsController do
                                           :action => 'index')
   end
 
+  it 'should route join' do
+    { :post => '/groups/5/join' }.should route_to(:controller => 'groups',
+                                                  :action => 'join',
+                                                  :id => '5')
+  end
+
 end
 

@@ -104,6 +104,17 @@ class GroupsController < ApplicationController
     redirect_to group
   end
 
+  def join
+    group = Group.find(params[:id])
+    raise ActiveRecord::RecordNotFound if group.private?
+    if group.hospitable?
+      group.users << current_user unless group.users.exists? current_user
+    else
+      flash[:error] = t('groups.join.errors.not_hospitable')
+    end
+    redirect_to group
+  end
+
   def leave
     group = current_user.groups.find(params[:id])
     group.users.delete current_user
