@@ -55,5 +55,7 @@ ru:
     leave:
       link: Выйти из группы
       successful: 'Вы вышли из группы %{group}'
+    index:
+      title: Группы
 
 
