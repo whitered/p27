@@ -533,4 +533,73 @@ describe GroupsController do
       response.should render_template(:index)
     end
   end
+
+  describe 'join' do
+
+    before do 
+      @group = Group.make!
+      @user = User.make!
+    end
+
+    def do_join
+      post :join, :id => @group.id
+    end
+
+    it 'should require user authentication' do
+      do_join
+      response.should redirect_to(new_user_session_path)
+    end
+      
+    it 'should raise NotFound error for not existant group' do
+      sign_in @user
+      lambda do
+        post :join, :id => 0
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should raise NotFound error for private group' do
+      @group.update_attribute(:private, true)
+      sign_in @user
+      lambda do
+        do_join
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should show error message if group is not hospitable' do
+      @group.update_attributes({ :private => false, :hospitable => false })
+      sign_in @user
+      do_join
+      response.should redirect_to(group_path(@group))
+      flash[:error].should eq(t('groups.join.errors.not_hospitable'))
+    end
+
+
+    context 'for hospitable public group' do
+
+      before do
+        @group.update_attributes :private => false, :hospitable => true
+        sign_in @user
+      end
+
+      it 'should do nothing if user is a member of the group already' do
+        @group.users << @user
+        lambda do
+          do_join
+        end.should_not change{ @group.users.count }
+      end
+
+      it 'should add user to the group if it is not a member' do
+        lambda do
+          do_join
+        end.should change{ @group.users.count }.by(1)
+        @group.users.should include(@user)
+      end
+
+      it 'should redirect to group page' do
+        do_join
+        response.should redirect_to(group_path(@group))
+      end
+    end
+
+  end
 end

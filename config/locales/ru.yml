@@ -54,6 +54,8 @@ ru:
         no_name_given: Не указано имя пользователя
     join:
       link: Вступить в группу
+      errors:
+        not_hospitable: Вступить в эту группу можно только по приглашению
     leave:
       link: Выйти из группы
       successful: 'Вы вышли из группы %{group}'
