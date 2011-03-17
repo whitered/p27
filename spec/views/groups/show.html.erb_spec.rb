@@ -184,4 +184,23 @@ describe "groups/show.html.erb" do
 
   end
 
+
+  it 'should show edit link for group owner' do
+    @group.update_attribute(:owner_id, @user.id)
+    render
+    page.should have_link(t('groups.edit.link', :href => edit_group_path(@group)))
+  end
+
+  it 'should not show edit link for admin' do
+    @group.set_admin_status @user, true
+    render
+    page.should have_no_link(t('groups.edit.link'))
+  end
+
+  it 'should not show edit link for guest' do
+    @group.users.delete @user
+    render
+    page.should have_no_link(t('groups.edit.link'))
+  end
+
 end

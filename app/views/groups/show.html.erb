@@ -1,5 +1,7 @@
 <p><%= @group.name %></p>
 
+<%= link_to t('groups.edit.link'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user %>
+
 <div id="group_users">
   <% if user_signed_in? %>
     <% if @group.users.exists? current_user %>
