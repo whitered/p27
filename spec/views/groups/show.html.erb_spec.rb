@@ -65,6 +65,11 @@ describe "groups/show.html.erb" do
         group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
       end
 
+      it 'should have link to leave group' do
+        render
+        page.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+      end
+
     end
 
 
@@ -99,7 +104,12 @@ describe "groups/show.html.erb" do
         group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
       end
 
-   end
+      it 'should have link to leave group' do
+        render
+        page.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+      end
+
+    end
 
     context 'for owner' do
 
@@ -128,6 +138,17 @@ describe "groups/show.html.erb" do
       end
 
 
+    end
+
+    context 'for guest' do
+      before do
+        @group.users.delete @user
+      end
+
+      it 'should not have leave link' do
+        render
+        page.should have_no_link(t('groups.leave.link'))
+      end
     end
 
   end

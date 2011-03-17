@@ -426,4 +426,111 @@ describe GroupsController do
     end
 
   end
+
+
+  describe 'leave' do
+
+    before do
+      @user = User.make!
+      @group = Group.make!
+    end
+
+    def do_leave
+      post :leave, :id => @group.id
+    end
+
+    it 'should require user to be authenticated' do
+      do_leave
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should require user to be a member of the group' do
+      sign_in @user
+      lambda do
+        do_leave
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+      
+    
+    context 'for group member' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      it 'should remove user from group' do
+        lambda do
+          do_leave
+        end.should change{ @group.users.exists? @user }.from(true).to(false)
+      end
+
+      it 'should set flash notification' do
+        do_leave
+        flash[:notice].should eq(t('groups.leave.successful', :group => @group.name))
+      end
+      
+      context 'of private group' do
+
+        before do
+          @group.update_attribute(:private, true)
+        end
+
+        it 'should redirect to root' do
+          do_leave
+          response.should redirect_to(root_path)
+        end
+
+      end
+
+      context 'of public group' do
+
+        before do
+          @group.update_attribute(:private, false)
+        end
+
+        it 'should redirect to group page' do
+          do_leave
+          response.should redirect_to(@group)
+        end
+
+      end
+
+    end
+
+  end
+
+  describe 'index' do
+
+    before do
+      @groups = Group.make!(3)
+      @groups.second.update_attribute(:private, true)
+      get :index
+    end
+
+    it 'should be successful' do
+      response.should be_successful
+    end
+
+    it 'should assign :groups' do
+      assigns[:groups].should be_a(Array)
+    end
+
+    describe '@groups' do
+
+      it 'should contain all public groups' do
+        assigns[:groups].should include(@groups.first)
+        assigns[:groups].should include(@groups.third)
+      end
+
+      it 'should not contain any private groups' do
+        assigns[:groups].should_not include(@groups.second)
+      end
+
+    end
+
+    it 'should render :index template' do
+      response.should render_template(:index)
+    end
+  end
 end

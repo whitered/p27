@@ -12,10 +12,11 @@ P27::Application.routes.draw do
     get '/profile' => 'devise/registrations#edit', :as => :edit_user_registration
   end
 
-  resources :groups, :only => [:new, :create, :show] do
+  resources :groups, :only => [:new, :create, :show, :index] do
     member do
       post :manage_members
       post :manage_admins
+      post :leave
     end
   end
 
