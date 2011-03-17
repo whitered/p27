@@ -602,4 +602,50 @@ describe GroupsController do
     end
 
   end
+
+
+  describe 'edit' do 
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+    end
+
+    def do_edit
+      get :edit, :id => @group.id
+    end
+
+    it 'should require user authentication' do
+      do_edit
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should require user to be group owner' do
+      sign_in @user
+      lambda do
+        do_edit
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+
+    context 'for group owner' do
+
+      before do
+        @group.update_attribute(:owner_id, @user.id)
+        sign_in @user
+      end
+
+      it 'should assign :group' do
+        do_edit
+        assigns[:group].should eq(@group)
+      end
+
+      it 'should render :edit template' do
+        do_edit
+        response.should render_template(:edit)
+      end
+
+    end
+
+  end
 end

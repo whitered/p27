@@ -126,4 +126,8 @@ class GroupsController < ApplicationController
     @groups = Group.find(:all, :conditions => { :private => false })
   end
 
+  def edit
+    @group = current_user.own_groups.find(params[:id])
+  end
+
 end
