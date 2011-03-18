@@ -47,5 +47,17 @@ describe GroupsController do
                                                   :id => '5')
   end
 
+  it 'should route edit' do
+    { :get => 'groups/1/edit' }.should route_to(:controller => 'groups',
+                                                :action => 'edit',
+                                                :id => '1')
+  end
+
+  it 'should route update' do
+    { :put => 'groups/1' }.should route_to(:controller => 'groups',
+                                           :action => 'update',
+                                           :id => '1')
+  end
+
 end
 
