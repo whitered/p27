@@ -19,6 +19,8 @@ P27::Application.routes.draw do
       post :leave
       post :join
     end
+
+    resources :invitations, :only => [:new, :create]
   end
 
   resources :users, :only => [:show]
