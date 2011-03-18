@@ -3,10 +3,7 @@ require 'spec_helper'
 describe "invitations/new.html.erb", :focus => true do
 
   before do
-    @invitation = Invitation.new
-    group = Group.make!
-    @invitation.stub(:group).and_return(group)
-    @invitation.stub(:recipient)
+    @invitation = Invitation.new(:group => Group.make!)
     render
   end
 
