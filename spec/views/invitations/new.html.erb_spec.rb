@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "invitations/new.html.erb", :focus => true do
+describe 'invitations/new.html.erb' do
 
   before do
     @invitation = Invitation.new(:group => Group.make!)

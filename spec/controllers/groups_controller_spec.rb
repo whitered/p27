@@ -278,7 +278,7 @@ describe GroupsController do
         @group.users.exists?(@member).should be_false
       end
 
-      it 'should ignore not existant users requested to be added' do
+      it 'should ignore not existent users requested to be added' do
         lambda do
           do_manage_members :add => 'Who_is_it'
         end.should_not change{ @group.users.count }
@@ -312,8 +312,8 @@ describe GroupsController do
       end
 
       it 'should set error message if wrong names were given to be added' do
-        do_manage_members :add => 'somebody_not_existant'
-        flash[:error].should eq(t('groups.manage_members.errors.users_not_found', :names => 'somebody_not_existant'))
+        do_manage_members :add => 'somebody_not_existent'
+        flash[:error].should eq(t('groups.manage_members.errors.users_not_found', :names => 'somebody_not_existent'))
       end
 
       it 'should set error message if wrong names were requested to be removed' do
@@ -550,7 +550,7 @@ describe GroupsController do
       response.should redirect_to(new_user_session_path)
     end
       
-    it 'should raise NotFound error for not existant group' do
+    it 'should raise NotFound error for not existent group' do
       sign_in @user
       lambda do
         post :join, :id => 0
@@ -665,7 +665,7 @@ describe GroupsController do
       response.should redirect_to(new_user_session_path)
     end
 
-    it 'shoudl raise NotFound exception if group is not existant' do
+    it 'shoudl raise NotFound exception if group is not existent' do
       sign_in @user
       lambda do
         put :update, :id => 0, :group => { :name => 'New name' }

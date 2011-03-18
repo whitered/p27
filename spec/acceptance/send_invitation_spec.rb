@@ -15,7 +15,7 @@ feature "Send Invitation" do
     visit new_group_invitation_path(@group)
     fill_in t('activerecord.attributes.invitation.recipient'), :with => recipient
     fill_in t('activerecord.attributes.invitation.message'), :with => 'Join my group!'
-    click_link_of_button t('invitations.new.commit')
+    click_link_or_button t('invitations.new.commit')
   end
 
   scenario 'group admin sends invitation to registered user by username' do
