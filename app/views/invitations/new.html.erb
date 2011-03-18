@@ -1,10 +1,12 @@
-<h1><%= t('invitations.new.title', :group => @invitation.group.name) %></h1>
+<h1><%= t('invitations.new.title', :group => @group.name) %></h1>
 
 <p><%= t('invitations.new.hint') %></p>
 
-<%= semantic_form_for [@invitation.group, @invitation] do |f| %>
-  <%= f.inputs :recipient, :message %>
-  <%= f.buttons do %>
-    <%= f.commit_button t('invitations.new.commit') %>
-  <% end -%>
+<%= form_tag group_invitations_path(@group) do %>
+  <%= label_tag :recipients, t('invitations.new.recipients') %>
+  <%= text_field_tag :recipients %>
+  <%= label_tag :message, t('activerecord.attributes.invitation.message') %>
+  <%= text_area_tag :message %>
+  <%= submit_tag t('invitations.new.commit') %>
 <% end -%>
+
