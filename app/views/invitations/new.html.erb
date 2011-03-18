@@ -1,2 +1,10 @@
-<h1>Invitations#new</h1>
-<p>Find me in app/views/invitations/new.html.erb</p>
+<h1><%= t('invitations.new.title', :group => @invitation.group.name) %></h1>
+
+<p><%= t('invitations.new.hint') %></p>
+
+<%= semantic_form_for [@invitation.group, @invitation] do |f| %>
+  <%= f.inputs :recipient, :message %>
+  <%= f.buttons do %>
+    <%= f.commit_button t('invitations.new.commit') %>
+  <% end -%>
+<% end -%>

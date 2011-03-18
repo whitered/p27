@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110317105614) do
+ActiveRecord::Schema.define(:version => 20110318094340) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -20,6 +20,19 @@ ActiveRecord::Schema.define(:version => 20110317105614) do
     t.boolean  "private",    :default => false, :null => false
     t.boolean  "open",       :default => true
     t.boolean  "hospitable", :default => true,  :null => false
+  end
+
+  create_table "invitations", :force => true do |t|
+    t.integer  "user_id"
+    t.string   "email"
+    t.integer  "group_id"
+    t.integer  "author_id"
+    t.string   "message"
+    t.integer  "membership_id"
+    t.boolean  "declined"
+    t.string   "code"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "memberships", :force => true do |t|
