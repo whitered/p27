@@ -20,4 +20,26 @@ describe 'groups/index.html.erb' do
     page.all('#groups p', :text => 'groups/_group.html.erb').size.should eq(3)
   end
 
+  context 'for logged in user' do
+
+    before do 
+      sign_in User.make!
+    end
+
+    it 'should have new group link' do
+      render
+      page.should have_link(t('groups.new.link'), :href => new_group_path)
+    end
+
+  end
+
+  context 'for not logged in user' do
+
+    it 'should not have new group link' do
+      render
+      page.should have_no_link(t('groups.new.link'))
+    end
+
+  end
+
 end
