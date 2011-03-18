@@ -36,6 +36,11 @@ describe InvitationsController do
         sign_in @admin
       end
 
+      it 'should assign :group' do
+        get :new, :group_id => @group.id
+        assigns[:group].should eq(@group)
+      end
+
       it 'should render :new template' do
         get :new, :group_id => @group.id
         response.should render_template(:new)
@@ -49,5 +54,7 @@ describe InvitationsController do
     end
 
   end
+
+
 
 end
