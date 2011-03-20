@@ -12,6 +12,16 @@ describe Invitation do
     invite.should respond_to(:email)
   end
 
+  describe 'email' do
+    it 'should be an email' do
+      %w( invalid@email @email.com admin-at-server.com email@.com ).each do |email|
+        invitation = Invitation.new(:email => email)
+        invitation.valid?
+        invitation.errors[:email].should_not be_empty
+      end
+    end
+  end
+
   it 'should have group' do
     invite.should respond_to(:group)
   end
@@ -20,7 +30,7 @@ describe Invitation do
     it 'should not be nil' do
       invitation = Invitation.new(:group => nil)
       invitation.should_not be_valid
-      invitation.errors[:group_id].should_not be_nil
+      invitation.errors[:group_id].should_not be_empty
     end
   end
 
@@ -36,7 +46,7 @@ describe Invitation do
     it 'should not be nil' do
       invitation = Invitation.new(:author => nil)
       invitation.should_not be_valid
-      invitation.errors[:author_id].should_not be_nil
+      invitation.errors[:author_id].should_not be_empty
     end
   end
 
@@ -52,7 +62,7 @@ describe Invitation do
     it 'should not be nil' do
       invitation = Invitation.new(:declined => nil)
       invitation.should_not be_valid
-      invitation.errors[:declined].should_not be_nil
+      invitation.errors[:declined].should_not be_empty
     end
 
     it 'should be false by default' do
