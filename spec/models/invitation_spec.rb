@@ -56,7 +56,7 @@ describe Invitation do
     end
 
     it 'should be false by default' do
-      Invitation.new.declined?.should be_false
+      Invitation.new.declined.should eq(false)
     end
   end
 
