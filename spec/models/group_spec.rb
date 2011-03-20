@@ -102,7 +102,7 @@ describe Group do
     it 'should not be nil' do
       group = Group.new(:private => nil)
       group.should_not be_valid
-      group.errors[:private].should_not be_nil
+      group.errors[:private].should_not be_empty
     end
 
     it 'should be false by default' do
@@ -139,7 +139,7 @@ describe Group do
     it 'should not be nil' do
       group = Group.new(:hospitable => nil)
       group.should_not be_valid
-      group.errors[:hospitable].should_not be_nil
+      group.errors[:hospitable].should_not be_empty
     end
 
     it 'should be true by default' do

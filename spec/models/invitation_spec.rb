@@ -20,6 +20,12 @@ describe Invitation do
         invitation.errors[:email].should_not be_empty
       end
     end
+
+    it 'can be empty' do
+      invitation = Invitation.new(:email => nil)
+      invitation.valid?
+      invitation.errors[:email].should be_blank
+    end
   end
 
   it 'should have group' do

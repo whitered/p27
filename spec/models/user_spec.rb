@@ -17,41 +17,41 @@ describe User do
     it 'should not be nil' do
       user = User.make( :username => nil )
       user.should_not be_valid
-      user.errors[:username].should_not be_nil
+      user.errors[:username].should_not be_empty
     end
 
     it 'should be unique' do
       User.make!( :username => 'tommy' )
       user = User.make( :username => 'tommy' )
       user.should_not be_valid
-      user.errors[:username].should_not be_nil
+      user.errors[:username].should_not be_empty
     end
 
     it 'should be unique case-insensitive' do
       User.make!( :username => 'billy' )
       user = User.make( :username => 'Billy' )
       user.should_not be_valid
-      user.errors[:username].should_not be_nil
+      user.errors[:username].should_not be_empty
     end
 
     it 'should not contain restricted characters' do
       ' ?!\'\\/^:",.'.chars do |char|
         user = User.make( :username => 'name_' + char )
         user.should_not be_valid
-        user.errors[:username].should_not be_nil
+        user.errors[:username].should_not be_empty
       end
     end
 
     it 'should not be too short' do
       user = User.make( :username => '12' )
       user.should_not be_valid
-      user.errors[:username].should_not be_nil
+      user.errors[:username].should_not be_empty
     end
 
     it 'should not be too long' do
       user = User.make( :username => '12345678901234567' )
       user.should_not be_valid
-      user.errors[:username].should_not be_nil
+      user.errors[:username].should_not be_empty
     end
 
   end
