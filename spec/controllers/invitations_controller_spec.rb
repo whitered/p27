@@ -164,8 +164,8 @@ describe InvitationsController do
             do_create valid_email
           end.should change(ActionMailer::Base.deliveries, :count).by(1)
           mail = ActionMailer::Base.deliveries.last
-          mail.to.should eq(valid_email)
-          mail.body.raw_source.should eq(Invitation.last.code)
+          mail.to.should eq([valid_email])
+          mail.body.raw_source.should match(Invitation.last.code)
         end
 
         it 'should set successful notice' do

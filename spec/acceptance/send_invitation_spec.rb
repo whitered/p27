@@ -20,22 +20,22 @@ feature "Send Invitation" do
 
   scenario 'group admin sends invitation to registered user by username' do
     send_invitations @recipient.username
-    page.should have_content(t('invitations.new.successful'))
+    page.should have_content(t('invitations.create.invitation_sent'))
   end
 
   scenario 'group admin sends invitation to registered user by email' do
     send_invitations @recipient.email
-    page.should have_content(t('invitations.new.successful'))
+    page.should have_content(t('invitations.create.invitation_sent'))
   end
 
   scenario 'group admin sends invitation to registered user by username' do
     send_invitations 'dude@hotmail.com'
-    page.should have_content(t('invitations.new.successful'))
+    page.should have_content(t('invitations.create.invitation_sent'))
   end
 
   scenario 'group admin send invitations to several users' do
     send_invitations [@recipient.username, 'dude@hotmail.com'].join(',')
-    page.should have_content(t('invitations.new.successful'))
+    page.should have_content(t('invitations.create.invitations_sent'))
   end
 
 end

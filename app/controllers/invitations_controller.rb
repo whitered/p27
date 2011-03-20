@@ -23,6 +23,7 @@ class InvitationsController < ApplicationController
       invitation.group = @group
       invitation.author = current_user
       if invitation.save
+        InvitationMailer.invite_user(invitation, new_user_registration_url(:code => invitation.code)).deliver
         sent_invitations << name
       else
         wrong_invitations << name

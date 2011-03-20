@@ -80,6 +80,15 @@ describe Invitation do
     invite.should respond_to(:code)
   end
 
+  describe 'code' do
+
+   it 'should be generated before save' do
+      invitation = Invitation.create(:group_id => 1, :author_id => 2)
+      invitation.code.should_not be_blank
+    end
+   
+  end
+
   it 'should have recipient' do
     invite.should respond_to(:recipient)
   end

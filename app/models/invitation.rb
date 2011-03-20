@@ -10,4 +10,12 @@ class Invitation < ActiveRecord::Base
   validates_presence_of :group_id
   validates_presence_of :author_id
   validates_inclusion_of :declined, :in => [false, true]
+
+  before_create :generate_code
+
+private
+
+  def generate_code
+    self.code = ActiveSupport::SecureRandom.hex(20)
+  end
 end
