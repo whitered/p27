@@ -38,8 +38,12 @@ gem 'formtastic'
 group :test, :development do
   gem 'rspec-rails'
   gem 'steak'
+end
+
+group :test do
   gem 'capybara'
   gem 'machinist', '>= 2.0.0.beta2'
   gem 'launchy'
   gem 'database_cleaner'
+  gem 'faker'
 end
