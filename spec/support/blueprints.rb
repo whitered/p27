@@ -16,3 +16,6 @@ Membership.blueprint do
   user_id { 1 }
   group_id { 1 }
 end
+
+Invitation.blueprint do
+end
