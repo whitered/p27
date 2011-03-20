@@ -26,6 +26,10 @@ class User < ActiveRecord::Base
     groups.exists?(group) || own_groups.exists?(group)
   end
 
+  def self.find_by_username_or_email name
+    where(["username = :value OR email = :value", { :value => name }]).first
+  end
+
 protected
   
   def self.find_for_database_authentication(conditions)
