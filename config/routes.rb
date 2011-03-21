@@ -24,6 +24,13 @@ P27::Application.routes.draw do
   end
 
   resources :users, :only => [:show]
+
+  resources :invitations, :only => [:index] do
+    member do
+      post :accept
+      post :decline
+    end
+  end
  
   # The priority is based upon order of creation:
   # first created -> highest priority.

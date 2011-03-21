@@ -1,0 +1,6 @@
+.group
+  = @invitation.group.name
+  = t('invitations.invitation.from')
+  = @invitation.author.username
+  = link_to t('invitations.invitation.accept'), accept_invitation_path(@invitation)
+  = link_to t('invitations.invitation.decline'), decline_invitation_path(@invitation)
