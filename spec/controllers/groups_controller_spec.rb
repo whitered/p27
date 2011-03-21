@@ -266,6 +266,12 @@ describe GroupsController do
         end.should change{ @group.users.exists? @member }.from(true).to(false)
       end
 
+      it 'should destroy membership when removing user' do
+        lambda do
+          do_manage_members :remove => @member.username
+        end.should change(Membership, :count).by(-1)
+      end
+
       it 'should be able to add and remove users from the group same time' do
         do_manage_members :add => @outsider.username, :remove => @member.username
         @group.users.exists?(@outsider).should be_true
