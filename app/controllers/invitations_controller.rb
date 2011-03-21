@@ -47,4 +47,7 @@ class InvitationsController < ApplicationController
     render :new
   end
 
+  def index
+    @invitations = Invitation.find(:all, :conditions => { :user_id => current_user.id })
+  end
 end

@@ -237,4 +237,24 @@ describe InvitationsController do
 
     end
   end
+
+  describe 'index' do
+
+    it 'should require user authentication' do
+      get :index
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should find all invitations owned by user' do
+      user = User.make!
+      invitations = (1..3).map { Invitation.make!(:user => user, :group => Group.make!, :author => User.make! )}
+      sign_in user
+      get :index
+      assigns[:invitations].size.should eq(3)
+      invitations.each do |invitation|
+        assigns[:invitations].should include(invitation)
+      end
+    end
+
+  end
 end
