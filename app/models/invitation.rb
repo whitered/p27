@@ -10,6 +10,8 @@ class Invitation < ActiveRecord::Base
   validates_presence_of :group_id
   validates_presence_of :author_id
   validates_inclusion_of :declined, :in => [false, true]
+  validates_uniqueness_of :user_id, :scope => :group_id, :unless => 'user_id.blank?'
+  validates_uniqueness_of :email, :scope => :group_id, :unless => 'email.blank?'
 
   before_create :generate_code
 

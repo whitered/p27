@@ -40,5 +40,16 @@ describe Membership do
     end
   end
 
+  it 'should have unique user_id in a group' do
+    group = Group.make!
+    user = User.make!
+    Membership.create(:group => group, :user => user)
+    membership = Membership.new(:group => group, :user => user)
+    membership.should_not be_valid
+    membership.errors[:user_id].should_not be_empty
+    membership.user = User.make!
+    membership.should be_valid
+  end
+
 
 end

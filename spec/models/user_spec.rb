@@ -105,4 +105,17 @@ describe User do
 
   end
 
+  it 'should have email' do
+    User.make.should respond_to(:email)
+  end
+
+  describe 'email' do
+    it 'should be unique' do
+      User.make!(:email => 'user@email.com')
+      user = User.make(:email => 'user@email.com')
+      user.should_not be_valid
+      user.errors[:email].should_not be_empty
+    end
+  end
+
 end

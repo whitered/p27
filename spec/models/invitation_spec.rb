@@ -82,7 +82,7 @@ describe Invitation do
 
   describe 'code' do
 
-   it 'should be generated before save' do
+    it 'should be generated before save' do
       invitation = Invitation.create(:group_id => 1, :author_id => 2)
       invitation.code.should_not be_blank
     end
@@ -91,5 +91,27 @@ describe Invitation do
 
   it 'should have recipient' do
     invite.should respond_to(:recipient)
+  end
+
+  it 'should have unique user id in a group' do
+    group = Group.make!
+    user = User.make!
+    Invitation.make!(:group => group, :user => user, :author => User.make!)
+    invitation = Invitation.make(:group => group, :user => user, :author => User.make!)
+    invitation.should_not be_valid
+    invitation.errors[:user_id].should_not be_empty
+    invitation.user = User.make!
+    invitation.should be_valid
+  end
+
+  it 'should have unique email in a group' do
+    group = Group.make!
+    email = Faker::Internet.email
+    Invitation.make!(:group => group, :email => email, :author => User.make!)
+    invitation = Invitation.make(:group => group, :email => email, :author => User.make!)
+    invitation.should_not be_valid
+    invitation.errors[:email].should_not be_empty
+    invitation.email = Faker::Internet.email
+    invitation.should be_valid
   end
 end
