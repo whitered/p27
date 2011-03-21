@@ -256,5 +256,91 @@ describe InvitationsController do
       end
     end
 
+    it 'should not fetch foreign invitations' do
+      user = User.make!
+      invitation = Invitation.make!(:user => User.make!, :group => Group.make!, :author => User.make!)
+      sign_in user
+      get :index
+      assigns[:invitations].should_not include(invitation)
+    end
+
+  end
+
+
+  describe 'accept' do
+     
+    before do
+      @group = Group.make!
+      @user, @author = User.make!(2)
+      @invitation = Invitation.make!(:user => @user, :author => @author, :group => @group)
+    end
+
+    def do_accept
+      post :accept, :id => @invitation.id
+    end
+
+    it 'should require user authentication' do
+      do_accept
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound error for not existend invitation' do
+      lambda do
+        post :accept, :id => 0
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should raise NotFound error for foreign invitation' do
+      invitation = Invitation.make!(:user => User.make!, :author => @author, :group => @group)
+      lambda do
+        post :accept, :id => invitation.id
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'own invitation' do
+
+      it 'should add user to the group' do
+        lambda do
+          do_accept
+        end.should change{ @group.users.exists?(@user) }.from(false).to(true)
+      end
+
+      it 'should create new membership' do
+        lambda do
+          do_accept
+        end.should change(Membership, :count).by(1)
+        Membership.find(:first, :conditions => { :user => @user, :group => @group }).should_not be_nil
+      end
+
+      it 'should set inviter to the membership' do 
+        do_accept
+        Membership.find(:first, :conditions => { :user => @user, :group => @group }).inviter.should eq(@author)
+      end
+
+      it 'should remove used invitation' do
+        lambda do
+          do_accept
+        end.should change(Invitation, :count).by(-1)
+        Invitation.find(:first, :conditions => { :user => @user, :group => @group }).should be_nil
+      end
+
+      it 'should set successful flash message' do
+        do_accept
+        flash[:notice].should eq(t('invitations.accept.successful', :group => @group.name))
+      end
+
+      it 'should redirect to invitations page' do
+        do_accept
+        response.should redirect_to(invitations_path)
+      end
+
+      it 'should do nothing if user is a member of the group already' do
+        @group.users << @user
+        lambda do
+          do_accept
+        end.should_not change(Membership, :count)
+      end
+
+    end
   end
 end
