@@ -90,6 +90,8 @@ ru:
       from: от
     accept:
       successful: 'Вы вступили в группу %{group}'
+    decline:
+      successful: 'Приглашение отклонено'
             
 
 

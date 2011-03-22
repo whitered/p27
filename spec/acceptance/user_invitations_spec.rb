@@ -17,7 +17,7 @@ feature "User Invitations" do
   end
 
 
-  scenario 'user can accept an invitation' do
+  scenario 'user accepts invitation' do
     visit invitations_path
     within(:xpath, "//*[@class = 'invitation' and contains(., '#{@groups.first.name}')]") do
       click_link_or_button t('invitations.invitation.accept')
@@ -27,6 +27,20 @@ feature "User Invitations" do
     within '#group_users' do
       page.should have_content(@user.username)
     end
+  end
+
+
+  scenario 'user declines invitation' do
+    visit invitations_path
+    within(:xpath, "//*[@class = 'invitation' and contains(., '#{@groups.first.name}')]") do
+      click_link_or_button t('invitations.invitation.decline')
+    end
+    page.should have_content(t('invitations.decline.successful', :group => @groups.first.name))
+    visit group_path(@groups.first)
+    within '#group_users' do
+      page.should_not have_content(@user.username)
+    end
+
   end
 
 end

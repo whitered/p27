@@ -284,14 +284,14 @@ describe InvitationsController do
       response.should redirect_to(new_user_session_path)
     end
 
-    it 'should raise NotFound error for not existend invitation' do
+    it 'should raise NotFound exception for not existend invitation' do
       sign_in @user
       lambda do
         post :accept, :id => 0
       end.should raise_exception(ActiveRecord::RecordNotFound)
     end
 
-    it 'should raise NotFound error for foreign invitation' do
+    it 'should raise NotFound exception for foreign invitation' do
       sign_in @user
       invitation = Invitation.make!(:user => User.make!, :inviter => @inviter, :group => @group)
       lambda do
@@ -345,6 +345,71 @@ describe InvitationsController do
         lambda do
           do_accept
         end.should_not change(Membership, :count)
+      end
+
+    end
+  end
+
+
+  describe 'decline' do
+
+    before do
+      @group = Group.make!
+      @user, @inviter = User.make!(2)
+      @invitation = Invitation.make!(:user => @user, :inviter => @inviter, :group => @group)
+    end
+
+    def do_decline
+      post :decline, :id => @invitation.id
+    end
+
+    it 'should require user authentication' do
+      do_decline
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound exception for not existent invitation' do
+      sign_in @user
+      lambda do
+        post :decline, :id => 0
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should raise NotFound exception for foreign invitation' do
+      sign_in @user
+      invitation = Invitation.make!(:user => User.make!, :inviter => @inviter, :group => @group)
+      lambda do
+        post :decline, :id => invitation.id
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'own invitation' do
+
+      before do
+        sign_in @user
+      end
+
+      it 'should remove invitation' do
+        lambda do
+          do_decline
+        end.should change(Invitation, :count).by(-1)
+        Invitation.find_by_id(@invitation.id).should be_nil
+      end
+
+      it 'should not create any memberships' do
+        lambda do
+          do_decline
+        end.should_not change(Membership, :count)
+      end
+
+      it 'should set successful message' do
+        do_decline
+        flash[:notice].should eq(t('invitations.decline.successful', :group => @invitation.group.name))
+      end
+
+      it 'should redirect to invitations page' do
+        do_decline
+        response.should redirect_to(invitations_path)
       end
 
     end
