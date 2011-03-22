@@ -1,14 +1,14 @@
 class Invitation < ActiveRecord::Base
   belongs_to :user
   belongs_to :group
-  belongs_to :author, :class_name => 'User'
+  belongs_to :inviter, :class_name => 'User'
   belongs_to :membership
 
   attr_accessor :recipient
 
   validates :email, :email => true, :unless => 'email.blank?'
   validates_presence_of :group_id
-  validates_presence_of :author_id
+  validates_presence_of :inviter_id
   validates_inclusion_of :declined, :in => [false, true]
   validates_uniqueness_of :user_id, :scope => :group_id, :unless => 'user_id.blank?'
   validates_uniqueness_of :email, :scope => :group_id, :unless => 'email.blank?'

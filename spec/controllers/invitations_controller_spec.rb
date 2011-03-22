@@ -107,7 +107,7 @@ describe InvitationsController do
           end.should change(Invitation, :count).by(1)
           invite = Invitation.last
           invite.user.should eq(@user)
-          invite.author.should eq(@admin)
+          invite.inviter.should eq(@admin)
           invite.group.should eq(@group)
         end
         
@@ -131,7 +131,7 @@ describe InvitationsController do
           end.should change(Invitation, :count).by(1)
           invite = Invitation.last
           invite.user.should eq(@user)
-          invite.author.should eq(@admin)
+          invite.inviter.should eq(@admin)
           invite.group.should eq(@group)
         end
         
@@ -155,7 +155,7 @@ describe InvitationsController do
           end.should change(Invitation, :count).by(1)
           invite = Invitation.last
           invite.email.should eq(valid_email)
-          invite.author.should eq(@admin)
+          invite.inviter.should eq(@admin)
           invite.group.should eq(@group)
         end
 
@@ -247,7 +247,7 @@ describe InvitationsController do
 
     it 'should find all invitations owned by user' do
       user = User.make!
-      invitations = (1..3).map { Invitation.make!(:user => user, :group => Group.make!, :author => User.make! )}
+      invitations = (1..3).map { Invitation.make!(:user => user, :group => Group.make!, :inviter => User.make! )}
       sign_in user
       get :index
       assigns[:invitations].size.should eq(3)
@@ -258,7 +258,7 @@ describe InvitationsController do
 
     it 'should not fetch foreign invitations' do
       user = User.make!
-      invitation = Invitation.make!(:user => User.make!, :group => Group.make!, :author => User.make!)
+      invitation = Invitation.make!(:user => User.make!, :group => Group.make!, :inviter => User.make!)
       sign_in user
       get :index
       assigns[:invitations].should_not include(invitation)
@@ -271,8 +271,8 @@ describe InvitationsController do
      
     before do
       @group = Group.make!
-      @user, @author = User.make!(2)
-      @invitation = Invitation.make!(:user => @user, :author => @author, :group => @group)
+      @user, @inviter = User.make!(2)
+      @invitation = Invitation.make!(:user => @user, :inviter => @inviter, :group => @group)
     end
 
     def do_accept
@@ -293,7 +293,7 @@ describe InvitationsController do
 
     it 'should raise NotFound error for foreign invitation' do
       sign_in @user
-      invitation = Invitation.make!(:user => User.make!, :author => @author, :group => @group)
+      invitation = Invitation.make!(:user => User.make!, :inviter => @inviter, :group => @group)
       lambda do
         post :accept, :id => invitation.id
       end.should raise_exception(ActiveRecord::RecordNotFound)
@@ -320,7 +320,7 @@ describe InvitationsController do
 
       it 'should set inviter to the membership' do 
         do_accept
-        Membership.find(:first, :conditions => { :user_id => @user.id, :group_id => @group.id }).inviter.should eq(@author)
+        Membership.find(:first, :conditions => { :user_id => @user.id, :group_id => @group.id }).inviter.should eq(@inviter)
       end
 
       it 'should remove used invitation' do

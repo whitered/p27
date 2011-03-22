@@ -21,7 +21,7 @@ class InvitationsController < ApplicationController
         invitation = Invitation.new(:user => user)
       end
       invitation.group = @group
-      invitation.author = current_user
+      invitation.inviter = current_user
       if invitation.save
         InvitationMailer.invite_user(invitation, new_user_registration_url(:code => invitation.code)).deliver
         sent_invitations << name
@@ -53,7 +53,7 @@ class InvitationsController < ApplicationController
 
   def accept
     invitation = current_user.invitations.find(params[:id])
-    Membership.create(:user => current_user, :group => invitation.group, :inviter => invitation.author)
+    Membership.create(:user => current_user, :group => invitation.group, :inviter => invitation.inviter)
     invitation.destroy
     flash[:notice] = t('invitations.accept.successful', :group => invitation.group.name)
     redirect_to invitations_path

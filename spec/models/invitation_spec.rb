@@ -44,15 +44,15 @@ describe Invitation do
     invite.should respond_to(:message)
   end
 
-  it 'should have author' do
-    invite.should respond_to(:author)
+  it 'should have inviter' do
+    invite.should respond_to(:inviter)
   end
 
-  describe 'author' do
+  describe 'inviter' do
     it 'should not be nil' do
-      invitation = Invitation.new(:author => nil)
+      invitation = Invitation.new(:inviter => nil)
       invitation.should_not be_valid
-      invitation.errors[:author_id].should_not be_empty
+      invitation.errors[:inviter_id].should_not be_empty
     end
   end
 
@@ -83,7 +83,7 @@ describe Invitation do
   describe 'code' do
 
     it 'should be generated before save' do
-      invitation = Invitation.create(:group_id => 1, :author_id => 2)
+      invitation = Invitation.create(:group_id => 1, :inviter_id => 2)
       invitation.code.should_not be_blank
     end
    
@@ -96,8 +96,8 @@ describe Invitation do
   it 'should have unique user id in a group' do
     group = Group.make!
     user = User.make!
-    Invitation.make!(:group => group, :user => user, :author => User.make!)
-    invitation = Invitation.make(:group => group, :user => user, :author => User.make!)
+    Invitation.make!(:group => group, :user => user, :inviter => User.make!)
+    invitation = Invitation.make(:group => group, :user => user, :inviter => User.make!)
     invitation.should_not be_valid
     invitation.errors[:user_id].should_not be_empty
     invitation.user = User.make!
@@ -107,8 +107,8 @@ describe Invitation do
   it 'should have unique email in a group' do
     group = Group.make!
     email = Faker::Internet.email
-    Invitation.make!(:group => group, :email => email, :author => User.make!)
-    invitation = Invitation.make(:group => group, :email => email, :author => User.make!)
+    Invitation.make!(:group => group, :email => email, :inviter => User.make!)
+    invitation = Invitation.make(:group => group, :email => email, :inviter => User.make!)
     invitation.should_not be_valid
     invitation.errors[:email].should_not be_empty
     invitation.email = Faker::Internet.email

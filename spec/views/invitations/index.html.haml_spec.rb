@@ -12,7 +12,7 @@ describe 'invitations/index.html.haml' do
 
     before do
       @user = User.make!
-      @invitations = Array.new(3) { Invitation.make!(:group => Group.make!, :user => @user, :author => User.make!) }
+      @invitations = Array.new(3) { Invitation.make!(:group => Group.make!, :user => @user, :inviter => User.make!) }
       render
     end
 

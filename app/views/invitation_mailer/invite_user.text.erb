@@ -1,11 +1,11 @@
 <% if @invitation.message.blank? -%>
   <%= t('mail.invite_user.body', 
-        :author => @invitation.author.username, 
+        :inviter => @invitation.inviter.username, 
         :group => @invitation.group.name,
         :registration_link => @link) %>
 <%- else -%>
   <%= t('mail.invite_user.body_with_message',
-        :author => @invitation.author.username,
+        :inviter => @invitation.inviter.username,
         :group => @invitation.group.name,
         :message => @invitation.message,
         :registration_link => @link) %>

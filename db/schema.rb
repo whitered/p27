@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110322084453) do
+ActiveRecord::Schema.define(:version => 20110322090114) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -26,7 +26,7 @@ ActiveRecord::Schema.define(:version => 20110322084453) do
     t.integer  "user_id"
     t.string   "email"
     t.integer  "group_id"
-    t.integer  "author_id"
+    t.integer  "inviter_id"
     t.string   "message"
     t.integer  "membership_id"
     t.boolean  "declined",      :default => false, :null => false

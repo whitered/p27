@@ -5,7 +5,7 @@ feature "User Invitations" do
   background do
     @user = User.make!
     @groups = Group.make!(2)
-    @invitations = @groups.map { |group| Invitation.create(:user => @user, :author => User.make!, :group => group) }
+    @invitations = @groups.map { |group| Invitation.create(:user => @user, :inviter => User.make!, :group => group) }
     login @user
   end
 

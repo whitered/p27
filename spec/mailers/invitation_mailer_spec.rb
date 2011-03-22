@@ -7,7 +7,7 @@ describe InvitationMailer do
     before do
       @invitation = Invitation.make(:email => Faker::Internet.email,
                                     :group => Group.make!,
-                                    :author => User.make!)
+                                    :inviter => User.make!)
       @link = Faker::Internet.domain_name
     end
 
@@ -22,7 +22,7 @@ describe InvitationMailer do
 
     it 'renders the body' do
       mail.body.encoded.should match(t('mail.invite_user.body',
-                                       :author => @invitation.author.username,
+                                       :inviter => @invitation.inviter.username,
                                        :group => @invitation.group.name,
                                        :registration_link => @link))
     end
@@ -30,7 +30,7 @@ describe InvitationMailer do
     it 'renders the body with message' do
       @invitation.message = Faker::Lorem.sentence
       mail.body.encoded.should match(t('mail.invite_user.body_with_message',
-                                       :author => @invitation.author.username,
+                                       :inviter => @invitation.inviter.username,
                                        :group => @invitation.group.name,
                                        :message => @invitation.message,
                                        :registration_link => @link))

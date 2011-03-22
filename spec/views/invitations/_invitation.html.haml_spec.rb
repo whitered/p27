@@ -3,7 +3,7 @@ require 'spec_helper'
 describe 'invitations/_invitation' do
 
   before do 
-    @invitation = Invitation.make!(:group => Group.make!, :user => User.make!, :author => User.make!)
+    @invitation = Invitation.make!(:group => Group.make!, :user => User.make!, :inviter => User.make!)
     render :partial => 'invitations/invitation.html.haml', :locals => { :invitation => @invitation }
   end
 
@@ -18,8 +18,8 @@ describe 'invitations/_invitation' do
     node.should have_content(@invitation.group.name)
   end
 
-  it 'should render author username' do
-    node.should have_content(@invitation.author.username)
+  it 'should render inviter username' do
+    node.should have_content(@invitation.inviter.username)
   end
 
   it 'should have link to accept invitation' do
