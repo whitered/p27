@@ -88,6 +88,8 @@ ru:
       accept: Принять
       decline: Отказаться
       from: от
+    accept:
+      successful: 'Вы вступили в группу %{group}'
             
 
 

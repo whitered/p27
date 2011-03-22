@@ -50,4 +50,12 @@ class InvitationsController < ApplicationController
   def index
     @invitations = Invitation.find(:all, :conditions => { :user_id => current_user.id })
   end
+
+  def accept
+    invitation = current_user.invitations.find(params[:id])
+    Membership.create(:user => current_user, :group => invitation.group, :inviter => invitation.author)
+    invitation.destroy
+    flash[:notice] = t('invitations.accept.successful', :group => invitation.group.name)
+    redirect_to invitations_path
+  end
 end

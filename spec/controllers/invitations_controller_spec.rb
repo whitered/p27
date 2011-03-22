@@ -285,12 +285,14 @@ describe InvitationsController do
     end
 
     it 'should raise NotFound error for not existend invitation' do
+      sign_in @user
       lambda do
         post :accept, :id => 0
       end.should raise_exception(ActiveRecord::RecordNotFound)
     end
 
     it 'should raise NotFound error for foreign invitation' do
+      sign_in @user
       invitation = Invitation.make!(:user => User.make!, :author => @author, :group => @group)
       lambda do
         post :accept, :id => invitation.id
@@ -298,6 +300,10 @@ describe InvitationsController do
     end
 
     context 'own invitation' do
+
+      before do
+        sign_in @user
+      end
 
       it 'should add user to the group' do
         lambda do
@@ -309,19 +315,19 @@ describe InvitationsController do
         lambda do
           do_accept
         end.should change(Membership, :count).by(1)
-        Membership.find(:first, :conditions => { :user => @user, :group => @group }).should_not be_nil
+        Membership.find(:first, :conditions => { :user_id => @user.id, :group_id => @group.id }).should_not be_nil
       end
 
       it 'should set inviter to the membership' do 
         do_accept
-        Membership.find(:first, :conditions => { :user => @user, :group => @group }).inviter.should eq(@author)
+        Membership.find(:first, :conditions => { :user_id => @user.id, :group_id => @group.id }).inviter.should eq(@author)
       end
 
       it 'should remove used invitation' do
         lambda do
           do_accept
         end.should change(Invitation, :count).by(-1)
-        Invitation.find(:first, :conditions => { :user => @user, :group => @group }).should be_nil
+        Invitation.find(:first, :conditions => { :user_id => @user.id, :group_id => @group.id }).should be_nil
       end
 
       it 'should set successful flash message' do
