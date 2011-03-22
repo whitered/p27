@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :groups, :through => :memberships
   has_many :own_groups, :class_name => 'Group', :foreign_key => 'owner_id'
+  has_many :invitations
 
   validates_presence_of :username
   validates_uniqueness_of :username, :case_sensitive => false

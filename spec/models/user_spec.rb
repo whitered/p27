@@ -118,4 +118,8 @@ describe User do
     end
   end
 
+  it 'should have invitations' do
+    User.make!.should respond_to(:invitations)
+  end
+
 end
