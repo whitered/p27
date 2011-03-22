@@ -51,5 +51,9 @@ describe Membership do
     membership.should be_valid
   end
 
+  it 'should have inviter' do
+    Membership.new.should respond_to(:inviter)
+  end
+
 
 end

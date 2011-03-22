@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110320114749) do
+ActiveRecord::Schema.define(:version => 20110322084453) do
 
   create_table "groups", :force => true do |t|
     t.string   "name"
@@ -18,6 +18,7 @@ ActiveRecord::Schema.define(:version => 20110320114749) do
     t.datetime "updated_at"
     t.integer  "owner_id"
     t.boolean  "private",    :default => false, :null => false
+    t.boolean  "open",       :default => true
     t.boolean  "hospitable", :default => true,  :null => false
   end
 
@@ -40,6 +41,7 @@ ActiveRecord::Schema.define(:version => 20110320114749) do
     t.boolean  "is_admin",   :default => false
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "inviter_id"
   end
 
   create_table "users", :force => true do |t|
