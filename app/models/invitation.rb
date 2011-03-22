@@ -18,6 +18,6 @@ class Invitation < ActiveRecord::Base
 private
 
   def generate_code
-    self.code = ActiveSupport::SecureRandom.hex(20)
+    self.code = ActiveSupport::SecureRandom.hex(20) if user.nil?
   end
 end

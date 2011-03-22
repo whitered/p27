@@ -82,10 +82,16 @@ describe Invitation do
 
   describe 'code' do
 
-    it 'should be generated before save' do
-      invitation = Invitation.create(:group_id => 1, :inviter_id => 2)
+    it 'should be generated before save if user not exists' do
+      invitation = Invitation.create(:group_id => 1, :inviter_id => 2, :email => Faker::Internet.email)
       invitation.code.should_not be_blank
     end
+    
+    it 'should not be generated if user exists' do
+      invitation = Invitation.create(:group_id => 1, :inviter_id => 2, :user => User.make!)
+      invitation.code.should be_nil
+    end
+
    
   end
 
