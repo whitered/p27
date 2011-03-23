@@ -10,7 +10,7 @@ feature "User Registration" do
       fill_in t('activerecord.attributes.user.email'), :with => 'john_doe@mail.com'
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('devise.registrations.new.submit')
+      click_link_or_button t('registrations.new.submit')
     end
 
     
@@ -18,7 +18,7 @@ feature "User Registration" do
       lambda do
         do_register
       end.should change(User, :count).by(1)
-      page.should have_content(t('devise.registrations.signed_up'))
+      page.should have_content(t('registrations.create.confirm_registration'))
     end
     
     
@@ -43,6 +43,10 @@ feature "User Registration" do
 
   end
 
+  scenario 'registration with wrong link' do
+    visit new_user_registration_path(:invitation => 'wrong_code')
+    page.should have_content(t('registrations.new.wrong_invitation'))
+  end
 
   context 'having an invitation' do
 
@@ -54,19 +58,35 @@ feature "User Registration" do
 
     scenario 'registration by link' do
       username = Faker::Internet.user_name
-      visit new_user_registration_path
+      visit new_user_registration_path(:invitation => @invitation.code)
       fill_in t('activerecord.attributes.user.username'), :with => username
       fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('devise.registrations.new.submit')
+      save_and_open_page
+      page.should have_content(t('registrations.create.registered_and_confirmed'))
+      ActionMailer::Base.deliveries.should be_empty
+      click_link_or_button t('registrations.new.submit')
       visit group_path(@group)
       within('#user_members') do
         page.should have_link(username)
       end
     end
 
-    scenario 'registration with invitation code' 
+    scenario 'registration with another email' do
+      email = Faker::Internet.email
+      visit new_user_registration_path(:invitation => @invitation.code)
+      fill_in t('activerecord.attributes.user.username'), :with => Faker::Internet.user_name
+      fill_in t('activerecord.attributes.user.email'), :with => email
+      fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
+      fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
+      click_link_or_button t('registrations.new.submit')
+      page.should have_content(t('registrations.create.confirm_registration'))
+      
+      mail = ActionMailer::Base.deliveries.last
+      mail.to.should eq([email])
+    end
+  
 
   end
 

@@ -15,11 +15,7 @@ ru:
       invitation:
         message: Сообщение
   devise:
-    registrations:
-      new:
-        title: Регистрация
-        submit: Зарегистрироваться
-    sessions:
+   sessions:
       new:
         title: Вход
         submit: Войти
@@ -92,7 +88,16 @@ ru:
       successful: 'Вы вступили в группу %{group}'
     decline:
       successful: 'Приглашение отклонено'
-            
+  registrations:
+    create:
+      confirm_registration: На указанный адрес электронной почты выслано письмо со ссылкой для подтверждения регистрации
+      registered_and_confirmed: Вы успешно зарегистрированы
+    new:
+      title: Регистрация
+      submit: Зарегистрироваться
+      wrong_invitation: Неверный код приглашения
+ 
+                
 
 
 

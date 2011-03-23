@@ -15,7 +15,7 @@ describe 'registrations/new.html.erb' do
 
   it 'should contain page title' do
     render
-    page.should have_content(t('devise.registrations.new.title'))
+    page.should have_content(t('registrations.new.title'))
   end
 
   it 'should contain email field' do
@@ -40,7 +40,7 @@ describe 'registrations/new.html.erb' do
 
   it 'should contain submit button' do
     render
-    page.should have_button(t('devise.registrations.new.submit'))
+    page.should have_button(t('registrations.new.submit'))
   end
 
   it 'should render error for wrong email' do
@@ -59,6 +59,15 @@ describe 'registrations/new.html.erb' do
     user.errors.add(:password)
     render
     page.should have_content(t_error(User, :password))
+  end
+
+  it 'should have hidden invitation field if invitation was specified' do
+    @invitation = Invitation.make!(:email => Faker::Internet.email,
+                                   :group => Group.make!,
+                                   :inviter => User.make!)
+    render
+    puts rendered
+    page.should have_field(:invitation, :hidden => true, :value => @invitation.code)
   end
 
 
