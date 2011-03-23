@@ -1,7 +1,6 @@
 require 'spec_helper'
-require 'devise/test_helpers'
 
-describe 'devise/registrations/new.html.erb' do
+describe 'registrations/new.html.erb' do
 
   let(:user) { stub_model(User).as_new_record }
 

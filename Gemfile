@@ -30,7 +30,6 @@ gem 'sqlite3'
 #   gem 'webrat'
 # end
 
-gem 'win32console' if PLATFORM =~ /win32/
 gem 'devise'
 gem 'russian'
 gem 'formtastic'

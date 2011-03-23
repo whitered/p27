@@ -2,14 +2,14 @@ P27::Application.routes.draw do
 
   root :to => 'home#index'
 
-  devise_for :users, :skip => [:sessions, :registrations] do
+  devise_for :users, :skip => [:sessions, :registrations], :controllers => {:registrations => 'registrations'} do
     get '/login' => 'devise/sessions#new', :as => :new_user_session
     post '/login' => 'devise/sessions#create', :as => :user_session
     get '/logout' => 'devise/sessions#destroy', :as => :destroy_user_session
     
-    get '/registration' => 'devise/registrations#new', :as => :new_user_registration
-    post '/registration' => 'devise/registrations#create', :as => :user_registration
-    get '/profile' => 'devise/registrations#edit', :as => :edit_user_registration
+    get '/registration' => 'registrations#new', :as => :new_user_registration
+    post '/registration' => 'registrations#create', :as => :user_registration
+    get '/profile' => 'registrations#edit', :as => :edit_user_registration
   end
 
   resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do

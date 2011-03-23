@@ -43,4 +43,31 @@ feature "User Registration" do
 
   end
 
+
+  context 'having an invitation' do
+
+    background do
+      @group = Group.make!
+      @inviter = User.make!
+      @invitation = Invitation.make!(:group => @group, :inviter => @inviter, :email => Faker::Internet.email)
+    end
+
+    scenario 'registration by link' do
+      username = Faker::Internet.user_name
+      visit new_user_registration_path
+      fill_in t('activerecord.attributes.user.username'), :with => username
+      fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
+      fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
+      fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
+      click_link_or_button t('devise.registrations.new.submit')
+      visit group_path(@group)
+      within('#user_members') do
+        page.should have_link(username)
+      end
+    end
+
+    scenario 'registration with invitation code' 
+
+  end
+
 end
