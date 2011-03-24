@@ -7,10 +7,9 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     @user = User.new(params[:user])
 
-    if @user.valid?
-      unless @invitation.nil?
-        @user.skip_confirmation! if @user.email.downcase == @invitation.email.downcase
-      end
+    unless @invitation.nil?
+      @user.email = @invitation.email
+      @user.skip_confirmation! 
     end
 
     if @user.save

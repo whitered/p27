@@ -18,9 +18,15 @@ describe 'registrations/new.html.haml' do
     page.should have_content(t('registrations.new.title'))
   end
 
-  it 'should contain email field' do
+  it 'should contain email field if no invitation is given' do
     render
     page.should have_field(t('activerecord.attributes.user.email'))
+  end
+
+  it 'should not contain email if invitation is given' do
+    @invitation = Invitation.create!(:group => Group.make!, :inviter => User.make!, :email => user.email)
+    render
+    page.should_not have_field(t('activerecord.attributes.user.email'))
   end
 
   it 'should contain username field' do

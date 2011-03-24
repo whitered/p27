@@ -2,7 +2,7 @@
 = semantic_form_for(resource, :url => registration_path(resource_name)) do |form|
   = form.inputs do
     = form.input :username
-    = form.input :email
+    = form.input :email if @invitation.nil?
     = form.input :password
     = form.input :password_confirmation, :required => true
   = hidden_field_tag :invitation, @invitation.code unless @invitation.nil?

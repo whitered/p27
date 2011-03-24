@@ -61,7 +61,6 @@ feature "User Registration" do
       username = 'my_name'
       visit new_user_registration_path(:invitation => @invitation.code)
       fill_in t('activerecord.attributes.user.username'), :with => username
-      fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
       click_link_or_button t('registrations.new.submit')
@@ -73,27 +72,10 @@ feature "User Registration" do
       end
     end
 
-    scenario 'registration with another email' do
-      ActionMailer::Base.deliveries = []
-      email = Faker::Internet.email
-      visit new_user_registration_path(:invitation => @invitation.code)
-      fill_in t('activerecord.attributes.user.username'), :with => 'username'
-      fill_in t('activerecord.attributes.user.email'), :with => email
-      fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
-      fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('registrations.new.submit')
-      page.should have_content(t('registrations.create.confirm_registration'))
-      
-      ActionMailer::Base.deliveries.size.should eq(1)
-      mail = ActionMailer::Base.deliveries.last
-      mail.to.should eq([email])
-    end
-
     scenario 'registration with one of several invitations' do
       invitation2 = Invitation.create!(:email => @invitation.email, :inviter => User.make!, :group => Group.make!)
       visit new_user_registration_path(:invitation => @invitation.code)
       fill_in t('activerecord.attributes.user.username'), :with => 'username'
-      fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
       fill_in t('activerecord.attributes.user.password'), :with => 'asdasd'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'asdasd'
       click_link_or_button t('registrations.new.submit')
