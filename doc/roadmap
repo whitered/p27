@@ -1,6 +1,7 @@
 group admin can send invitation to registered user with username
 group admin can send invitation to registered user with email
 group admin can send invitation to unregistered user with email
+add model uniqueness specs
 registered user can view invitations he has got
 registered user can join group with invitation
 registered user can decline any invitation

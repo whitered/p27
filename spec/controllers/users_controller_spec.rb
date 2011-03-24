@@ -11,7 +11,7 @@ describe UsersController do
       assigns[:user].should eq(@user)
     end
 
-    context 'with existant username' do
+    context 'with existent username' do
 
       before do
         @user = User.make!
@@ -32,7 +32,7 @@ describe UsersController do
 
     end
 
-    context 'with not existant username' do
+    context 'with not existent username' do
 
       it 'should raise NotFound error' do
         lambda {

@@ -13,6 +13,7 @@ class User < ActiveRecord::Base
   has_many :memberships
   has_many :groups, :through => :memberships
   has_many :own_groups, :class_name => 'Group', :foreign_key => 'owner_id'
+  has_many :invitations
 
   validates_presence_of :username
   validates_uniqueness_of :username, :case_sensitive => false
@@ -24,6 +25,10 @@ class User < ActiveRecord::Base
 
   def is_insider_of? group
     groups.exists?(group) || own_groups.exists?(group)
+  end
+
+  def self.find_by_username_or_email name
+    where(["username = :value OR email = :value", { :value => name }]).first
   end
 
 protected

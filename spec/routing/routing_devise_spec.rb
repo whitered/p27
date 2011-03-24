@@ -3,12 +3,12 @@ require 'spec_helper'
 describe Devise::RegistrationsController do
 
   it 'should route new' do
-    { :get => '/registration' }.should route_to(:controller => 'devise/registrations', 
+    { :get => '/registration' }.should route_to(:controller => 'registrations', 
                                                 :action => 'new' )
   end
 
   it 'should route create' do
-    { :post => '/registration' }.should route_to(:controller => 'devise/registrations',
+    { :post => '/registration' }.should route_to(:controller => 'registrations',
                                                  :action => 'create' )
   end
 

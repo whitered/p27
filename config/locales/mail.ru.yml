@@ -3,4 +3,8 @@ ru:
     registration_confirmation: 
       title: 'Приветствуем вас на портале 27, %{username}!'
       body: 'Для подтверждения регистрации пройдите по ссылке:'
+    invite_user:
+      subject: 'Приглашение на сайт'
+      body: 'Привет! %{inviter} пригласил вас вступить в группу %{group}. Вы можете зарегистрироваться по ссылке %{registration_link}.'
+      body_with_message: 'Привет! %{inviter} пригласил вас вступить в группу %{group}, сообщив при этом: %{message}. Для вступления в группу зарегистрируйтесь по ссылке %{registration_link}.'
 
