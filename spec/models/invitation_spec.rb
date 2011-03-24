@@ -120,4 +120,44 @@ describe Invitation do
     invitation.email = Faker::Internet.email
     invitation.should be_valid
   end
+
+  it 'should have accept! method' do
+    Invitation.new.should respond_to(:accept!)
+  end
+
+  describe 'accept!' do
+
+    let(:email_invitation) { Invitation.create!(:email => Faker::Internet.email, :group => Group.make!, :inviter => User.make!) }
+    let(:user_invitation) { Invitation.create(:user => User.make!, :group => Group.make!, :inviter => User.make!) }
+
+    it 'should require user to be given as argument if self.user is nil' do
+      lambda do
+        email_invitation.accept!
+      end.should raise_exception(ArgumentError)
+    end
+
+    it 'should add user to the group' do
+      user = User.make!
+      email_invitation.accept! user 
+      email_invitation.group.users.should include(user)
+    end
+
+    it 'should add own user to the group' do
+      user_invitation.accept!
+      user_invitation.group.users.should include(user_invitation.user)
+    end
+
+    it 'should remove itself after accepting' do
+      user_invitation.accept!
+      Invitation.find_by_id(user_invitation.id).should be_nil
+    end
+
+    it 'should set inviter on membership' do
+      user_invitation.accept!
+      membership = Membership.find(:first, :conditions => { :user_id => user_invitation.user.id, :group_id => user_invitation.group.id })
+      membership.inviter.should eq(user_invitation.inviter)
+    end
+
+  end
+
 end

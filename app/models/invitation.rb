@@ -15,6 +15,13 @@ class Invitation < ActiveRecord::Base
 
   before_create :generate_code
 
+  def accept! user=nil
+    user ||= self.user
+    raise ArgumentError if user.nil?
+    Membership.create!(:user => user, :group => group, :inviter => inviter)
+    destroy
+  end
+
 private
 
   def generate_code
