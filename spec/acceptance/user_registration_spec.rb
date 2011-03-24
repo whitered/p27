@@ -88,7 +88,19 @@ feature "User Registration" do
       mail = ActionMailer::Base.deliveries.last
       mail.to.should eq([email])
     end
-  
+
+    scenario 'registration with one of several invitations' do
+      invitation2 = Invitation.create!(:email => @invitation.email, :inviter => User.make!, :group => Group.make!)
+      visit new_user_registration_path(:invitation => @invitation.code)
+      fill_in t('activerecord.attributes.user.username'), :with => 'username'
+      fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
+      fill_in t('activerecord.attributes.user.password'), :with => 'asdasd'
+      fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'asdasd'
+      click_link_or_button t('registrations.new.submit')
+      visit invitations_path
+      page.should have_content(invitation2.group.name)
+      page.should have_content(invitation2.inviter.username)
+    end
 
   end
 

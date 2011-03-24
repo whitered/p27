@@ -16,6 +16,13 @@ class RegistrationsController < Devise::RegistrationsController
     if @user.save
       @invitation.accept! @user unless @invitation.nil?
 
+      invitations = Invitation.find(:all, :conditions => [ 'lower(email) = ?', @user.email.downcase ])
+      invitations.each do |invitation|
+        invitation.user = @user
+        invitation.email = nil
+        invitation.save
+      end
+
       if @user.confirmed? 
         flash[:notice] = t('registrations.create.registered_and_confirmed')
       else
