@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'devise/mailer/confirmation_instructions.html.erb' do
+describe 'devise/mailer/confirmation_instructions.html.haml' do
 
   include Devise::Controllers::UrlHelpers
 

@@ -1,0 +1,10 @@
+%h2= t 'devise.sessions.new.title'
+= semantic_form_for(resource, :url => session_path(resource_name)) do |f|
+  = f.inputs do
+    = f.input :login
+    = f.input :password
+    - if devise_mapping.rememberable?
+      = f.input :remember_me, :as => :boolean
+  = f.buttons do
+    = f.commit_button :label => t('devise.sessions.new.submit')
+= render :partial => "devise/shared/links"

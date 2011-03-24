@@ -1,8 +1,0 @@
-<h1><%= t 'groups.edit.title' %></h1>
-
-<%= semantic_form_for @group do |f| %>
-  <%= f.inputs :name, :private, :hospitable %>
-  <%= f.buttons do %>
-    <%= f.commit_button t('groups.edit.commit') %>
-  <% end -%>
-<% end -%>

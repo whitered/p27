@@ -1,0 +1,4 @@
+- unless flash.empty?
+  #notifications
+    = content_tag(:div, flash[:notice], :class => 'notice') if flash[:notice]
+    = content_tag(:div, flash[:alert], :class => 'alert') if flash[:alert]
