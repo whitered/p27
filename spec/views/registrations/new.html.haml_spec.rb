@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'registrations/new.html.erb' do
+describe 'registrations/new.html.haml' do
 
   let(:user) { stub_model(User).as_new_record }
 

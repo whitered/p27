@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'groups/edit.html.erb' do
+describe 'groups/edit.html.haml' do
 
   before do
     @group = Group.make!

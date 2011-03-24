@@ -1,9 +1,9 @@
 require 'spec_helper'
 
-describe 'groups/index.html.erb' do
+describe 'groups/index.html.haml' do
 
   before do 
-    stub_template 'groups/_group.html.erb' => '<p>groups/_group.html.erb</p>'
+    stub_template 'groups/_group.html.haml' => '<p>groups/_group.html.haml</p>'
     @groups = Group.make(3)
   end
 
@@ -17,7 +17,7 @@ describe 'groups/index.html.erb' do
   it 'should render _group template for each group' do
     render
     page.should have_selector('#groups')
-    page.all('#groups p', :text => 'groups/_group.html.erb').size.should eq(3)
+    page.all('#groups p', :text => 'groups/_group.html.haml').size.should eq(3)
   end
 
   context 'for logged in user' do

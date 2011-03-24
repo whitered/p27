@@ -1,11 +1,11 @@
 require 'spec_helper'
 
-describe 'groups/_group.html.erb' do
+describe 'groups/_group.html.haml' do
 
   before do 
     @group = Group.make!
     @group.users << User.make!(2)
-    render :partial => 'groups/group.html.erb', :locals => { :group => @group }
+    render :partial => 'groups/group.html.haml', :locals => { :group => @group }
   end
 
   let(:page) { Capybara.string rendered }

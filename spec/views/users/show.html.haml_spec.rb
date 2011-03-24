@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe "users/show.html.erb" do
+describe "users/show.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
