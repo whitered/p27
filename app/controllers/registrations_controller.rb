@@ -4,19 +4,17 @@ class RegistrationsController < Devise::RegistrationsController
 
   before_filter :find_invitation, :only => [:new, :create]
 
-  def new
-    super
-  end
-
   def create
     @user = User.new(params[:user])
 
-    if @user.save
-
+    if @user.valid?
       unless @invitation.nil?
-        @invitation.accept
-        @user.skip_confirmation if @user.email.downcase == @invitation.email.downcase
+        @user.skip_confirmation! if @user.email.downcase == @invitation.email.downcase
       end
+    end
+
+    if @user.save
+      @invitation.accept! @user unless @invitation.nil?
 
       if @user.confirmed? 
         flash[:notice] = t('registrations.create.registered_and_confirmed')

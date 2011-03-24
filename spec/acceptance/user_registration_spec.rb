@@ -57,32 +57,34 @@ feature "User Registration" do
     end
 
     scenario 'registration by link' do
-      username = Faker::Internet.user_name
+      ActionMailer::Base.deliveries = []
+      username = 'my_name'
       visit new_user_registration_path(:invitation => @invitation.code)
       fill_in t('activerecord.attributes.user.username'), :with => username
       fill_in t('activerecord.attributes.user.email'), :with => @invitation.email
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      save_and_open_page
+      click_link_or_button t('registrations.new.submit')
       page.should have_content(t('registrations.create.registered_and_confirmed'))
       ActionMailer::Base.deliveries.should be_empty
-      click_link_or_button t('registrations.new.submit')
       visit group_path(@group)
-      within('#user_members') do
+      within('#group_users') do
         page.should have_link(username)
       end
     end
 
     scenario 'registration with another email' do
+      ActionMailer::Base.deliveries = []
       email = Faker::Internet.email
       visit new_user_registration_path(:invitation => @invitation.code)
-      fill_in t('activerecord.attributes.user.username'), :with => Faker::Internet.user_name
+      fill_in t('activerecord.attributes.user.username'), :with => 'username'
       fill_in t('activerecord.attributes.user.email'), :with => email
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
       click_link_or_button t('registrations.new.submit')
       page.should have_content(t('registrations.create.confirm_registration'))
       
+      ActionMailer::Base.deliveries.size.should eq(1)
       mail = ActionMailer::Base.deliveries.last
       mail.to.should eq([email])
     end

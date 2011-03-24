@@ -66,7 +66,6 @@ describe 'registrations/new.html.erb' do
                                    :group => Group.make!,
                                    :inviter => User.make!)
     render
-    puts rendered
     page.should have_field(:invitation, :hidden => true, :value => @invitation.code)
   end
 
