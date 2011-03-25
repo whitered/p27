@@ -18,6 +18,12 @@ feature "Send Invitation" do
     click_link_or_button t('invitations.new.commit')
   end
 
+  scenario 'group admin visits invitations page' do
+    visit group_path(@group)
+    click_link t('invitations.new.link')
+    current_path.should eq(new_group_invitation_path(@group))
+  end
+
   scenario 'group admin sends invitation to registered user by username' do
     send_invitations @recipient.username
     page.should have_content(t('invitations.create.invitation_sent'))

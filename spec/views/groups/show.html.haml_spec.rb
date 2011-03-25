@@ -102,6 +102,11 @@ describe "groups/show.html.haml" do
         group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
       end
 
+      it 'should have link to the new invitation page' do
+        render
+        group_users.should have_link(t('invitations.new.link'), :href => new_group_invitation_path(@group))
+      end
+
     end
 
     context 'for owner' do
