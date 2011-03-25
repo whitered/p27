@@ -14,7 +14,7 @@ P27::Application.routes.draw do
 
   resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do
     member do
-      post :manage_members
+      post :remove_member
       post :manage_admins
       post :leave
       post :join

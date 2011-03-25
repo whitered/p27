@@ -99,6 +99,20 @@ describe InvitationsController do
         sign_in @admin
       end
 
+      context 'with no recipients given' do
+
+        it 'should not create any invitations' do
+          lambda do
+            do_create nil
+          end.should_not change(Invitation, :count)
+        end
+
+        it 'should show alert' do
+          do_create nil
+          flash[:alert].should eq(t('invitations.create.no_recipients'))
+        end
+      end
+
       context 'with username of existing user' do
 
         it 'should create invitation for the user' do
@@ -110,7 +124,7 @@ describe InvitationsController do
           invite.inviter.should eq(@admin)
           invite.group.should eq(@group)
         end
-        
+
         it 'should set successful notice' do
           do_create @user.username
           flash[:notice].should eq(t('invitations.create.invitation_sent'))
@@ -121,6 +135,18 @@ describe InvitationsController do
           response.should render_template(:new)
         end
 
+        it 'should not create invitation if user is a member of the group' do
+          @group.users << @user
+          lambda do
+            do_create @user.username
+          end.should_not change(Invitation, :count)
+        end
+
+        it 'should notify if requested user is in the group already' do
+          @group.users << @user
+          do_create @user.username
+          flash[:alert].should eq(t('invitations.create.user_is_member', :recipient => @user.username))
+        end
       end
 
       context 'with email of existing user' do
@@ -134,7 +160,7 @@ describe InvitationsController do
           invite.inviter.should eq(@admin)
           invite.group.should eq(@group)
         end
-        
+
         it 'should set successful notice' do
           do_create @user.email
           flash[:notice].should eq(t('invitations.create.invitation_sent'))
@@ -145,6 +171,18 @@ describe InvitationsController do
           response.should render_template(:new)
         end
 
+        it 'should not create invitation if user is a member of the group' do
+          @group.users << @user
+          lambda do
+            do_create @user.email
+          end.should_not change(Invitation, :count)
+        end
+        
+        it 'should show notification if user is a member of the group' do
+          @group.users << @user
+          do_create @user.email
+          flash[:alert].should eq(t('invitations.create.user_is_member', :recipient => @user.email))
+        end
       end
 
       context 'with email of not existent user' do
@@ -189,7 +227,7 @@ describe InvitationsController do
 
         it 'should show error message with wrong value' do
           do_create invalid_email
-          flash[:error].should eq(t('invitations.create.wrong_email', :recipient => invalid_email))
+          flash[:alert].should eq(t('invitations.create.wrong_email', :recipient => invalid_email))
         end
 
         it 'should render :new template' do
@@ -224,15 +262,34 @@ describe InvitationsController do
           end.should change(Invitation, :count).by(2)
         end
 
-        it 'should show error message with wrong values' do
-          do_create [@user.username, valid_email, invalid_email].join(' ,')
-          flash[:error].should eq(t('invitations.create.wrong_email', :recipient => invalid_email))
-        end
-
         it 'should render :new template' do
           do_create [@user.username, valid_email, invalid_email].join(',')
           response.should render_template(:new)
         end
+
+        describe 'flash messages' do
+
+          it 'should be failure for wrong values' do
+            do_create [@user.username, valid_email, invalid_email].join(' ,')
+            flash[:alert].should eq(t('invitations.create.wrong_email', :recipient => invalid_email))
+          end
+
+          it 'should be failure for members' do
+            @group.users << @user
+            do_create [@user.username, valid_email].join(' ')
+            flash[:alert].should eq(t('invitations.create.user_is_member', :recipient => @user.username))
+          end
+
+          it 'should ve failure for multiple errors' do
+            @group.users << @user
+            do_create [@user.email, invalid_email].join(' ')
+            flash[:alert].should include(t('invitations.create.invitations_failed', :recipients => ''))
+            flash[:alert].should include(@user.email)
+            flash[:alert].should include(invalid_email)
+          end
+
+        end
+
       end
 
     end
@@ -340,11 +397,11 @@ describe InvitationsController do
         response.should redirect_to(invitations_path)
       end
 
-      it 'should do nothing if user is a member of the group already' do
+      it 'should raise exception if user is a member of the group already' do
         @group.users << @user
         lambda do
           do_accept
-        end.should_not change(Membership, :count)
+        end.should raise_exception
       end
 
     end

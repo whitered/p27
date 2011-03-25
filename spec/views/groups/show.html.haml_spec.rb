@@ -49,12 +49,6 @@ describe "groups/show.html.haml" do
 
     context 'for a member' do
 
-      it 'should not have invite_to_group form' do
-        render
-        group_users.should have_no_field(t('groups.manage_members.add.name'))
-        group_users.should have_no_button(t('groups.manage_members.add.commit'))
-      end
-
       it 'should not have links to set admin' do
         render
         group_users.should have_no_link(t('groups.manage_admins.set_link.name'))
@@ -84,18 +78,12 @@ describe "groups/show.html.haml" do
         @group.set_admin_status @user, true
       end
 
-      it 'should have form to invite new users to the group' do
-        render
-        group_users.should have_field(t('groups.manage_members.add.name'))
-        group_users.should have_button(t('groups.manage_members.add.commit'))
-      end
-
       it 'should have links to remove any user from the group' do
         render
-        group_users.all(:xpath, ".//a[. = '#{t('groups.manage_members.remove.link')}']").count.should eq(@group.users.count)
+        group_users.all(:xpath, ".//a[. = '#{t('groups.remove_member.link')}']").count.should eq(@group.users.count)
         group_users.all('li').each do |node|
           username = node.first('a').text
-          node.should have_link(t('groups.manage_members.remove.link'), :href => manage_members_group_path(@group, :remove => username))
+          node.should have_link(t('groups.remove_member.link'), :href => remove_member_group_path(@group, :username => username))
         end
       end
 
@@ -112,6 +100,11 @@ describe "groups/show.html.haml" do
       it 'should have link to leave group' do
         render
         group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+      end
+
+      it 'should have link to the new invitation page' do
+        render
+        group_users.should have_link(t('invitations.new.link'), :href => new_group_invitation_path(@group))
       end
 
     end
