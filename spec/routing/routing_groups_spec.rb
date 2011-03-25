@@ -18,9 +18,9 @@ describe GroupsController do
                                             :id => '2')
   end
 
-  it 'should route manage_members' do
-    { :post => '/groups/3/manage_members' }.should route_to(:controller => 'groups',
-                                                          :action => 'manage_members',
+  it 'should route remove_member' do
+    { :post => '/groups/3/remove_member' }.should route_to(:controller => 'groups',
+                                                          :action => 'remove_member',
                                                           :id => '3')
   end
 

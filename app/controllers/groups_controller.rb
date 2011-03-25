@@ -18,48 +18,26 @@ class GroupsController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @group.public? || (user_signed_in? && current_user.is_insider_of?(@group))
   end
 
-  def manage_members
+  def remove_member
     group = current_user.own_groups.find_by_id(params[:id])
     if group.nil?
       group = current_user.groups.find(params[:id])
       unless group.user_is_admin?(current_user)
-        flash[:error] = t('groups.manage_members.errors.not_permitted')
+        flash[:alert] = t('groups.remove_member.errors.not_permitted')
         redirect_to group
         return
       end
     end
 
-    if params[:add].blank? && params[:remove].blank? 
-      flash[:error] = t('groups.manage_members.errors.no_name_given')
+    if params[:username].blank? 
+      flash[:alert] = t('groups.remove_member.errors.name_not_given')
     else
-      if !params[:add].blank?
-        wrong_names = []
-        names = params[:add].split(/\W+/)
-        names.each do |name|
-          user = User.find(:first, :conditions => [ 'lower(username) = ?', name.downcase ])
-          if user.nil?
-            wrong_names << name
-          elsif !group.users.exists?(user)
-            group.users << user
-          end
-        end
-        flash[:error] = t('groups.manage_members.errors.users_not_found', :names => wrong_names.join(', ')) unless wrong_names.empty?
-      end
-
-      if !params[:remove].blank?
-        wrong_names = []
-        removed_names = []
-        params[:remove].split(/\W+/).each do |name|
-          user = group.users.find(:first, :conditions => [ 'lower(username) = ?', name.downcase ])
-          if user.nil?
-            wrong_names << name
-          else 
-            group.users.delete(user)
-            removed_names << user.username
-          end
-        end
-        flash[:error] = t('groups.manage_members.errors.users_not_members', :names => wrong_names.join(', ')) unless wrong_names.empty?
-        flash[:notice] = t('groups.manage_members.remove.successful', :names => removed_names.join(', ')) unless removed_names.empty?
+      user = group.users.find(:first, :conditions => [ 'lower(username) = ?', params[:username].downcase ])
+      if user.nil?
+        flash[:alert] = t('groups.remove_member.errors.user_not_member', :username => params[:username])
+      else 
+        group.users.delete(user)
+        flash[:notice] = t('groups.remove_member.successful', :username => params[:username])
       end
     end
 
@@ -70,9 +48,9 @@ class GroupsController < ApplicationController
     group = current_user.groups.find_by_id(params[:id]) || current_user.own_groups.find_by_id(params[:id])
     raise ActiveRecord::RecordNotFound if group.nil?
     if group.owner != current_user
-      flash[:error] = t('groups.manage_admins.errors.not_permitted')
+      flash[:alert] = t('groups.manage_admins.errors.not_permitted')
     elsif params[:set].blank? && params[:unset].blank?
-      flash[:error] = t('groups.manage_admins.errors.no_name_given')
+      flash[:alert] = t('groups.manage_admins.errors.no_name_given')
     else
       wrong_names = []
       
@@ -98,7 +76,7 @@ class GroupsController < ApplicationController
         end
       end
 
-      flash[:error] = t('groups.manage_admins.errors.wrong_names', :names => wrong_names.join(', ')) unless wrong_names.empty?
+      flash[:alert] = t('groups.manage_admins.errors.wrong_names', :names => wrong_names.join(', ')) unless wrong_names.empty?
     end
 
     redirect_to group
@@ -110,7 +88,7 @@ class GroupsController < ApplicationController
     if group.hospitable?
       group.users << current_user unless group.users.exists? current_user
     else
-      flash[:error] = t('groups.join.errors.not_hospitable')
+      flash[:alert] = t('groups.join.errors.not_hospitable')
     end
     redirect_to group
   end

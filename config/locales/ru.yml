@@ -31,18 +31,14 @@ ru:
       link: Создать новую группу
       title: Новая группа
       submit: Создать группу
-    manage_members:
-      add:
-        name: Пригласить в группу
-        commit: Пригласить
-      remove:
-        link: '[x]'
-        successful: 'Удалены из группы: %{names}'
+    remove_member:
+      link: '[x]'
+      successful: '%{username} удален из группы'
       errors:
-        no_name_given: Не указано ни одного пользователя
-        not_permitted: Только администратор группы может приглашать новых пользователей
-        users_not_found: 'Таких пользователей не найдено: %{names}'
-        users_not_members: 'Таких пользователей нет в группе: %{names}'
+        name_not_given: Не указано имя пользователя
+        not_permitted: Исключить из группы может только администратор
+        user_not_found: 'Пользователь с ником %{username} не найден'
+        user_not_member: '%{username} не состоит в группе'
     manage_admins:
       set_link:
         name: '[+A]'

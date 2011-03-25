@@ -1,6 +1,6 @@
 require File.expand_path(File.dirname(__FILE__) + '/acceptance_helper')
 
-feature 'Manage Group Members' do
+feature 'Remove User From Group' do
 
   context 'group admin' do
 
@@ -14,18 +14,6 @@ feature 'Manage Group Members' do
 
     let(:group_users) { page.find '#group_users' }
 
-    scenario 'should be able to add several users to the group by their usernames' do
-      users = User.make!(3)
-      visit group_path(@group)
-      fill_in t('groups.manage_members.add.name'), :with => users.map{ |u| u.username }.join(' ')
-      click_link_or_button t('groups.manage_members.add.commit')
-
-      users.each do |user|
-        group_users.should have_link(user.username, :href => user_path(user.username))
-      end
-
-    end
-
     scenario 'should be able to remove user from group' do
       member = User.make!
       @group.users << member
@@ -33,12 +21,12 @@ feature 'Manage Group Members' do
       visit group_path(@group)
       within '#group_users' do
         within(:xpath, ".//li[contains(.,'#{member.username}')]") do
-          click_link_or_button t('groups.manage_members.remove.link')
+          click_link_or_button t('groups.remove_member.link')
         end
       end
 
       group_users.should have_no_content(member.username)
-      page.should have_content(t('groups.manage_members.remove.successful', :names => member.username))
+      page.should have_content(t('groups.remove_member.successful', :username => member.username))
     end
 
   end
