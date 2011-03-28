@@ -3,7 +3,10 @@ class Group < ActiveRecord::Base
   has_many :users, :through => :memberships
   belongs_to :owner, :class_name => 'User'
 
-  validates_inclusion_of :private?, :in => [false, true]
+  validates_inclusion_of :private, :in => [false, true]
+  validates_inclusion_of :hospitable, :in => [false, true]
+
+  attr_accessible :private, :hospitable, :name
 
   def set_admin_status user, status
     membership = memberships.find_by_user_id(user.id)

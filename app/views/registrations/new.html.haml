@@ -1,0 +1,10 @@
+%h2= t('registrations.new.title')
+= semantic_form_for(resource, :url => registration_path(resource_name)) do |form|
+  = form.inputs do
+    = form.input :username
+    = form.input :email if @invitation.nil?
+    = form.input :password
+    = form.input :password_confirmation, :required => true
+  = hidden_field_tag :invitation, @invitation.code unless @invitation.nil?
+  = form.buttons do
+    = form.commit_button :label => t('registrations.new.submit')

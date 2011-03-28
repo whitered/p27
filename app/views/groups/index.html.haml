@@ -1,0 +1,4 @@
+%h1= t 'groups.index.title'
+= link_to t('groups.new.link'), new_group_path if user_signed_in?
+#groups
+  = render @groups

@@ -1,0 +1,20 @@
+%p= @group.name
+= link_to t('groups.edit.link'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
+#group_users
+  - if user_signed_in?
+    - if @group.users.exists? current_user
+      = link_to t('groups.leave.link'), leave_group_path(@group), :method => :post
+    - elsif @group.hospitable?
+      = link_to t('groups.join.link'), join_group_path(@group), :method => :post
+  %ul
+    - @group.users.each do |user|
+      %li
+        = link_to user.username, user_path(user.username), :class => (@group.user_is_admin?(user) ? 'admin' : nil)
+        = link_to t('groups.remove_member.link'), remove_member_group_path(@group, :username => user.username), :method => :post if @group.user_is_admin?(current_user)
+        - if @group.owner == current_user
+          - if @group.user_is_admin?(user)
+            = link_to t('groups.manage_admins.unset_link.name'), manage_admins_group_path(@group, :unset => user.username), :method => :post
+          - else
+            = link_to t('groups.manage_admins.set_link.name'), manage_admins_group_path(@group, :set => user.username), :method => :post
+  = link_to t('invitations.new.link'), new_group_invitation_path(@group) if user_signed_in? && @group.user_is_admin?(current_user)
+

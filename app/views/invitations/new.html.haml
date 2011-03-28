@@ -1,0 +1,8 @@
+%h1= t('invitations.new.title', :group => @group.name)
+%p= t('invitations.new.hint')
+= form_tag group_invitations_path(@group) do
+  = label_tag :recipients, t('invitations.new.recipients')
+  = text_field_tag :recipients
+  = label_tag :message, t('activerecord.attributes.invitation.message')
+  = text_area_tag :message
+  = submit_tag t('invitations.new.commit')

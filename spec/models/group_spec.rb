@@ -101,7 +101,8 @@ describe Group do
     
     it 'should not be nil' do
       group = Group.new(:private => nil)
-      group.private?.should_not be_nil
+      group.should_not be_valid
+      group.errors[:private].should_not be_empty
     end
 
     it 'should be false by default' do
@@ -124,6 +125,25 @@ describe Group do
     it 'should be false for private groups' do
       group = Group.new(:private => true)
       group.public?.should be_false
+    end
+
+  end
+
+
+  it 'should have hospitable? property' do
+    group.should respond_to(:hospitable?)
+  end
+
+  describe 'hospitable?' do
+
+    it 'should not be nil' do
+      group = Group.new(:hospitable => nil)
+      group.should_not be_valid
+      group.errors[:hospitable].should_not be_empty
+    end
+
+    it 'should be true by default' do
+      Group.new.hospitable?.should be_true
     end
 
   end
