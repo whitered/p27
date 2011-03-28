@@ -64,6 +64,11 @@ GEM
       activesupport (>= 2.3.7)
       i18n (~> 0.4)
     haml (3.0.25)
+    haml-rails (0.3.4)
+      actionpack (~> 3.0)
+      activesupport (~> 3.0)
+      haml (~> 3.0)
+      railties (~> 3.0)
     i18n (0.5.0)
     json_pure (1.5.1)
     launchy (0.4.0)
@@ -141,7 +146,7 @@ DEPENDENCIES
   devise
   faker
   formtastic
-  haml
+  haml-rails
   launchy
   machinist (>= 2.0.0.beta2)
   rails (= 3.0.5)
