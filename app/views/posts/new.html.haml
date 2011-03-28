@@ -1,2 +1,6 @@
-%h1 Posts#new
-%p Find me in app/views/posts/new.html.haml
+%h1= t 'posts.new.title'
+= semantic_form_for [@group, @post] do |f|
+  = f.inputs :title, :body
+  = f.buttons do
+    = f.commit_button t('posts.new.commit')
+
