@@ -62,13 +62,13 @@ class InvitationsController < ApplicationController
     invitation = current_user.invitations.find(params[:id])
     invitation.accept!
     flash[:notice] = t('invitations.accept.successful', :group => invitation.group.name)
-    redirect_to invitations_path
+    redirect_to invitations_url
   end
 
   def decline
     invitation = current_user.invitations.find(params[:id])
     invitation.destroy
     flash[:notice] = t('invitations.decline.successful', :group => invitation.group.name)
-    redirect_to invitations_path
+    redirect_to invitations_url
   end
 end
