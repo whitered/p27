@@ -1,0 +1,5 @@
+.post
+  %p= link_to post.title, post
+  %div
+    = link_to post.author.username, post.author
+    = l post.created_at

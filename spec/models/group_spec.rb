@@ -148,4 +148,43 @@ describe Group do
 
   end
 
+  it 'should have posts' do
+    group.should respond_to(:posts)
+  end
+
+  it 'should have user_can_post? method' do
+    group.should respond_to(:user_can_post?)
+  end
+
+  describe 'user_can_post?' do
+
+    it 'should be true for group admin' do
+      admin = User.make!
+      group.users << admin
+      group.set_admin_status admin, true
+      group.user_can_post?(admin).should be_true
+    end
+
+    it 'should be true for group owner' do
+      owner = User.make!
+      group.owner = owner
+      group.user_can_post?(owner).should be_true
+    end
+
+    it 'should be true for group member' do
+      member = User.make!
+      group.users << member
+      group.user_can_post?(member).should be_true
+    end
+
+    it 'should be false for outsider' do
+      outsider = User.make!
+      group.user_can_post?(outsider).should be_false
+    end
+
+    it 'should be false for nil' do
+      group.user_can_post?(nil).should be_false
+    end
+
+  end
 end

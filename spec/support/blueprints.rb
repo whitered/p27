@@ -19,3 +19,8 @@ end
 
 Invitation.blueprint do
 end
+
+Post.blueprint do
+  title { "Post #{sn}" }
+  body { Faker::Lorem.paragraph }
+end

@@ -14,6 +14,9 @@ ru:
         hospitable: Свободная регистрация
       invitation:
         message: Сообщение
+      post:
+        title: Заголовок
+        body: Текст
   devise:
    sessions:
       new:
@@ -95,6 +98,10 @@ ru:
       title: Регистрация
       submit: Зарегистрироваться
       wrong_invitation: Неверный код приглашения
+  posts:
+    new:
+      title: Новый пост
+      commit: Написать
  
                 
 

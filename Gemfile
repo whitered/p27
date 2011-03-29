@@ -33,7 +33,7 @@ gem 'sqlite3'
 gem 'devise'
 gem 'russian'
 gem 'formtastic'
-gem 'haml'
+gem 'haml-rails'
 
 group :test, :development do
   gem 'rspec-rails'

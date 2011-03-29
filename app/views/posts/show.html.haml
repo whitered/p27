@@ -1,0 +1,9 @@
+%h1= @post.title
+#sub_header= link_to @post.group.name, @post.group
+#post
+  %p= @post.body
+  .post_data
+    = link_to @post.author.username, @post.author
+    = l @post.created_at
+
+

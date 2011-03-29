@@ -196,4 +196,12 @@ describe "groups/show.html.haml" do
     page.should have_no_link(t('groups.edit.link'))
   end
 
+  it 'should render group posts' do
+    3.times { Post.make!(:group => @group, :author => User.make!) }
+    stub_template 'posts/_post' => '<div class="stub_template_post"/>'
+    render
+    page.should have_selector('#posts')
+    page.all('#posts .stub_template_post').size.should eq(3)
+  end
+
 end

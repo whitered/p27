@@ -1,6 +1,6 @@
 class GroupsController < ApplicationController
 
-  before_filter :authenticate_user!, :except => [:show, :index]
+  skip_before_filter :authenticate_user!, :only => [:show, :index]
 
   def new
     @group = Group.new
