@@ -28,4 +28,38 @@ describe Post do
     Post.new.should respond_to(:group)
   end
 
+  it 'should have can_be_edited_by? method' do
+    Post.new.should respond_to(:can_be_edited_by?)
+  end
+
+  describe 'can_be_edited_by?' do
+
+    before do
+      @post = Post.make!(:author => User.make!, :group => Group.make!(:owner => User.make!))
+    end
+
+    it 'should be false for nil' do
+      @post.can_be_edited_by?(nil).should be_false
+    end
+
+    it 'should be false for outsider' do
+      @post.can_be_edited_by?(User.make!).should be_false
+    end
+
+    it 'should be true for group admin' do
+      admin = User.make!
+      @post.group.users << admin
+      @post.group.set_admin_status admin, true
+      @post.can_be_edited_by?(admin).should be_true
+    end
+
+    it 'should be true for group owner' do
+      @post.can_be_edited_by?(@post.group.owner).should be_true
+    end
+
+    it 'should be true for post author' do
+      @post.can_be_edited_by?(@post.author).should be_true
+    end
+  end
+
 end

@@ -102,8 +102,11 @@ ru:
     new:
       title: Новый пост
       commit: Написать
- 
-                
-
+    edit:
+      link: Редактировать
+      title: Редактировать пост
+      commit: Сохранить
+    update:
+      successful: Изменения сохранены
 
 

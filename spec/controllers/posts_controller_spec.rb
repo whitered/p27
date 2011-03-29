@@ -179,4 +179,100 @@ describe PostsController do
 
   end
 
+  describe 'edit' do
+
+    before do
+      @post = Post.make!(:author => User.make!)
+    end
+
+    it 'should require user authentication' do
+      get :edit, :id => @post.id
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound exception if user not authorized to edit the post' do
+      sign_in User.make!
+      lambda do
+        get :edit, :id => @post.id
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      before do
+        sign_in @post.author
+        get :edit, :id => @post.id
+      end
+
+      it 'should be successful' do
+        response.should be_successful
+      end
+
+      it 'should assign :post' do
+        assigns[:post].should eq(@post)
+      end
+
+      it 'should render :edit template' do
+        response.should render_template(:edit)
+      end
+
+    end
+  end
+
+  describe 'update' do
+
+    before do 
+      @post = Post.make!(:group => Group.make!, :author => User.make!)
+    end
+
+    it 'should require user authentication' do
+      put :update, :id => @post.id, :post => { :title => 'new title' }
+      response.should redirect_to(new_user_session_url)
+    end
+
+    it 'should raise NotFound exception if user is not authorized to edit post' do
+      sign_in User.make!
+      lambda do
+        put :update, :id => @post.id, :post => { :title => 'new title' }
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do 
+
+      before do
+        sign_in @post.author
+      end
+
+      it 'should update post title' do
+        put :update, :id => @post.id, :post => { :title => 'new title' }
+        Post.find(@post.id).title.should eq('new title')
+      end
+
+      it 'should update post body' do
+        put :update, :id => @post.id, :post => { :body => 'new body' }
+        Post.find(@post.id).body.should eq('new body')
+      end
+
+      it 'should not modify post author' do
+        put :update, :id => @post.id, :post => { :author_id => -999 }
+        Post.find(@post.id).author_id.should eq(@post.author_id)
+      end
+
+      it 'should not modify post group' do
+        put :update, :id => @post.id, :post => { :group_id => -666 }
+        Post.find(@post.id).group_id.should eq(@post.group_id)
+      end
+
+      it 'should set successful message' do
+        put :update, :id => @post.id, :post => { :title => 'new title' }
+        flash[:notice].should eq(t('posts.update.successful'))
+      end
+
+      it 'should redirect to post page' do
+        put :update, :id => @post.id, :post => { :title => 'new title' }
+        response.should redirect_to(post_path(@post))
+      end
+
+    end
+  end
 end
