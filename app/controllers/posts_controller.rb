@@ -1,6 +1,7 @@
 class PostsController < ApplicationController
 
   before_filter :find_group, :only => [:new, :create]
+  skip_before_filter :authenticate_user!, :only => :show
 
   def new
     raise AccessDenied unless @group.user_can_post?(current_user)
@@ -16,6 +17,10 @@ class PostsController < ApplicationController
   end
 
   def show
+    @post = Post.find(params[:id])
+    if @post.group.private?
+      raise ActiveRecord::RecordNotFound unless user_signed_in? && current_user.is_insider_of?(@post.group)
+    end
   end
 
 private

@@ -120,4 +120,63 @@ describe PostsController do
 
   end
 
+
+  describe 'show' do
+
+    before do
+      @group = Group.make!
+      @post = Post.make!(:author => User.make!, :group => @group)
+    end
+
+    context "private group's post" do
+
+      before do
+        @group.update_attribute(:private, true)
+      end
+
+      it 'should raise NotFound exception if user is not logged in' do
+        lambda do
+          get :show, :id => @post.id
+        end.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      it 'should raise NotFound exception if user is not a member' do
+        sign_in User.make!
+        lambda do
+          get :show, :id => @post.id
+        end.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+    end
+
+    context 'allowed post' do
+
+      it 'should be success for public group post' do
+        get :show, :id => @post.id
+        response.should be_successful
+      end
+
+      it 'should be success for private group post when user is a member' do
+        @group.update_attribute(:private, true)
+        user = User.make!
+        @group.users << user
+        sign_in user
+        get :show, :id => @post.id
+        response.should be_successful
+      end
+
+      it 'should assign :post' do
+        get :show, :id => @post.id
+        assigns[:post].should eq(@post)
+      end
+
+      it 'should render :show template' do
+        get :show, :id => @post.id
+        response.should render_template(:show)
+      end
+
+    end
+
+  end
+
 end
