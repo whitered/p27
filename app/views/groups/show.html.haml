@@ -17,4 +17,5 @@
           - else
             = link_to t('groups.manage_admins.set_link.name'), manage_admins_group_path(@group, :set => user.username), :method => :post
   = link_to t('invitations.new.link'), new_group_invitation_path(@group) if user_signed_in? && @group.user_is_admin?(current_user)
-
+#posts
+  = render @group.posts
