@@ -23,6 +23,19 @@ class PostsController < ApplicationController
     end
   end
 
+  def edit
+    @post = Post.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless @post.can_be_edited_by?(current_user)
+  end
+
+  def update
+    @post = Post.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless @post.can_be_edited_by?(current_user)
+    @post.update_attributes(params[:post])
+    flash[:notice] = t('posts.update.successful')
+    redirect_to @post
+  end
+
 private
 
   def find_group
