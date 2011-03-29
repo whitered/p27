@@ -19,3 +19,4 @@
   = link_to t('invitations.new.link'), new_group_invitation_path(@group) if user_signed_in? && @group.user_is_admin?(current_user)
 #posts
   = render @group.posts
+  = link_to t('posts.new.link'), new_group_post_path(@group) if @group.user_can_post?(current_user)

@@ -100,6 +100,7 @@ ru:
       wrong_invitation: Неверный код приглашения
   posts:
     new:
+      link: Написать пост
       title: Новый пост
       commit: Написать
     edit:

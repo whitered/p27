@@ -5,6 +5,7 @@ describe "groups/show.html.haml" do
   let(:page) { Capybara.string rendered }
 
   before do
+    stub_template 'posts/_post' => '<div class="stub_template_post"/>'
     @user, @member, @admin = User.make!(3)
     @group = Group.make!
     @group.users << @user << @member << @admin
@@ -198,10 +199,21 @@ describe "groups/show.html.haml" do
 
   it 'should render group posts' do
     3.times { Post.make!(:group => @group, :author => User.make!) }
-    stub_template 'posts/_post' => '<div class="stub_template_post"/>'
     render
     page.should have_selector('#posts')
     page.all('#posts .stub_template_post').size.should eq(3)
   end
 
+  it 'should have new post link for authorized user' do
+    @group.set_admin_status @user, true
+    render
+    page.should have_link(t('posts.new.link'), :href => new_group_post_path(@group))
+  end
+    
+  it 'should not have new post link for not authorized user' do
+    @group.users.delete @user
+    render
+    page.should have_no_link(t('posts.new.link'))
+    page.should have_no_xpath("//a[@href = '#{new_group_post_path(@group)}']")
+  end
 end

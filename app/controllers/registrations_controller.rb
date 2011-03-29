@@ -7,6 +7,8 @@ class RegistrationsController < Devise::RegistrationsController
   def create
     @user = User.new(params[:user])
 
+    @user.skip_confirmation! if Rails.env.development?
+
     unless @invitation.nil?
       @user.email = @invitation.email
       @user.skip_confirmation! 
