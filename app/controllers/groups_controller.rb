@@ -37,7 +37,7 @@ class GroupsController < ApplicationController
         flash[:alert] = t('groups.remove_member.errors.user_not_member', :username => params[:username])
       else 
         group.users.delete(user)
-        flash[:notice] = t('groups.remove_member.successful', :username => params[:username])
+        flash[:notice] = t('groups.remove_member.success', :username => params[:username])
       end
     end
 
@@ -96,7 +96,7 @@ class GroupsController < ApplicationController
   def leave
     group = current_user.groups.find(params[:id])
     group.users.delete current_user
-    flash[:notice] = t('groups.leave.successful', :group => group.name)
+    flash[:notice] = t('groups.leave.success', :group => group.name)
     redirect_to (group.public? ? group : root_path)
   end
 
@@ -111,7 +111,7 @@ class GroupsController < ApplicationController
   def update
     @group = current_user.own_groups.find(params[:id])
     @group.update_attributes(params[:group])
-    flash[:notice] = t('groups.edit.successful')
+    flash[:notice] = t('groups.update.success')
     render :edit
   end
 

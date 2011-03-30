@@ -11,7 +11,7 @@ feature "Edit Post" do
   scenario 'post author edits post' do
     login @author
     visit post_path(@post)
-    click_link_or_button(t('posts.edit.link'))
+    click_link_or_button(t('posts.show.edit'))
     fill_in t('activerecord.attributes.post.title'), :with => 'New title'
     fill_in t('activerecord.attributes.post.body'), :with => 'New post body'
     click_button t('posts.edit.commit')

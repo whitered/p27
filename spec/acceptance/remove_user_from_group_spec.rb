@@ -21,12 +21,12 @@ feature 'Remove User From Group' do
       visit group_path(@group)
       within '#group_users' do
         within(:xpath, ".//li[contains(.,'#{member.username}')]") do
-          click_link_or_button t('groups.remove_member.link')
+          click_link_or_button t('groups.show.remove_member')
         end
       end
 
       group_users.should have_no_content(member.username)
-      page.should have_content(t('groups.remove_member.successful', :username => member.username))
+      page.should have_content(t('groups.remove_member.success', :username => member.username))
     end
 
   end

@@ -1,75 +1,61 @@
 ru:
-  activerecord:
-    attributes:
-      user:
-        login: Логин или емейл
-        username: Логин
-        email: Емейл
-        password: Пароль
-        password_confirmation: Подтверждение
-        remember_me: Запомнить меня
-      group:
-        name: Название
-        private: Приватная группа
-        hospitable: Свободная регистрация
-      invitation:
-        message: Сообщение
-      post:
-        title: Заголовок
-        body: Текст
   devise:
-   sessions:
+    sessions:
       new:
         title: Вход
-        submit: Войти
-  authentication:
-    registration: Регистрация
-    login: Вход
-    logout: Выход
+        commit: Войти
+  layouts:
+    authentication:
+      registration: Регистрация
+      login: Вход
+      logout: Выход
   home:
     index:
       welcome: Проект 27
+      new_group: Создать новую группу
   groups:
     new:
-      link: Создать новую группу
       title: Новая группа
-      submit: Создать группу
+      commit: Создать группу
     remove_member:
-      link: '[x]'
-      successful: '%{username} удален из группы'
+      success: '%{username} удален из группы'
       errors:
         name_not_given: Не указано имя пользователя
         not_permitted: Исключить из группы может только администратор
         user_not_found: 'Пользователь с ником %{username} не найден'
         user_not_member: '%{username} не состоит в группе'
     manage_admins:
-      set_link:
-        name: '[+A]'
-      unset_link:
-        name: '[-A]'
       errors:
         wrong_names: 'Таких пользователей нет в группе: %{names}'
         not_permitted: Только владелец группы может назначить администратора
         no_name_given: Не указано имя пользователя
+    show:
+      join: Вступить в группу
+      leave: Выйти из группы
+      edit: Hастройки группы
+      remove_member: '[x]'
+      set_admin: '[+A]'
+      unset_admin: '[-A]'
+      new_invitation: Пригласить участника
+      new_post: Написать пост
     join:
-      link: Вступить в группу
       errors:
         not_hospitable: Вступить в эту группу можно только по приглашению
     leave:
-      link: Выйти из группы
-      successful: 'Вы вышли из группы %{group}'
+      success: 'Вы вышли из группы %{group}'
     index:
       title: Группы
+      new_group: Создать новую группу
     edit:
-      link: Hастройки группы
       title: Настройки группы
       commit: Сохранить изменения
-      successful: Настройки группы сохранены
+    update:
+      success: Настройки группы сохранены
   invitations:
     new:
-      link: Пригласить участника
       title: 'Приглашение новых участников в группу %{group}'
       recipients: Ник или емейл пользователей
+      message: Сообщение
       commit: Пригласить
       hint: Вы можете указать ники пользователя или почтовые адреса. Незарегистрированные пользователи получат приглашения по почте и будут добавлены в группу при регистрации. Зарегистрированные пользователи увидят приглашения в своем аккаунте.
     create:
@@ -96,15 +82,15 @@ ru:
       registered_and_confirmed: Вы успешно зарегистрированы
     new:
       title: Регистрация
-      submit: Зарегистрироваться
+      commit: Зарегистрироваться
       wrong_invitation: Неверный код приглашения
   posts:
     new:
-      link: Написать пост
       title: Новый пост
       commit: Написать
+    show:
+      edit: Редактировать
     edit:
-      link: Редактировать
       title: Редактировать пост
       commit: Сохранить
     update:

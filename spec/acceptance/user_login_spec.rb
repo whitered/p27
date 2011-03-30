@@ -6,7 +6,7 @@ feature "User Login" do
     visit new_user_session_path
     fill_in t('activerecord.attributes.user.login'), :with => login
     fill_in t('activerecord.attributes.user.password'), :with => password
-    click_link_or_button t('devise.sessions.new.submit')
+    click_link_or_button t('devise.sessions.new.commit')
   end
 
   let(:user) { User.make!(:confirmed_at => nil) }

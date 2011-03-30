@@ -12,12 +12,12 @@ describe 'layouts/_authentication' do
     end
 
     it 'should have login link' do
-      authentication.should have_link(t('authentication.login'), 
+      authentication.should have_link(t('layouts.authentication.login'), 
                                       :href => new_user_session_path)
     end
 
     it 'should have registration link' do
-      authentication.should have_link(t('authentication.registration'), 
+      authentication.should have_link(t('layouts.authentication.registration'), 
                                         :href => new_user_registration_path)
     end
 
@@ -44,7 +44,7 @@ describe 'layouts/_authentication' do
     #end
 
     it 'should have logout link' do
-      authentication.should have_link(t('authentication.logout'),
+      authentication.should have_link(t('layouts.authentication.logout'),
                                       :href => destroy_user_session_path)
     end
 

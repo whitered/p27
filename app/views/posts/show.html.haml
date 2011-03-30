@@ -5,6 +5,6 @@
   .post_data
     = link_to @post.author.username, @post.author
     = l @post.created_at
-    = link_to t('posts.edit.link'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
+    = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
 
 

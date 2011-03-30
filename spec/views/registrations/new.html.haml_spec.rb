@@ -44,9 +44,9 @@ describe 'registrations/new.html.haml' do
     page.should have_field(t('activerecord.attributes.user.password_confirmation'))
   end
 
-  it 'should contain submit button' do
+  it 'should contain commit button' do
     render
-    page.should have_button(t('registrations.new.submit'))
+    page.should have_button(t('registrations.new.commit'))
   end
 
   it 'should render error for wrong email' do

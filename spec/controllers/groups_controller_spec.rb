@@ -278,7 +278,7 @@ describe GroupsController do
 
       it 'should show notice when a member is removed' do
         do_remove_member @admin.username
-        flash[:notice].should eq(t('groups.remove_member.successful', :username => @admin.username))
+        flash[:notice].should eq(t('groups.remove_member.success', :username => @admin.username))
       end
       
       it 'should set error message if no names given' do
@@ -437,7 +437,7 @@ describe GroupsController do
 
       it 'should set flash notification' do
         do_leave
-        flash[:notice].should eq(t('groups.leave.successful', :group => @group.name))
+        flash[:notice].should eq(t('groups.leave.success', :group => @group.name))
       end
       
       context 'of private group' do
@@ -684,7 +684,7 @@ describe GroupsController do
 
       it 'should set successful notification' do
         do_update :name => 'New name'
-        flash[:notice].should eq(t('groups.edit.successful'))
+        flash[:notice].should eq(t('groups.update.success'))
       end
 
       it 'should render :edit template' do

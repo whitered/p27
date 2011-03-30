@@ -36,7 +36,7 @@ describe "posts/show.html.haml" do
   it 'should have link to edit page if user is authorized for editing' do
     sign_in @post.author
     render
-    page.should have_link(t('posts.edit.link'), :href => edit_post_path(@post))
+    page.should have_link(t('posts.show.edit'), :href => edit_post_path(@post))
   end
 
   it 'should not have link to edit page for not authorized user' do

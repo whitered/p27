@@ -10,7 +10,7 @@ feature "Join Open Group" do
 
   scenario 'user can join open group' do
     visit group_path(@group)
-    click_link_or_button t('groups.join.link')
+    click_link_or_button t('groups.show.join')
     page.should have_selector('#group_users')
     within('#group_users') do
       page.should have_content(@user.username)

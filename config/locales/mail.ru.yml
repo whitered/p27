@@ -1,8 +1,10 @@
 ru:
-  mail:
-    registration_confirmation: 
-      title: 'Приветствуем вас на портале 27, %{username}!'
-      body: 'Для подтверждения регистрации пройдите по ссылке:'
+  devise:
+    mailer:
+      confirmation_instructions:
+        title: 'Приветствуем вас на портале 27, %{username}!'
+        body: 'Для подтверждения регистрации пройдите по ссылке:'
+  invitation_mailer:
     invite_user:
       subject: 'Приглашение на сайт'
       body: 'Привет! %{inviter} пригласил вас вступить в группу %{group}. Вы можете зарегистрироваться по ссылке %{registration_link}.'

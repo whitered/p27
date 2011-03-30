@@ -9,5 +9,5 @@ def login user = nil
   visit new_user_session_path
   fill_in t('activerecord.attributes.user.login'), :with => user.username
   fill_in t('activerecord.attributes.user.password'), :with => user.password
-  click_link_or_button t('devise.sessions.new.submit')
+  click_link_or_button t('devise.sessions.new.commit')
 end
