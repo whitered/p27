@@ -5,7 +5,7 @@ ru:
         title: Вход
         commit: Войти
   layouts:
-    authentication:
+    header:
       registration: Регистрация
       login: Вход
       logout: Выход

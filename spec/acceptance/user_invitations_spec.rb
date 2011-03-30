@@ -38,7 +38,7 @@ feature "User Invitations" do
     page.should have_content(t('invitations.decline.successful', :group => @groups.first.name))
     visit group_path(@groups.first)
     within '#group_users' do
-      page.should_not have_content(@user.username)
+      page.should have_no_content(@user.username)
     end
 
   end

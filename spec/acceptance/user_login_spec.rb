@@ -29,13 +29,13 @@ feature "User Login" do
 
     scenario 'should not be able to login with wrong password' do
       try_login user.email, 'wrong_password'
-      page.should_not have_content(t 'devise.sessions.signed_in')
+      page.should have_no_content(t 'devise.sessions.signed_in')
       page.should have_content(t 'devise.failure.invalid')
     end
 
     scenario 'should not be able to login with wrong login' do
       try_login 'wrong_login', user.password
-      page.should_not have_content(t 'devise.sessions.signed_in')
+      page.should have_no_content(t 'devise.sessions.signed_in')
       page.should have_content(t 'devise.failure.invalid')
     end
 

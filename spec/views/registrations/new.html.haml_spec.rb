@@ -26,7 +26,7 @@ describe 'registrations/new.html.haml' do
   it 'should not contain email if invitation is given' do
     @invitation = Invitation.create!(:group => Group.make!, :inviter => User.make!, :email => user.email)
     render
-    page.should_not have_field(t('activerecord.attributes.user.email'))
+    page.should have_no_field(t('activerecord.attributes.user.email'))
   end
 
   it 'should contain username field' do

@@ -15,7 +15,7 @@ feature 'Leave Group' do
     visit group_path(@group)
     click_link_or_button t('groups.show.leave')
     page.should have_content(@group.name)
-    page.find('#group_users').should_not have_content(@user.username)
+    page.find('#group_users').should have_no_content(@user.username)
     page.should have_content(t('groups.leave.success', :group => @group.name))
   end
 
