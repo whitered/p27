@@ -39,7 +39,7 @@ feature "User Registration Confirmation" do
       url = user_confirmation_path(:confirmation_token => john.confirmation_token) 
       visit url
       visit url
-      page.should_not have_content(t('devise.confirmations.confirmed'))
+      page.should have_no_content(t('devise.confirmations.confirmed'))
     end
 
   end

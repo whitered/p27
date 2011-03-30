@@ -44,6 +44,8 @@ GEM
     celerity (0.8.8)
     childprocess (0.1.7)
       ffi (~> 0.6.3)
+    compass (0.10.6)
+      haml (>= 3.0.4)
     configuration (1.2.0)
     culerity (0.2.15)
     database_cleaner (0.6.4)
@@ -69,6 +71,8 @@ GEM
       activesupport (~> 3.0)
       haml (~> 3.0)
       railties (~> 3.0)
+    html5-boilerplate (0.3.2)
+      compass (>= 0.10.0)
     i18n (0.5.0)
     json_pure (1.5.1)
     launchy (0.4.0)
@@ -142,11 +146,13 @@ PLATFORMS
 
 DEPENDENCIES
   capybara
+  compass
   database_cleaner
   devise
   faker
   formtastic
   haml-rails
+  html5-boilerplate
   launchy
   machinist (>= 2.0.0.beta2)
   rails (= 3.0.5)

@@ -5,25 +5,27 @@ describe 'layouts/application' do
   let(:page) { Capybara.string rendered }
 
   before do
-    stub_template 'layouts/_notifications' => ''
-    stub_template 'layouts/_authentication' => ''
+    stub_template 'layouts/header' => ''
+    stub_template 'layouts/flashes' => ''
+    stub_template 'layouts/footer' => ''
+    stub_template 'layouts/javascripts' => ''
     render
   end
 
-  it 'should render _notifications template' do
-    page.should render_template('layouts/_notifications')
+  it 'should render header partial' do
+    page.should render_template('layouts/_header')
   end
 
-  it 'should render _authentication template' do
-    page.should render_template('layouts/_authentication')
+  it 'should render flashes partial' do
+    page.should render_template('layouts/_flashes')
   end
 
-  describe 'stylesheets' do
+  it 'should render footer partial' do
+    page.should render_template('layouts/_footer')
+  end
 
-    it 'should include formstatic' do
-      page.should have_xpath("//head//link[contains(@href, 'formstatic')]")
-    end
-
+  it 'should render javascripts partial' do
+    page.should render_template('layouts/_javascripts')
   end
 
 end

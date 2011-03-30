@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'layouts/_authentication' do
+describe 'layouts/_header' do
 
   let(:page) { Capybara.string rendered }
   let(:authentication) { page.find '#authentication' }
@@ -12,21 +12,21 @@ describe 'layouts/_authentication' do
     end
 
     it 'should have login link' do
-      authentication.should have_link(t('layouts.authentication.login'), 
+      authentication.should have_link(t('layouts.header.login'), 
                                       :href => new_user_session_path)
     end
 
     it 'should have registration link' do
-      authentication.should have_link(t('layouts.authentication.registration'), 
+      authentication.should have_link(t('layouts.header.registration'), 
                                         :href => new_user_registration_path)
     end
 
     #it 'should not have profile link' do
-      #authentication.should_not have_xpath("//a[@href = '#{user_profile_path}']")
+      #authentication.should have_no_xpath("//a[@href = '#{user_profile_path}']")
     #end
 
     it 'should not have logout link' do
-      authentication.should_not have_xpath(".//a[@href='#{destroy_user_session_path}']")
+      authentication.should have_no_xpath(".//a[@href='#{destroy_user_session_path}']")
     end
 
   end
@@ -44,16 +44,16 @@ describe 'layouts/_authentication' do
     #end
 
     it 'should have logout link' do
-      authentication.should have_link(t('layouts.authentication.logout'),
+      authentication.should have_link(t('layouts.header.logout'),
                                       :href => destroy_user_session_path)
     end
 
     it 'should not have login link' do
-      authentication.should_not have_xpath(".//a[@href='#{new_user_session_path}']")
+      authentication.should have_no_xpath(".//a[@href='#{new_user_session_path}']")
     end
 
     it 'should not have registration link' do
-      authentication.should_not have_xpath(".//a[@href = '#{new_user_registration_path}']")
+      authentication.should have_no_xpath(".//a[@href = '#{new_user_registration_path}']")
     end
 
   end

@@ -34,6 +34,8 @@ gem 'devise'
 gem 'russian'
 gem 'formtastic'
 gem 'haml-rails'
+gem 'compass'
+gem 'html5-boilerplate'
 
 group :test, :development do
   gem 'rspec-rails'
