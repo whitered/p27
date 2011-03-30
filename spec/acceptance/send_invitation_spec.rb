@@ -14,7 +14,7 @@ feature "Send Invitation" do
   def send_invitations recipients
     visit new_group_invitation_path(@group)
     fill_in t('invitations.new.recipients'), :with => recipients
-    fill_in t('activerecord.attributes.invitation.message'), :with => 'Join my group!'
+    fill_in t('invitations.new.message'), :with => 'Join my group!'
     click_link_or_button t('invitations.new.commit')
   end
 

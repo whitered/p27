@@ -21,7 +21,7 @@ describe InvitationMailer do
     end
 
     it 'renders the body' do
-      mail.body.encoded.should match(t('mail.invite_user.body',
+      mail.body.encoded.should match(t('invitation_mailer.invite_user.body',
                                        :inviter => @invitation.inviter.username,
                                        :group => @invitation.group.name,
                                        :registration_link => @link))
@@ -29,7 +29,7 @@ describe InvitationMailer do
 
     it 'renders the body with message' do
       @invitation.message = Faker::Lorem.sentence
-      mail.body.encoded.should match(t('mail.invite_user.body_with_message',
+      mail.body.encoded.should match(t('invitation_mailer.invite_user.body_with_message',
                                        :inviter => @invitation.inviter.username,
                                        :group => @invitation.group.name,
                                        :message => @invitation.message,

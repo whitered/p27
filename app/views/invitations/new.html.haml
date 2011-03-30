@@ -3,6 +3,6 @@
 = form_tag group_invitations_path(@group) do
   = label_tag :recipients, t('.recipients')
   = text_field_tag :recipients
-  = label_tag :message, t('activerecord.attributes.invitation.message')
+  = label_tag :message, t('.message')
   = text_area_tag :message
   = submit_tag t('.commit')

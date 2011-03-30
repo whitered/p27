@@ -3,11 +3,12 @@ ru:
     sessions:
       new:
         title: Вход
-        submit: Войти
-  authentication:
-    registration: Регистрация
-    login: Вход
-    logout: Выход
+        commit: Войти
+  layouts:
+    authentication:
+      registration: Регистрация
+      login: Вход
+      logout: Выход
   home:
     index:
       welcome: Проект 27
@@ -54,6 +55,7 @@ ru:
     new:
       title: 'Приглашение новых участников в группу %{group}'
       recipients: Ник или емейл пользователей
+      message: Сообщение
       commit: Пригласить
       hint: Вы можете указать ники пользователя или почтовые адреса. Незарегистрированные пользователи получат приглашения по почте и будут добавлены в группу при регистрации. Зарегистрированные пользователи увидят приглашения в своем аккаунте.
     create:
@@ -80,7 +82,7 @@ ru:
       registered_and_confirmed: Вы успешно зарегистрированы
     new:
       title: Регистрация
-      submit: Зарегистрироваться
+      commit: Зарегистрироваться
       wrong_invitation: Неверный код приглашения
   posts:
     new:

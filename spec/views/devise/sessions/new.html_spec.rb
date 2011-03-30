@@ -33,7 +33,7 @@ describe 'devise/sessions/new.html.haml' do
 
   it 'should have submit button' do
     render
-    page.should have_button(t 'devise.sessions.new.submit')
+    page.should have_button(t 'devise.sessions.new.commit')
   end
 
   it 'should render error for login' do

@@ -12,8 +12,6 @@ ru:
         name: Название
         private: Приватная группа
         hospitable: Свободная регистрация
-      invitation:
-        message: Сообщение
       post:
         title: Заголовок
         body: Текст

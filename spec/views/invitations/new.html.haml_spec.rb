@@ -22,7 +22,7 @@ describe 'invitations/new.html.haml' do
   end
 
   it 'should have message field' do
-    page.should have_field(t('activerecord.attributes.invitation.message'))
+    page.should have_field(t('invitations.new.message'))
   end
 
   it 'should have commit button' do
