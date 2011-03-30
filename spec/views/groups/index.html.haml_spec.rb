@@ -28,7 +28,7 @@ describe 'groups/index.html.haml' do
 
     it 'should have new group link' do
       render
-      page.should have_link(t('groups.new.link'), :href => new_group_path)
+      page.should have_link(t('groups.index.new_group'), :href => new_group_path)
     end
 
   end
@@ -37,7 +37,7 @@ describe 'groups/index.html.haml' do
 
     it 'should not have new group link' do
       render
-      page.should have_no_link(t('groups.new.link'))
+      page.should have_no_link(t('groups.index.new_group_link'))
     end
 
   end

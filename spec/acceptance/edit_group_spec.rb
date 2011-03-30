@@ -17,7 +17,7 @@ feature 'Edit Group' do
     click_link_or_button t('groups.edit.commit')
 
     visit edit_group_path(@group)
-    page.should have_content(t('groups.edit.successful'))
+    page.should have_content(t('groups.update.success'))
     page.find_field(t('activerecord.attributes.group.name')).value.should eq('New name')
     page.find_field(t('activerecord.attributes.group.private')).should_not be_checked
     page.find_field(t('activerecord.attributes.group.hospitable')).should be_checked

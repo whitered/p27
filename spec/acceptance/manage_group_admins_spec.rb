@@ -21,13 +21,13 @@ feature 'Manage Group Admins' do
 
     scenario 'should be able to set group admin' do
       visit group_path(@group)
-      find_member(@member.username).click_link_or_button t('groups.manage_admins.set_link.name')
+      find_member(@member.username).click_link_or_button t('groups.show.set_admin')
       find_member(@member.username).should have_selector('.admin')
     end
 
     scenario 'should be able to unset group admin' do
       visit group_path(@group)
-      find_member(@admin.username).click_link_or_button t('groups.manage_admins.unset_link.name')
+      find_member(@admin.username).click_link_or_button t('groups.show.unset_admin')
       find_member(@admin.username).should have_no_selector('.admin')
     end
  

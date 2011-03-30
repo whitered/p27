@@ -20,7 +20,7 @@ feature "Send Invitation" do
 
   scenario 'group admin visits invitations page' do
     visit group_path(@group)
-    click_link t('invitations.new.link')
+    click_link t('groups.show.new_invitation')
     current_path.should eq(new_group_invitation_path(@group))
   end
 

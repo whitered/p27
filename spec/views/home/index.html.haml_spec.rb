@@ -28,7 +28,7 @@ describe "home/index.html.haml" do
     end
 
     it 'should have new_group link' do
-      page.should have_link(t('groups.new.link'), :href => new_group_path)
+      page.should have_link(t('home.index.new_group'), :href => new_group_path)
     end
 
   end

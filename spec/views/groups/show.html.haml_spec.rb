@@ -52,22 +52,22 @@ describe "groups/show.html.haml" do
 
       it 'should not have links to set admin' do
         render
-        group_users.should have_no_link(t('groups.manage_admins.set_link.name'))
+        group_users.should have_no_link(t('groups.show.set_admin'))
       end
 
       it 'should not have links to unset admin' do
         render
-        group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
+        group_users.should have_no_link(t('groups.show.unset_admin'))
       end
 
       it 'should have link to leave group' do
         render
-        group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.show.leave'), :href => leave_group_path(@group))
       end
 
       it 'should not have link to join group' do
         render
-        group_users.should have_no_link(t('groups.join.link'))
+        group_users.should have_no_link(t('groups.show.join'))
       end
 
     end
@@ -81,31 +81,31 @@ describe "groups/show.html.haml" do
 
       it 'should have links to remove any user from the group' do
         render
-        group_users.all(:xpath, ".//a[. = '#{t('groups.remove_member.link')}']").count.should eq(@group.users.count)
+        group_users.all(:xpath, ".//a[. = '#{t('groups.show.remove_member')}']").count.should eq(@group.users.count)
         group_users.all('li').each do |node|
           username = node.first('a').text
-          node.should have_link(t('groups.remove_member.link'), :href => remove_member_group_path(@group, :username => username))
+          node.should have_link(t('groups.show.remove_member'), :href => remove_member_group_path(@group, :username => username))
         end
       end
 
       it 'should not have links to set admin' do
         render
-        group_users.should have_no_link(t('groups.manage_admins.set_link.name'))
+        group_users.should have_no_link(t('groups.show.set_admin'))
       end
 
       it 'should not have links to unset admin' do
         render
-        group_users.should have_no_link(t('groups.manage_admins.unset_link.name'))
+        group_users.should have_no_link(t('groups.show.unset_admin'))
       end
 
       it 'should have link to leave group' do
         render
-        group_users.should have_link(t('groups.leave.link'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.show.leave'), :href => leave_group_path(@group))
       end
 
       it 'should have link to the new invitation page' do
         render
-        group_users.should have_link(t('invitations.new.link'), :href => new_group_invitation_path(@group))
+        group_users.should have_link(t('groups.show.new_invitation'), :href => new_group_invitation_path(@group))
       end
 
     end
@@ -118,22 +118,22 @@ describe "groups/show.html.haml" do
 
       it 'should have links to set admin for regular members' do
         render
-        find_user_item(@member.username).should have_link(t('groups.manage_admins.set_link.name'), :href => manage_admins_group_path(@group, :set => @member.username))
+        find_user_item(@member.username).should have_link(t('groups.show.set_admin'), :href => manage_admins_group_path(@group, :set => @member.username))
       end
 
       it 'should have links to unset admin for admins' do
         render
-        find_user_item(@admin.username).should have_link(t('groups.manage_admins.unset_link.name'), :href => manage_admins_group_path(@group, :unset => @admin.username))
+        find_user_item(@admin.username).should have_link(t('groups.show.unset_admin'), :href => manage_admins_group_path(@group, :unset => @admin.username))
       end
 
       it 'should not have link to set admin for admin' do
         render
-        find_user_item(@admin.username).should have_no_link(t('groups.manage_admins.set_link.name'))
+        find_user_item(@admin.username).should have_no_link(t('groups.show.set_admin'))
       end
 
       it 'should not have link to unset admin for regular member' do
         render
-        find_user_item(@member.username).should have_no_link(t('groups.manage_admins.unset_link.name'))
+        find_user_item(@member.username).should have_no_link(t('groups.show.unset_admin'))
       end
 
 
@@ -146,7 +146,7 @@ describe "groups/show.html.haml" do
 
       it 'should not have leave link' do
         render
-        group_users.should have_no_link(t('groups.leave.link'))
+        group_users.should have_no_link(t('groups.show.leave'))
       end
 
       context 'hospitable group' do
@@ -157,7 +157,7 @@ describe "groups/show.html.haml" do
 
         it 'should have link to join group' do
           render
-          group_users.should have_link(t('groups.join.link'), :href => join_group_path(@group))
+          group_users.should have_link(t('groups.show.join'), :href => join_group_path(@group))
         end
 
       end
@@ -170,7 +170,7 @@ describe "groups/show.html.haml" do
 
         it 'should not have link to join group' do
           render
-          group_users.should have_no_link(t('groups.join.link'))
+          group_users.should have_no_link(t('groups.show.join'))
         end
 
       end
@@ -182,19 +182,19 @@ describe "groups/show.html.haml" do
   it 'should show edit link for group owner' do
     @group.update_attribute(:owner_id, @user.id)
     render
-    page.should have_link(t('groups.edit.link', :href => edit_group_path(@group)))
+    page.should have_link(t('groups.show.edit', :href => edit_group_path(@group)))
   end
 
   it 'should not show edit link for admin' do
     @group.set_admin_status @user, true
     render
-    page.should have_no_link(t('groups.edit.link'))
+    page.should have_no_link(t('groups.show.edit'))
   end
 
   it 'should not show edit link for guest' do
     @group.users.delete @user
     render
-    page.should have_no_link(t('groups.edit.link'))
+    page.should have_no_link(t('groups.show.edit'))
   end
 
   it 'should render group posts' do
@@ -207,13 +207,13 @@ describe "groups/show.html.haml" do
   it 'should have new post link for authorized user' do
     @group.set_admin_status @user, true
     render
-    page.should have_link(t('posts.new.link'), :href => new_group_post_path(@group))
+    page.should have_link(t('groups.show.new_post'), :href => new_group_post_path(@group))
   end
     
   it 'should not have new post link for not authorized user' do
     @group.users.delete @user
     render
-    page.should have_no_link(t('posts.new.link'))
+    page.should have_no_link(t('groups.show.new_post'))
     page.should have_no_xpath("//a[@href = '#{new_group_post_path(@group)}']")
   end
 end

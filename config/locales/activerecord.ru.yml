@@ -1,0 +1,20 @@
+ru:
+  activerecord:
+    attributes:
+      user:
+        login: Логин или емейл
+        username: Логин
+        email: Емейл
+        password: Пароль
+        password_confirmation: Подтверждение
+        remember_me: Запомнить меня
+      group:
+        name: Название
+        private: Приватная группа
+        hospitable: Свободная регистрация
+      invitation:
+        message: Сообщение
+      post:
+        title: Заголовок
+        body: Текст
+ 
