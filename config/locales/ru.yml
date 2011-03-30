@@ -86,8 +86,9 @@ ru:
     new:
       title: Новый пост
       commit: Написать
+    show:
+      edit: Редактировать
     edit:
-      link: Редактировать
       title: Редактировать пост
       commit: Сохранить
     update:

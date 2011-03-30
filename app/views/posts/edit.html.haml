@@ -1,5 +1,5 @@
-%h1= t('posts.edit.title')
+%h1= t('.title')
 = semantic_form_for @post do |f|
   = f.inputs :title, :body
   = f.buttons do
-    = f.commit_button t('posts.edit.commit')
+    = f.commit_button t('.commit')
