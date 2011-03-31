@@ -94,5 +94,8 @@ ru:
       commit: Сохранить
     update:
       successful: Изменения сохранены
+  comments:
+    form:
+      commit: Написать
 
 

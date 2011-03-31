@@ -15,4 +15,6 @@ ru:
       post:
         title: Заголовок
         body: Текст
+      comment:
+        body: Текст
  
