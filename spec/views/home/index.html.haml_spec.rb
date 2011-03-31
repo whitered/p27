@@ -10,10 +10,6 @@ describe "home/index.html.haml" do
       render
     end
 
-    it 'should show welcome' do
-      page.should have_content(t('home.index.welcome'))
-    end
-
     it 'should not have new_group link' do
       page.should have_no_link('', :href => new_group_path)
     end
