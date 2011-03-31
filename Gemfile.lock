@@ -28,6 +28,10 @@ GEM
       activemodel (= 3.0.5)
       activesupport (= 3.0.5)
     activesupport (3.0.5)
+    acts_as_commentable_with_threading (1.1.1)
+      activerecord (~> 3.0)
+      activesupport (~> 3.0)
+      moretea-awesome_nested_set
     arel (2.0.9)
     bcrypt-ruby (2.1.4)
     bcrypt-ruby (2.1.4-x86-mingw32)
@@ -85,6 +89,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    moretea-awesome_nested_set (1.4.3.1)
+      activerecord (~> 3.0.0)
     nokogiri (1.4.4)
     nokogiri (1.4.4-x86-mingw32)
     polyglot (0.3.1)
@@ -145,6 +151,7 @@ PLATFORMS
   x86-mingw32
 
 DEPENDENCIES
+  acts_as_commentable_with_threading
   capybara
   compass
   database_cleaner
