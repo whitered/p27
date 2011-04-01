@@ -6,6 +6,7 @@ describe "groups/show.html.haml" do
 
   before do
     stub_template 'posts/_post' => '<div class="stub_template_post"/>'
+    stub_template 'users/_user' => '<div class="stub_template_user"><%= user.username %></div>'
     @user, @member, @admin = User.make!(3)
     @group = Group.make!
     @group.users << @user << @member << @admin
@@ -34,15 +35,15 @@ describe "groups/show.html.haml" do
     it 'should render all the users' do
       render
       [@user, @admin, @member].each do |user|
-        group_users.should have_link(user.username, :href => user_path(user.username))
+        group_users.should have_xpath(".//*[@class = 'stub_template_user' and . = '#{user.username}']")
       end
     end
 
     it 'should mark admins' do
       render
 
-      group_users.should have_link(@member.username)
-      group_users.should have_link(@admin.username)
+      group_users.should have_content(@member.username)
+      group_users.should have_content(@admin.username)
       group_admins = group_users.find('.admin')
       group_admins.should have_content(@admin.username)
       group_admins.should have_no_content(@member.username)
@@ -83,7 +84,7 @@ describe "groups/show.html.haml" do
         render
         group_users.all(:xpath, ".//a[. = '#{t('groups.show.remove_member')}']").count.should eq(@group.users.count)
         group_users.all('li').each do |node|
-          username = node.first('a').text
+          username = node.first('.stub_template_user').text
           node.should have_link(t('groups.show.remove_member'), :href => remove_member_group_path(@group, :username => username))
         end
       end

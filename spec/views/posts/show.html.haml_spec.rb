@@ -5,6 +5,7 @@ describe "posts/show.html.haml" do
   before do
     stub_template 'comments/_form' => '<div id="comment_form" />'
     stub_template 'comments/_comment' => '<div class="comment"/>'
+    stub_template 'users/_user' => '<div class="user"><%= user.username %></div>'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
   end
 
@@ -27,7 +28,7 @@ describe "posts/show.html.haml" do
 
   it 'should have author' do
     render
-    page.should have_link(@post.author.username, :href => user_path(@post.author))
+    page.find('.user').should have_content(@post.author.username)
   end
 
   it 'should have group' do
