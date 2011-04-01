@@ -18,6 +18,18 @@ feature "Comment Post" do
       current_path.should eq(post_path(@post))
       page.should have_content('Here is my comment')
     end
+
+    scenario 'comments comment' do
+      comment = Comment.build_from(@post, @user.id, Faker::Lorem.sentence)
+      comment.save!
+      visit post_path(@post)
+      find("#comment_#{comment.id}").click_link_or_button(t('comments.comment.reply'))
+      fill_in t('activerecord.attributes.comment.body'), :with => 'This is my reply'
+      click_button t('comments.form.commit')
+      current_path.should eq(post_path(@post))
+      page.should have_selector('.comment+.indent_2')
+      page.find('.comment+.indent_2').should have_content('This is my reply')
+    end
   end
 
 end

@@ -1,4 +1,5 @@
-.comment
+%div[comment]
   %p= comment.body
   = render comment.user
   = l comment.created_at
+  = link_to t('comments.comment.reply'), polymorphic_path(comment.commentable, :comment_id => comment.id) if defined?(reply) && reply

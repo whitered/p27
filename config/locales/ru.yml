@@ -97,5 +97,7 @@ ru:
   comments:
     form:
       commit: Написать
+    comment:
+      reply: Ответить
 
 
