@@ -11,4 +11,8 @@ class Post < ActiveRecord::Base
     user && (author == user || group && (group.user_is_admin?(user) || group.owner == user))  
   end
 
+  def can_be_commented_by? user
+    user && user.is_insider_of?(group)
+  end
+
 end
