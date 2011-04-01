@@ -33,10 +33,10 @@ P27::Application.routes.draw do
     end
   end
 
-  resources :posts, :only => [:show, :edit, :update]
+  resources :posts, :only => [:show, :edit, :update] do
+    resources :comments, :only => [:create]
+  end
 
-  resources :comments, :only => [:create]
- 
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

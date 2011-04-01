@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "posts/show.html.haml" do
 
   before do
+    stub_template 'comments/_form' => '<div id="comment_form" />'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
   end
 
@@ -43,5 +44,16 @@ describe "posts/show.html.haml" do
     sign_in User.make!
     render
     page.should have_no_link(t('posts.edit.link'))
+  end
+
+  it' should not render comments form if @comment is not assigned' do
+    render
+    page.should_not render_template('comments/_form')
+  end
+
+  it 'should render comments for if @comment is assigned' do
+    @comment = Comment.new
+    render
+    page.should render_template('comments/_form')
   end
 end

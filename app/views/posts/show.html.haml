@@ -6,5 +6,5 @@
     = link_to @post.author.username, @post.author
     = l @post.created_at
     = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
-
+= render 'comments/form' unless @comment.nil?
 
