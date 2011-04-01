@@ -3,6 +3,8 @@ class Post < ActiveRecord::Base
   belongs_to :author, :class_name => 'User'
   belongs_to :group
 
+  has_many :comments, :as => :commentable
+
   attr_protected :group_id, :author_id
 
   validates_presence_of :author_id

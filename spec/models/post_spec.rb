@@ -105,4 +105,8 @@ describe Post do
 
   end
 
+  it 'should have comments' do
+    Post.new.should respond_to(:comments)
+  end
+
 end

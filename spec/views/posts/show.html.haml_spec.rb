@@ -4,6 +4,7 @@ describe "posts/show.html.haml" do
 
   before do
     stub_template 'comments/_form' => '<div id="comment_form" />'
+    stub_template 'comments/_comment' => '<div class="comment"/>'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
   end
 
@@ -55,5 +56,16 @@ describe "posts/show.html.haml" do
     @comment = Comment.new
     render
     page.should render_template('comments/_form')
+  end
+
+  it 'should render comments' do
+    render
+    page.should have_selector('#post_comments')
+  end
+
+  it 'should render comment template for each comment' do
+    3.times { @post.comments.create!(:user => User.make!, :body => Faker::Lorem.sentence) }
+    render
+    page.all('.comment').size.should eq(3)
   end
 end
