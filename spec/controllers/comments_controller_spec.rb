@@ -6,6 +6,7 @@ describe CommentsController do
     @post = Post.make!(:group => Group.make!, :author => User.make!)
     @user = User.make!
     @valid_comment = {
+      :post_id => @post.id,
       :comment => {
         :body => 'This is comment body',
         :commentable_id => @post.id,

@@ -1,0 +1,5 @@
+#comment_form
+  = semantic_form_for [@post, @comment] do |f|
+    = f.inputs :body
+    = f.buttons do
+      = f.commit_button t('comments.form.commit')
