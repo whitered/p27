@@ -9,9 +9,6 @@ describe CommentsController do
       :post_id => @post.id,
       :comment => {
         :body => 'This is comment body',
-        :commentable_id => @post.id,
-        :commentable_type => 'Post',
-        :user_id => @user.id
       }
     }
   end
