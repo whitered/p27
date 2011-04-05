@@ -70,6 +70,13 @@ describe 'comments/_comment.html.haml' do
     page.should have_selector('.indent_8')
   end
 
+  it 'should have indent class not higher then indent_9 for any actual indent' do
+    @locals[:indent] = 10
+    do_render
+    page.should have_no_selector('.indent_10')
+    page.should have_selector('.indent_9')
+  end
+
   it 'should render child comments with increased indent' do
     child = Comment.build_from(@current_comment.commentable, User.make!.id, Faker::Lorem.sentence)
     child.parent = @current_comment
@@ -99,4 +106,5 @@ describe 'comments/_comment.html.haml' do
     do_render
     page.should_not render_template('comment/_form')
   end
+
 end
