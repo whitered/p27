@@ -27,8 +27,8 @@ feature "Comment Post" do
       fill_in t('activerecord.attributes.comment.body'), :with => 'This is my reply'
       click_button t('comments.form.commit')
       current_path.should eq(post_path(@post))
-      page.should have_selector('.comment+.indent_2')
-      page.find('.comment+.indent_2').should have_content('This is my reply')
+      page.should have_selector('.comment.indent_1')
+      page.find('.comment.indent_1').should have_content('This is my reply')
     end
   end
 

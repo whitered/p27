@@ -99,5 +99,8 @@ ru:
       commit: Написать
     comment:
       reply: Ответить
+      parent: ↑
+    create:
+      failure: Не удалось сохранить комментарий
 
 

@@ -187,6 +187,18 @@ describe PostsController do
       comment.should be_new_record
       comment.commentable.should eq(@post)
       comment.user.should eq(user)
+      comment.parent.should be_nil
+    end
+
+    it 'should assign :comment with parent_id if concrete comment specified' do
+      user = User.make!
+      @group.users << user
+      comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+      comment.save!
+      sign_in user
+      get :show, :id => @post.id, :comment_id => comment.id.to_s
+      assigns[:comment].should be_a(Comment)
+      assigns[:comment].parent.should eq(comment)
     end
 
     it 'should not assign :comment if user cannot comment the post' do

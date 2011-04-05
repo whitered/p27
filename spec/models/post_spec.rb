@@ -105,8 +105,12 @@ describe Post do
 
   end
 
-  it 'should have comments' do
-    Post.new.should respond_to(:comments)
+  it 'should have comment_threads' do
+    Post.new.should respond_to(:comment_threads)
+  end
+
+  it 'should have root_comments' do
+    Post.new.should respond_to(:root_comments)
   end
 
 end

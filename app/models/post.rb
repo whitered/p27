@@ -1,9 +1,10 @@
 class Post < ActiveRecord::Base
 
+  acts_as_commentable
+
   belongs_to :author, :class_name => 'User'
   belongs_to :group
 
-  has_many :comments, :as => :commentable
 
   attr_protected :group_id, :author_id
 

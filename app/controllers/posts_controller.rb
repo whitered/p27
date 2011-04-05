@@ -23,6 +23,7 @@ class PostsController < ApplicationController
     end
     if user_signed_in? && @post.can_be_commented_by?(current_user)
       @comment = Comment.build_from(@post, current_user.id, '')
+      @comment.parent_id = params[:comment_id]
     end
   end
 
