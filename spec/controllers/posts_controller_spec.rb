@@ -207,6 +207,47 @@ describe PostsController do
       assigns[:comment].should be_nil
     end
 
+    it 'should assing :last_visit if user is logged in and have viewed the post before' do
+      user = User.make!
+      visit = Visit.make!(:user => user, :visitable => @post, :updated_at => 1.day.ago)
+      sign_in user
+      get :show, :id => @post.id
+      assigns[:last_visit].should eq(visit.updated_at)
+    end
+
+    it 'should not assign :last_visit if user not logged in' do
+      get :show, :id => @post.id
+      assigns[:last_visit].should be_nil
+    end
+
+    it 'should assign :last_visits to the ancient enough time if user never viewed the post before' do
+      sign_in User.make!
+      get :show, :id => @post.id
+      assigns[:last_visit].should_not be_nil
+      assigns[:last_visit].should <= @post.created_at
+    end
+
+    it 'should create new visit for logged in user after first-time view' do
+      user = User.make!
+      sign_in user
+      lambda do
+        get :show, :id => @post.id
+      end.should change(Visit, :count).by(1)
+      visit = Visit.last
+      visit.user.should eq(user)
+      visit.visitable.should eq(@post)
+    end
+
+    it 'should update visit time for logged in user after repeated views' do
+      user = User.make!
+      Visit.make!(:user => user, :visitable => @post, :updated_at => 1.day.ago)
+      sign_in user
+      lambda do
+        get :show, :id => @post.id
+      end.should change{ Visit.last.updated_at }
+      Visit.last.updated_at.should > 3.seconds.ago
+    end
+
   end
 
   describe 'edit' do
