@@ -113,4 +113,8 @@ describe Post do
     Post.new.should respond_to(:root_comments)
   end
 
+  it 'should have visits' do
+    Post.new.should respond_to(:visits)
+  end
+
 end

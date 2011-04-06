@@ -5,6 +5,8 @@ class Post < ActiveRecord::Base
   belongs_to :author, :class_name => 'User'
   belongs_to :group
 
+  has_many :visits, :as => :visitable
+
 
   attr_protected :group_id, :author_id
 
