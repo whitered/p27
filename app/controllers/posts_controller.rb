@@ -21,6 +21,10 @@ class PostsController < ApplicationController
     if @post.group.private?
       raise ActiveRecord::RecordNotFound unless user_signed_in? && current_user.is_insider_of?(@post.group)
     end
+    if user_signed_in? && @post.can_be_commented_by?(current_user)
+      @comment = Comment.build_from(@post, current_user.id, '')
+      @comment.parent_id = params[:comment_id]
+    end
   end
 
   def edit

@@ -3,6 +3,9 @@ require 'spec_helper'
 describe "posts/show.html.haml" do
 
   before do
+    stub_template 'comments/_form' => '<div id="comment_form" />'
+    stub_template 'comments/_comment' => '<div class="comment"><%= comment.id %></div>'
+    stub_template 'users/_user' => '<div class="user"><%= user.username %></div>'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
   end
 
@@ -25,7 +28,7 @@ describe "posts/show.html.haml" do
 
   it 'should have author' do
     render
-    page.should have_link(@post.author.username, :href => user_path(@post.author))
+    page.find('.user').should have_content(@post.author.username)
   end
 
   it 'should have group' do
@@ -43,5 +46,44 @@ describe "posts/show.html.haml" do
     sign_in User.make!
     render
     page.should have_no_link(t('posts.edit.link'))
+  end
+
+  it' should not render comments form if @comment is not assigned' do
+    render
+    page.should_not render_template('comments/_form')
+  end
+
+  it 'should render comments form if @comment with nil parent_id is assigned' do
+    @comment = Comment.new
+    render
+    page.should render_template('comments/_form')
+  end
+
+  it 'should not render comment form if @comment.parent_id is present' do
+    @comment = Comment.new(:parent_id => '23')
+    render
+    page.should_not render_template('comments/_form')
+  end
+
+  it 'should render comments' do
+    render
+    page.should have_selector('#post_comments')
+  end
+
+  it 'should render comment template for each root comment' do
+
+    comments = (1..3).map do 
+      comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+      comment.save!
+      comment
+    end
+
+    child = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+    child.parent = comments.first
+    child.save!
+
+    render
+    page.all('.comment').size.should eq(3)
+    page.find('.comment').should_not have_content(child.id.to_s)
   end
 end

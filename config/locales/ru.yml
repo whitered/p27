@@ -94,5 +94,13 @@ ru:
       commit: Сохранить
     update:
       successful: Изменения сохранены
+  comments:
+    form:
+      commit: Написать
+    comment:
+      reply: Ответить
+      parent: ↑
+    create:
+      failure: Не удалось сохранить комментарий
 
 

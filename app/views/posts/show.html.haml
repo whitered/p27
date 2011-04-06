@@ -1,10 +1,12 @@
 %h1= @post.title
 #sub_header= link_to @post.group.name, @post.group
-#post
+#post.post
   %p= @post.body
   .post_data
-    = link_to @post.author.username, @post.author
+    = render @post.author
     = l @post.created_at
     = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
-
+#post_comments
+  = render :partial => 'comments/comment', :collection => @post.root_comments, :locals => { :reply => @comment.present? }
+= render 'comments/form' if @comment.present? and @comment.parent_id.nil?
 

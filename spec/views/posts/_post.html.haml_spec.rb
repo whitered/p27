@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'posts/post' do
 
   before do
+    stub_template 'users/_user' => '<div class="user"><%= user.username %></div>'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
     render :partial => 'posts/post', :locals => { :post => @post }
   end
@@ -14,7 +15,7 @@ describe 'posts/post' do
   end
 
   it 'should render post author' do
-    page.should have_link(@post.author.username, :href => user_path(@post.author))
+    page.first('.user').text.should eq(@post.author.username)
   end
 
   it 'should render post creation date' do

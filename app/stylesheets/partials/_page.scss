@@ -63,6 +63,14 @@ header {
   }
 }
 
-#main {}
+#main {
+  margin: 1em 3em;
+  .post { margin: 3em 0; } 
+  .comment { margin-top: 2em; }
+
+  @for $i from 0 through 9 {
+    .indent_#{$i} { margin-left: 1em * $i; }
+  }
+}
 
 footer {}

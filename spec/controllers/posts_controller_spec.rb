@@ -149,7 +149,7 @@ describe PostsController do
 
     end
 
-    context 'allowed post' do
+    context 'public post' do
 
       it 'should be success for public group post' do
         get :show, :id => @post.id
@@ -175,6 +175,36 @@ describe PostsController do
         response.should render_template(:show)
       end
 
+    end
+
+    it 'should assign :comment if user can comment the post' do
+      user = User.make!
+      @group.users << user
+      sign_in user
+      get :show, :id => @post.id
+      assigns[:comment].should be_a(Comment)
+      comment = assigns[:comment]
+      comment.should be_new_record
+      comment.commentable.should eq(@post)
+      comment.user.should eq(user)
+      comment.parent.should be_nil
+    end
+
+    it 'should assign :comment with parent_id if concrete comment specified' do
+      user = User.make!
+      @group.users << user
+      comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+      comment.save!
+      sign_in user
+      get :show, :id => @post.id, :comment_id => comment.id.to_s
+      assigns[:comment].should be_a(Comment)
+      assigns[:comment].parent.should eq(comment)
+    end
+
+    it 'should not assign :comment if user cannot comment the post' do
+      sign_in User.make!
+      get :show, :id => @post.id
+      assigns[:comment].should be_nil
     end
 
   end
