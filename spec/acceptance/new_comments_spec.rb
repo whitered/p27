@@ -15,9 +15,10 @@ feature 'New Comments' do
 
   scenario 'user see all comments as new at first post view' do
     visit post_path(@post)
-    page.all('.new.comment').size.should eq(2)
-    page.find('.new.comment').should have_content('first comment')
-    page.find('.new.comment').should have_content('second comment')
+    new_comments = page.all('.new.comment')
+    new_comments.size.should eq(2)
+    new_comments.any?{ |c| c.has_content?('first comment') }.should be_true
+    new_comments.any?{ |c| c.has_content?('second comment') }.should be_true
   end
 
 
@@ -27,10 +28,10 @@ feature 'New Comments' do
     new_comment.save!
     visit post_path(@post)
     page.all('.new.comment').size.should eq(1)
-    new_comments = page.find('.new.comment')
-    new_comments.should have_content('last comment')
-    new_comments.should have_no_content('first comment')
-    new_comments.should have_no_content('second comment')
+    new_comments = page.all('.new.comment')
+    new_comments.any?{ |c| c.has_content?('last comment') }.should be_true
+    new_comments.any?{ |c| c.has_content?('first comment') }.should be_false
+    new_comments.any?{ |c| c.has_content?('second comment') }.should be_false
   end
 
 end
