@@ -20,4 +20,15 @@ class Post < ActiveRecord::Base
     user && user.is_insider_of?(group)
   end
 
+  def new_comments_count_for user
+    unless user.nil?
+      visit = visits.find(:first, :conditions => { :user_id => user.id })
+      if visit.nil?
+        comment_threads.size
+      else
+        comment_threads.where('created_at > ?', visit.updated_at).size
+      end
+    end
+  end
+
 end

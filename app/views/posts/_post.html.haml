@@ -1,5 +1,9 @@
 .post
-  %p= link_to post.title, post
+  %h3= link_to post.title, post
+  %p= post.body
   %div
     = render post.author
     = l post.created_at
+    = link_to t('.comment', :count => post.comment_threads.count), post
+    - if user_signed_in?
+      = new_comments_count post, current_user

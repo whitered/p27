@@ -109,12 +109,64 @@ describe Post do
     Post.new.should respond_to(:comment_threads)
   end
 
+  describe 'comment_threads' do
+
+    before do
+      user = User.make!
+      @post = Post.make!(:author => user)
+      3.times do 
+        comment = Comment.build_from(@post, user.id, Faker::Lorem.sentence)
+        comment.save!
+
+        reply = Comment.build_from(@post, user.id, Faker::Lorem.sentence)
+        reply.parent = comment
+        reply.save!
+      end
+    end
+
+    it 'should contain all comments for the post' do
+      @post.comment_threads.size.should eq(6)
+    end
+
+  end
+
   it 'should have root_comments' do
     Post.new.should respond_to(:root_comments)
   end
 
   it 'should have visits' do
     Post.new.should respond_to(:visits)
+  end
+
+  it 'should have method :new_comments_count_for' do
+    Post.new.should respond_to(:new_comments_count_for)
+  end
+
+  describe 'new_comments_count_for' do
+
+    before do
+      @post = Post.make!(:author => User.make!)
+      3.downto(1) do |n|
+        comment = Comment.build_from(@post, @post.author.id, n.to_s + ' hours ago')
+        comment.created_at = n.hours.ago
+        comment.save!
+      end
+      @user = User.make!
+    end
+
+    it 'should return nil for nil' do
+      @post.new_comments_count_for(nil).should be_nil
+    end
+
+    it 'should return number of the comments if user has never viewed post' do
+      @post.new_comments_count_for(@user).should eq(3)
+    end
+
+    it 'should return number of the new comments if user has viewed post earlier' do
+      Visit.make!(:user => @user, :visitable => @post, :updated_at => 90.minutes.ago)
+      @post.new_comments_count_for(@user).should eq(1)
+    end
+    
   end
 
 end
