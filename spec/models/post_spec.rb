@@ -122,6 +122,7 @@ describe Post do
         reply.parent = comment
         reply.save!
       end
+      @post.reload
     end
 
     it 'should contain all comments for the post' do
@@ -151,6 +152,7 @@ describe Post do
         comment.created_at = n.hours.ago
         comment.save!
       end
+      @post.reload
       @user = User.make!
     end
 
