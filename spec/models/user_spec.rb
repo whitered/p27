@@ -119,7 +119,11 @@ describe User do
   end
 
   it 'should have invitations' do
-    User.make!.should respond_to(:invitations)
+    User.new.should respond_to(:invitations)
+  end
+
+  it 'should have visits' do
+    User.new.should respond_to(:visits)
   end
 
 end

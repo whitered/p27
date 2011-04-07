@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110406073645) do
+ActiveRecord::Schema.define(:version => 20110407112915) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -66,6 +66,7 @@ ActiveRecord::Schema.define(:version => 20110406073645) do
     t.integer  "group_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "comment_threads_count", :default => 0
   end
 
   create_table "users", :force => true do |t|
@@ -90,5 +91,14 @@ ActiveRecord::Schema.define(:version => 20110406073645) do
   add_index "users", ["email"], :name => "index_users_on_email", :unique => true
   add_index "users", ["reset_password_token"], :name => "index_users_on_reset_password_token", :unique => true
   add_index "users", ["username"], :name => "index_users_on_username", :unique => true
+
+  create_table "visits", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "visitable_id"
+    t.string   "visitable_type"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "existing_comments", :default => 0, :null => false
+  end
 
 end

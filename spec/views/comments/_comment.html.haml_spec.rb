@@ -107,4 +107,23 @@ describe 'comments/_comment.html.haml' do
     page.should_not render_template('comment/_form')
   end
 
+  it 'should set class .new if @last_visit is defined and older then comment time' do
+    @current_comment.update_attribute(:created_at, 5.minutes.ago)
+    @last_visit = 10.minutes.ago
+    do_render
+    page.should have_selector('.comment.new')
+  end
+
+  it 'should not set class .new if @last_visit not defined' do
+    do_render
+    page.should_not have_selector('.comment.new')
+  end
+
+  it 'should not set class .new if @last_visit is younger than comment' do
+    @current_comment.update_attribute(:created_at, 1.hour.ago)
+    @last_visit = 30.minutes.ago
+    do_render
+    page.should_not have_selector('.comment.new')
+  end
+
 end

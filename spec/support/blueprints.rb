@@ -24,3 +24,6 @@ Post.blueprint do
   title { "Post #{sn}" }
   body { Faker::Lorem.paragraph }
 end
+
+Visit.blueprint do
+end

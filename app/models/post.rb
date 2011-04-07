@@ -5,6 +5,8 @@ class Post < ActiveRecord::Base
   belongs_to :author, :class_name => 'User'
   belongs_to :group
 
+  has_many :visits, :as => :visitable
+
 
   attr_protected :group_id, :author_id
 
@@ -16,6 +18,17 @@ class Post < ActiveRecord::Base
 
   def can_be_commented_by? user
     user && user.is_insider_of?(group)
+  end
+
+  def new_comments_count_for user
+    unless user.nil?
+      visit = visits.find(:first, :conditions => { :user_id => user.id })
+      if visit.nil?
+        comment_threads.size
+      else
+        comment_threads.size - visit.existing_comments
+      end
+    end
   end
 
 end

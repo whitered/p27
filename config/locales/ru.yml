@@ -94,6 +94,17 @@ ru:
       commit: Сохранить
     update:
       successful: Изменения сохранены
+    post:
+      comment:
+        one: %{count} комментарий
+        few: %{count} комментария
+        many: %{count} комментариев
+        other: %{count} комментария
+      new_comment:
+        one: %{count} новый
+        few: %{count} новых
+        many: %{count} новыx
+        other: %{count} новых
   comments:
     form:
       commit: Написать

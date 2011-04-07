@@ -1,5 +1,5 @@
 - indent = [indent || 0, 9].min
-%div{ :class => 'indent_' + indent.to_s }[comment]
+%div{ :class => 'indent_' + indent.to_s + ' ' + novelty_class(comment, @last_visit) }[comment]
   %p= comment.body
   = render comment.user
   = l comment.created_at

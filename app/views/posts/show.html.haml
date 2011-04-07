@@ -7,6 +7,6 @@
     = l @post.created_at
     = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
 #post_comments
-  = render :partial => 'comments/comment', :collection => @post.root_comments, :locals => { :reply => @comment.present? }
+  = render @post.root_comments
 = render 'comments/form' if @comment.present? and @comment.parent_id.nil?
 
