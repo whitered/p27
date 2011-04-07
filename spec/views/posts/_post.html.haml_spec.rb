@@ -41,8 +41,9 @@ describe 'posts/post' do
         comment.created_at = n.hours.ago
         comment.save!
       end
+      @post.reload
       user = User.make!
-      visit = Visit.make!(:visitable => @post, :user => user, :updated_at => 90.minutes.ago)
+      visit = Visit.make!(:visitable => @post, :user => user, :updated_at => 90.minutes.ago, :existing_comments => 2)
       sign_in user
     end
 

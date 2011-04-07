@@ -229,6 +229,8 @@ describe PostsController do
 
     it 'should create new visit for logged in user after first-time view' do
       user = User.make!
+      comment = Comment.build_from(@post, user.id, Faker::Lorem.sentence)
+      comment.save!
       sign_in user
       lambda do
         get :show, :id => @post.id
@@ -236,16 +238,32 @@ describe PostsController do
       visit = Visit.last
       visit.user.should eq(user)
       visit.visitable.should eq(@post)
+      visit.existing_comments.should eq(1)
     end
 
-    it 'should update visit time for logged in user after repeated views' do
-      user = User.make!
-      Visit.make!(:user => user, :visitable => @post, :updated_at => 1.day.ago)
-      sign_in user
-      lambda do
-        get :show, :id => @post.id
-      end.should change{ Visit.last.updated_at }
-      Visit.last.updated_at.should > 3.seconds.ago
+    context 'repeated view for logged in user' do
+
+      before do
+        comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+        comment.save!
+        user = User.make!
+        Visit.make!(:user => user, :visitable => @post, :updated_at => 1.day.ago)
+        sign_in user
+      end
+
+      it 'should update visit time for logged in user after repeated views' do
+        lambda do
+          get :show, :id => @post.id
+        end.should change{ Visit.last.updated_at }
+        Visit.last.updated_at.should > 3.seconds.ago
+      end
+
+      it 'should update existing comments in visit for logged in user after repeated views' do
+        lambda do
+          get :show, :id => @post.id
+        end.should change{ Visit.last.existing_comments }.from(0).to(1)
+      end
+
     end
 
   end

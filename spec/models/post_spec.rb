@@ -165,7 +165,7 @@ describe Post do
     end
 
     it 'should return number of the new comments if user has viewed post earlier' do
-      Visit.make!(:user => @user, :visitable => @post, :updated_at => 90.minutes.ago)
+      Visit.make!(:user => @user, :visitable => @post, :updated_at => 90.minutes.ago, :existing_comments => 2)
       @post.new_comments_count_for(@user).should eq(1)
     end
     

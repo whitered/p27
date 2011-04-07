@@ -26,7 +26,7 @@ class Post < ActiveRecord::Base
       if visit.nil?
         comment_threads.size
       else
-        comment_threads.where('created_at > ?', visit.updated_at).size
+        comment_threads.size - visit.existing_comments
       end
     end
   end

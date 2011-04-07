@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110407103019) do
+ActiveRecord::Schema.define(:version => 20110407112915) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -98,6 +98,7 @@ ActiveRecord::Schema.define(:version => 20110407103019) do
     t.string   "visitable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "existing_comments", :default => 0, :null => false
   end
 
 end
