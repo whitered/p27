@@ -12,6 +12,7 @@ ru:
   home:
     index:
       new_group: Создать новую группу
+      posts: Последние посты
   groups:
     new:
       title: Новая группа

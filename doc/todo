@@ -1,3 +1,6 @@
+use html in post body
+restrict post editing
+
 use paranoid mass assignment protection
 allow to change email after registration
 
