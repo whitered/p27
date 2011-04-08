@@ -130,6 +130,8 @@ GEM
       rspec (~> 2.5.0)
     rubyzip (0.9.4)
     russian (0.2.7)
+    sanitize (2.0.1)
+      nokogiri (~> 1.4.4)
     selenium-webdriver (0.1.4)
       childprocess (>= 0.1.7)
       ffi (>= 1.0.7)
@@ -167,5 +169,6 @@ DEPENDENCIES
   rails (= 3.0.6)
   rspec-rails
   russian
+  sanitize
   sqlite3
   steak

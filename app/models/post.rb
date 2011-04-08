@@ -7,6 +7,11 @@ class Post < ActiveRecord::Base
 
   has_many :visits, :as => :visitable
 
+  before_save do
+    self.body.gsub!(/$\s*^/m, '<br>')
+    self.body = Sanitize.clean(self.body, Sanitize::Config::POST)
+  end
+
 
   attr_protected :group_id, :author_id
 

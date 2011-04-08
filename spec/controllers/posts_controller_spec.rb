@@ -63,7 +63,7 @@ describe PostsController do
         :group_id => @group.id,
         :post => {
           :title => Faker::Lorem.sentence,
-          :body => Faker::Lorem.paragraphs
+          :body => Faker::Lorem.paragraphs.join
         }
       }
     end
