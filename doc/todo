@@ -1,5 +1,6 @@
-use html in post body
+allow html in post body
 restrict post editing
+use nicer dates format
 
 use paranoid mass assignment protection
 allow to change email after registration
