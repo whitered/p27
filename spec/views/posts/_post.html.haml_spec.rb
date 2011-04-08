@@ -33,6 +33,17 @@ describe 'posts/post' do
     page.should have_content(l @post.created_at)
   end
 
+  it 'should render group name' do
+    do_render
+    page.should have_link(@post.group.name, group_path(@post.group))
+  end
+
+  it 'should not render group name if @group is defined' do
+    @group = @post.group
+    do_render
+    page.should have_no_content(@group.name)
+  end
+
   context 'with comments' do
 
     before do
