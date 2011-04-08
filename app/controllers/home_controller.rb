@@ -4,7 +4,7 @@ class HomeController < ApplicationController
 
   def index
     if user_signed_in?
-      @posts = Post.joins(:group => {:memberships => :user}).where(:memberships => {:user_id => current_user.id}).order('created_at DESC')
+      @posts = Post.joins('INNER JOIN memberships ON memberships.group_id = posts.group_id').where(:memberships => {:user_id => current_user.id}).order('created_at DESC')
     end
   end
 
