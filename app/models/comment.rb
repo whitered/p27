@@ -16,6 +16,11 @@ class Comment < ActiveRecord::Base
   belongs_to :user
 
   belongs_to :commentable, :polymorphic => true, :counter_cache => :comment_threads_count
+
+  before_save do
+    self.body.gsub!(/$\s*^/m, '<br>')
+    self.body = Sanitize.clean(self.body, Sanitize::Config::COMMENT)
+  end
   
   # Helper class method that allows you to build a comment
   # by passing a commentable object, a user_id, and comment text

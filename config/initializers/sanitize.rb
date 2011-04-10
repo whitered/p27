@@ -28,5 +28,7 @@ class Sanitize
       }
     }
 
+    COMMENT = POST
+
   end
 end

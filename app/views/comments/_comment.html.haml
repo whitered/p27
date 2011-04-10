@@ -1,6 +1,6 @@
 - indent = [indent || 0, 9].min
 %div{ :class => 'indent_' + indent.to_s + ' ' + novelty_class(comment, @last_visit) }[comment]
-  %p= comment.body
+  %p= comment.body.html_safe
   = render comment.user
   = l comment.created_at
   = link_to t('.reply'), polymorphic_path(comment.commentable, :comment_id => comment.id) unless @comment.nil?
