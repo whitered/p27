@@ -27,4 +27,8 @@ class Group < ActiveRecord::Base
   def user_can_post? user
     user && (user == owner || users.include?(user))
   end
+
+  def user_can_announce_game? user
+    users.include? user
+  end
 end

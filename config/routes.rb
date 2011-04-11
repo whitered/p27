@@ -22,6 +22,7 @@ P27::Application.routes.draw do
 
     resources :invitations, :only => [:new, :create]
     resources :posts, :only => [:new, :create]
+    resources :games, :only => [:new, :create]
   end
 
   resources :users, :only => [:show]
@@ -36,6 +37,8 @@ P27::Application.routes.draw do
   resources :posts, :only => [:show, :edit, :update] do
     resources :comments, :only => [:create]
   end
+
+  resources :games, :only => [:show]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
