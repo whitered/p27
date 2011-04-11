@@ -1,7 +1,7 @@
 %h1= @post.title
 #sub_header= link_to @post.group.name, @post.group
 #post.post
-  %p= @post.body
+  %p= @post.body.html_safe
   .post_data
     = render @post.author
     = l @post.created_at

@@ -10,6 +10,63 @@ describe Post do
     Post.new.should respond_to(:body)
   end
 
+  describe 'body' do
+
+    before do
+      @post = Post.make(:author => User.make!)
+    end
+
+    let(:post_body) { Capybara.string @post.body }
+
+    it 'should substitute <br> in place of newlines' do
+      @post.body = "first line\nsecond line"
+      @post.save!
+      @post.reload.body.should eq('first line<br>second line')
+    end
+
+    it 'should allow img tags' do
+      @post.body = '<img src="some/image.jpg">'
+      @post.save!
+      @post.reload.body.should eq('<img src="some/image.jpg">')
+    end
+
+    it 'should allow links' do
+      @post.body = '<a href="some/url">link</a>'
+      @post.save!
+      post_body.should have_link('link', :href => 'some/url')
+    end
+
+    it 'should allow i tag' do
+      @post.body = '<i>italic</i>'
+      @post.save!
+      post_body.should have_selector('i', :text => 'italic')
+    end
+
+    it 'should allow b tag' do
+      @post.body = '<b>bold</b>'
+      @post.save!
+      post_body.should have_selector('b', :text => 'bold')
+    end
+
+    it 'should close unclosed tags' do
+      @post.body = '<b>bold'
+      @post.save!
+      @post.reload.body.should eq('<b>bold</b>')
+    end
+
+    it 'should not allow script tag' do
+      @post.body = '<script>script</script>'
+      @post.save!
+      post_body.should have_no_selector('script')
+    end
+
+    it 'should not allow div tag' do
+      @post.body = '<div>content</div>'
+      @post.save!
+      post_body.should have_no_selector('div')
+    end
+  end
+
   it 'should have author' do
     Post.new.should respond_to(:author)
   end
