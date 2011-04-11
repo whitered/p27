@@ -38,6 +38,7 @@ ru:
       unset_admin: '[-A]'
       new_invitation: Пригласить участника
       new_post: Написать пост
+      new_game: Объявить игру
     join:
       errors:
         not_hospitable: Вступить в эту группу можно только по приглашению

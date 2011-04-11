@@ -27,3 +27,6 @@ end
 
 Visit.blueprint do
 end
+
+Game.blueprint do
+end
