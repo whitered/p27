@@ -11,6 +11,6 @@ class InvitationMailer < ActionMailer::Base
     @invitation = invitation
     @link = link
 
-    mail :to => invitation.email, :subject => t('mail.invite_user.subject')
+    mail :to => invitation.email, :subject => t('invitation_mailer.invite_user.subject')
   end
 end

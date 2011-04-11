@@ -15,7 +15,7 @@ describe InvitationMailer do
     
 
     it 'renders the headers' do
-      mail.subject.should eq(t('mail.invite_user.subject'))
+      mail.subject.should eq(t('invitation_mailer.invite_user.subject'))
       mail.to.should eq([@invitation.email])
       mail.from.should eq(['invitation@p27.com'])
     end

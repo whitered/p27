@@ -4,6 +4,7 @@ ru:
       not_found: "не найдена"
       already_confirmed: "уже подтверждена"
       not_locked: "не заблокирована"
+      not_saved: "не сохранена"
 
   devise:
     failure:

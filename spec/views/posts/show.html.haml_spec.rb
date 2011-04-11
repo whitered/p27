@@ -45,7 +45,7 @@ describe "posts/show.html.haml" do
   it 'should not have link to edit page for not authorized user' do
     sign_in User.make!
     render
-    page.should have_no_link(t('posts.edit.link'))
+    page.should have_no_link(t('posts.show.edit'))
   end
 
   it' should not render comments form if @comment is not assigned' do

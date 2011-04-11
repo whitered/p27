@@ -37,7 +37,7 @@ describe 'groups/index.html.haml' do
 
     it 'should not have new group link' do
       render
-      page.should have_no_link(t('groups.index.new_group_link'))
+      page.should have_no_link(t('groups.index.new_group'))
     end
 
   end
