@@ -115,5 +115,9 @@ ru:
       parent: ↑
     create:
       failure: Не удалось сохранить комментарий
+  games:
+    new:
+      title: Новая игра
+      commit: Сохранить
 
 

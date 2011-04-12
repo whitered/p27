@@ -1,2 +1,6 @@
-%h1 Games#new
-%p Find me in app/views/games/new.html.haml
+%h1= t('.title')
+= semantic_form_for [@group, @game] do |f|
+  = f.inputs :date, :description, :place
+  = f.buttons do
+    = f.commit_button t('.commit')
+    

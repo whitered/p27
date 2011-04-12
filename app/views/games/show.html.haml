@@ -1,2 +1,7 @@
-%h1 Games#show
-%p Find me in app/views/games/show.html.haml
+#game
+  %p= @game.description
+  %p= @game.place
+  %p
+    = l @game.date
+    = link_to @game.group.name, @game.group
+  
