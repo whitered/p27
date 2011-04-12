@@ -29,4 +29,7 @@ Visit.blueprint do
 end
 
 Game.blueprint do
+  date { DateTime.now + 1 }
+  description { Faker::Lorem.paragraph }
+  place { Faker::Lorem.words.join }
 end

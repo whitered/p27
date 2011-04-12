@@ -17,4 +17,9 @@ ru:
         body: Текст
       comment:
         body: Текст
+      game:
+        date: Дата
+        time: Время
+        description: Описание
+        place: Место
 

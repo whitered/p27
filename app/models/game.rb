@@ -5,4 +5,5 @@ class Game < ActiveRecord::Base
 
   validates_presence_of :group_id
   validates_presence_of :announcer_id
+  validates_datetime :date
 end
