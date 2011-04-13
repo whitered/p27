@@ -217,4 +217,14 @@ describe "groups/show.html.haml" do
     page.should have_no_link(t('groups.show.new_post'))
     page.should have_no_xpath("//a[@href = '#{new_group_post_path(@group)}']")
   end
+
+  it 'should have link to create new game' do
+    render
+    page.should have_link(t('groups.show.new_game'), :href => new_group_game_path(@group))
+  end
+
+  it 'should have link to games' do
+    render
+    page.should have_link(t('groups.show.games'), :href => group_games_path(@group))
+  end
 end

@@ -1,5 +1,6 @@
 %p= @group.name
 = link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
+= link_to t('.games'), group_games_path(@group)
 #group_users
   - if user_signed_in?
     - if @group.users.exists? current_user
@@ -20,3 +21,5 @@
 #posts
   = render @group.posts
   = link_to t('.new_post'), new_group_post_path(@group) if @group.user_can_post?(current_user)
+#games
+  = link_to t('.new_game'), new_group_game_path(@group) if @group.user_can_announce_game?(current_user)

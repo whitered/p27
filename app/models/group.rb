@@ -3,6 +3,7 @@ class Group < ActiveRecord::Base
   has_many :users, :through => :memberships
   belongs_to :owner, :class_name => 'User'
   has_many :posts
+  has_many :games
 
   validates_inclusion_of :private, :in => [false, true]
   validates_inclusion_of :hospitable, :in => [false, true]
@@ -26,5 +27,9 @@ class Group < ActiveRecord::Base
 
   def user_can_post? user
     user && (user == owner || users.include?(user))
+  end
+
+  def user_can_announce_game? user
+    users.include? user
   end
 end

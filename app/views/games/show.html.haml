@@ -1,0 +1,7 @@
+#game
+  %p= @game.description
+  %p= @game.place
+  %p
+    = l @game.date
+    = link_to @game.group.name, @game.group
+  

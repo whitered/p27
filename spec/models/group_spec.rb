@@ -187,4 +187,30 @@ describe Group do
     end
 
   end
+
+  it 'should have user_can_announce_game? method' do
+    group.should respond_to(:user_can_announce_game?)
+  end
+
+  describe 'user_can_announce_game?' do
+
+    it 'should be false for nil' do
+      group.user_can_announce_game?(nil).should be_false
+    end
+
+    it 'should be false for outsider' do
+      group.user_can_announce_game?(User.make!).should be_false
+    end
+
+    it 'should be true for group admin' do
+      admin = User.make!
+      admin.groups << group
+      group.set_admin_status admin, true
+      group.user_can_announce_game?(admin).should be_true
+    end
+  end
+
+  it 'should have games' do
+    group.should respond_to(:games)
+  end
 end
