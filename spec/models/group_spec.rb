@@ -209,4 +209,8 @@ describe Group do
       group.user_can_announce_game?(admin).should be_true
     end
   end
+
+  it 'should have games' do
+    group.should respond_to(:games)
+  end
 end

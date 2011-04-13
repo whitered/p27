@@ -174,4 +174,50 @@ describe GamesController do
     end
 
   end
+
+  describe 'index' do
+
+    before do
+      @group = Group.make!
+      announcer = User.make!
+      @games = (1..3).map do |n|
+        Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
+      end
+    end
+
+    def get_index
+      get :index, :group_id => @group.id
+    end
+
+    it 'should raise NotFound for not authenticated user' do
+      @group.update_attribute(:private, true)
+      lambda do
+        get_index
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      it 'should assign @games' do
+        get_index
+        assigns[:games].should eq(@games.reverse)
+      end
+
+      it 'should not find games that belong to another group' do
+        game = Game.make!(:announcer => User.make!, :group => Group.make!)
+        get_index
+        assigns[:games].should_not include(game)
+      end
+
+      it 'should render :index template' do
+        get_index
+        response.should render_template(:index)
+      end
+
+      it 'should be successful' do
+        get_index
+        response.should be_successful
+      end
+    end
+  end
 end

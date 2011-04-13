@@ -222,4 +222,9 @@ describe "groups/show.html.haml" do
     render
     page.should have_link(t('groups.show.new_game'), :href => new_group_game_path(@group))
   end
+
+  it 'should have link to games' do
+    render
+    page.should have_link(t('groups.show.games'), :href => group_games_path(@group))
+  end
 end

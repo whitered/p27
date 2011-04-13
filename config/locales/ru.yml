@@ -39,6 +39,7 @@ ru:
       new_invitation: Пригласить участника
       new_post: Написать пост
       new_game: Объявить игру
+      games: Игры
     join:
       errors:
         not_hospitable: Вступить в эту группу можно только по приглашению
@@ -119,5 +120,5 @@ ru:
     new:
       title: Новая игра
       commit: Сохранить
-
-
+    index:
+      title: Игры

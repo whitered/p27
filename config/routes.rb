@@ -22,7 +22,7 @@ P27::Application.routes.draw do
 
     resources :invitations, :only => [:new, :create]
     resources :posts, :only => [:new, :create]
-    resources :games, :only => [:new, :create]
+    resources :games, :only => [:new, :create, :index]
   end
 
   resources :users, :only => [:show]

@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
 
-  skip_before_filter :authenticate_user!, :only => :show
+  skip_before_filter :authenticate_user!, :only => [:show, :index]
 
   def new
     @group = current_user.groups.find(params[:group_id])
@@ -24,6 +24,12 @@ class GamesController < ApplicationController
     unless @game.group.public? || (user_signed_in? && @game.group.users.include?(current_user))
       raise ActiveRecord::RecordNotFound
     end
+  end
+
+  def index
+    group = Group.find(params[:group_id])
+    raise ActiveRecord::RecordNotFound unless group.public? || (user_signed_in? && group.users.inlude?(current_user))
+    @games = group.games.order('date DESC')
   end
 
 end

@@ -1,3 +1,10 @@
+join game
+leave game
+add/remove user to game by admin
+add/remove fake player to game by admin
+close game providing results
+restrict game date created by regular group member
+
 restrict post editing
 use nicer dates format
 
