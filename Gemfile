@@ -52,4 +52,5 @@ group :test do
   gem 'launchy'
   gem 'database_cleaner'
   gem 'faker'
+  gem 'autotest-rails'
 end
