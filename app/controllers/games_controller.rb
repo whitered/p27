@@ -32,4 +32,12 @@ class GamesController < ApplicationController
     @games = group.games.order('date DESC')
   end
 
+  def join
+    game = Game.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless game.group.users.include?(current_user)
+    raise ActionController::MethodNotAllowed if game.users.include?(current_user)
+    game.participations.create!(:user => current_user)
+    redirect_to game
+  end
+
 end
