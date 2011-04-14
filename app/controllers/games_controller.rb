@@ -40,4 +40,12 @@ class GamesController < ApplicationController
     redirect_to game
   end
 
+  def leave
+    game = Game.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless game.group.users.include?(current_user)
+    raise ActionController::MethodNotAllowed unless game.users.include?(current_user)
+    game.users.delete(current_user)
+    redirect_to game
+  end
+
 end

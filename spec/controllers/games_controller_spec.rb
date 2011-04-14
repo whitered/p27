@@ -270,11 +270,65 @@ describe GamesController do
         p.game.should eq(@game)
       end
 
-      it 'should redirect to game path' do
+      it 'should redirect to game page' do
         do_join
         response.should redirect_to(@game)
       end
 
+    end
+  end
+
+  describe 'leave' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+      @game = Game.make!(:announcer => User.make!, :group => @group)
+    end
+
+    def do_leave
+      post :leave, :id => @game.id
+    end
+    
+    it 'should require user authentication' do
+      do_leave
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise RecordNotFound if user is not a member of the group' do
+      sign_in @user
+      lambda do
+        do_leave
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should raise MethodNotAllowed if user is not a participant of the game' do
+      @group.users << @user
+      sign_in @user
+      lambda do
+        do_leave
+      end.should raise_exception(ActionController::MethodNotAllowed)
+    end
+
+    context 'when method is allowed' do
+
+      before do
+        @group.users << @user
+        @game.users << @user
+        sign_in @user
+      end
+
+      it 'should destroy participation' do
+        lambda do
+          do_leave
+        end.should change(Participation, :count).by(-1)
+        Participation.find_by_user_id_and_game_id(@user.id, @game.id).should be_nil
+      end
+
+      it 'should redirect to game page' do
+        do_leave
+        response.should redirect_to(game_path(@game))
+      end
     end
   end
 end
