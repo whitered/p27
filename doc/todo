@@ -8,6 +8,12 @@ restrict game date created by regular group member
 restrict post editing
 use nicer dates format
 
-use paranoid mass assignment protection
 allow to change email after registration
+
+use paranoid mass assignment protection
+dependent => :destroy on joining models (railscast 167)
+use validation_reflection gem to review required fields in formtastic forms (railscast 185)
+use formtastic hints
+input time in a textfield with chronic gem (railscast 32)
+
 
