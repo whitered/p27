@@ -48,4 +48,8 @@ describe Game do
     Game.new.should respond_to(:description)
   end
 
+  it 'should have users' do
+    Game.new.should respond_to(:users)
+  end
+
 end
