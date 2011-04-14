@@ -3,6 +3,7 @@ require 'spec_helper'
 describe "games/show.html.haml" do
 
   before do
+    stub_template 'users/_user.html.haml' => '= user.username'
     @game = Game.make!(:announcer => User.make!, :group => Group.make!)
   end
 
@@ -31,5 +32,15 @@ describe "games/show.html.haml" do
   it 'should have link to group' do
     render
     page.should have_link(@game.group.name, :href => group_path(@game.group))
+  end
+
+  it 'should render game players' do
+    @game.users << User.make!(3)
+    render
+    page.should have_selector('.game_players')
+    game_players = page.find('.game_players')
+    @game.users.each do |user|
+      game_players.should have_content(user.username)
+    end
   end
 end

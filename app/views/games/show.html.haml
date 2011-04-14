@@ -4,4 +4,5 @@
   %p
     = l @game.date
     = link_to @game.group.name, @game.group
-  
+  .game_players
+    = render @game.users

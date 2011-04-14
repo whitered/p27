@@ -14,9 +14,9 @@ feature "Join Game" do
     visit group_games_path(@group)
     within('#game_' + @game.id.to_s) do
       click_link(t('games.game.join'))
-
     end
-    page.find('#game_' + @game.id.to_s + ' .game_players').should have_content(@user.username)
+    current_path.should eq(game_path(@game))
+    page.find('#game .game_players').should have_content(@user.username)
   end
 
 end

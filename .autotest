@@ -15,9 +15,7 @@ Autotest.add_discovery { "rspec2" }
 
 Autotest.add_hook :initialize do |at|
 
-  at.add_exception %r{^\.git}
-
-  at.add_exception %r{^\.tmp}
+  %w{.git .DS_Store ._* vendor}.each { |exception| at.add_exception(exception) }
 
   at.add_mapping(%r%^spec/acceptance/.*_spec.rb$%, true) { |filename, _|
     filename
