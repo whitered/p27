@@ -38,7 +38,12 @@ P27::Application.routes.draw do
     resources :comments, :only => [:create]
   end
 
-  resources :games, :only => [:show]
+  resources :games, :only => [:show] do
+    member do
+      post :join
+      post :leave
+    end
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

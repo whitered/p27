@@ -33,3 +33,6 @@ Game.blueprint do
   description { Faker::Lorem.paragraph }
   place { Faker::Lorem.words.join }
 end
+
+Participation.blueprint do
+end

@@ -1,6 +1,7 @@
 GEM
   remote: http://rubygems.org/
   specs:
+    ZenTest (4.5.0)
     abstract (1.0.0)
     actionmailer (3.0.6)
       actionpack (= 3.0.6)
@@ -33,6 +34,8 @@ GEM
       activesupport (~> 3.0)
       moretea-awesome_nested_set
     arel (2.0.9)
+    autotest-rails (4.1.0)
+      ZenTest
     bcrypt-ruby (2.1.4)
     bcrypt-ruby (2.1.4-x86-mingw32)
     builder (2.1.2)
@@ -159,6 +162,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_commentable_with_threading
+  autotest-rails
   capybara
   compass
   database_cleaner

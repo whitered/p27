@@ -11,4 +11,30 @@ require 'spec_helper'
 #   end
 # end
 describe GamesHelper do
+
+  describe '#participation_link' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+      @game = Game.make!(:announcer => User.make!, :group => @group)
+    end
+
+    let(:link) { participation_link(@game, @user) }
+
+    it 'should be nil if user not a member' do
+     link.should be_nil
+    end
+
+    it 'should be +1 if user have not joined game yet' do
+      @group.users << @user
+      Capybara.string(link).should have_link(t('games.game.join'), :href => join_game_path(@game), :method => :post)
+    end
+
+    it 'should be -1 if user have joined game' do
+      @group.users << @user
+      @game.users << @user
+      Capybara.string(link).should have_link(t('games.game.leave'), :href => leave_game_path(@game), :method => :post)
+    end
+  end
 end

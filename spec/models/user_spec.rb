@@ -126,4 +126,8 @@ describe User do
     User.new.should respond_to(:visits)
   end
 
+  it 'should have games' do
+    User.new.should respond_to(:games)
+  end
+
 end

@@ -122,3 +122,6 @@ ru:
       commit: Сохранить
     index:
       title: Игры
+    game:
+      join: '+1'
+      leave: '-1'

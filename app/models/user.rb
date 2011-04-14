@@ -15,6 +15,8 @@ class User < ActiveRecord::Base
   has_many :own_groups, :class_name => 'Group', :foreign_key => 'owner_id'
   has_many :invitations
   has_many :visits
+  has_many :participations
+  has_many :games, :through => :participations
 
   validates_presence_of :username
   validates_uniqueness_of :username, :case_sensitive => false
