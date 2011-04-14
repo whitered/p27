@@ -31,6 +31,10 @@ describe GamesHelper do
       Capybara.string(link).should have_link(t('games.game.join'), :href => join_game_path(@game), :method => :post)
     end
 
-    it 'should be -1 if user have joined game'
+    it 'should be -1 if user have joined game' do
+      @group.users << @user
+      @game.users << @user
+      Gapybara.string(link).should have_link(t('games.game.leave'), :href => leave_game_path(@game), :method => :post)
+    end
   end
 end

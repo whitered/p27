@@ -43,4 +43,9 @@ describe "games/show.html.haml" do
       game_players.should have_content(user.username)
     end
   end
+
+  it 'should render game announcer' do
+    render
+    page.should have_content(@game.announcer.username)
+  end
 end

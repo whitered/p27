@@ -41,6 +41,7 @@ P27::Application.routes.draw do
   resources :games, :only => [:show] do
     member do
       post :join
+      post :leave
     end
   end
 

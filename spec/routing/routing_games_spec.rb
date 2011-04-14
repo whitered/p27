@@ -14,6 +14,12 @@ describe GamesController do
                                                  :id => '5')
   end
 
+  it 'should route leave' do
+    { :post => '/games/5/join' }.should route_to(:controller => 'games',
+                                                 :action => 'join',
+                                                 :id => '5')
+  end
+
   context 'in group' do
 
     it 'should route new' do
