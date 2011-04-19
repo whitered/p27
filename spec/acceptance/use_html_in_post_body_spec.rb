@@ -12,7 +12,7 @@ feature 'Use HTML In Post Body' do
     login @user
     visit new_group_post_path(@group)
     fill_in t('activerecord.attributes.post.body'), :with => '<a href="http://example.org/article"><b>bold text</b></a><img src="http://example.com/image.jpg"><i>italic text</i>'
-    click_button t('posts.new.commit')
+    click_button t('posts.new.submit')
 
     page.should have_link('bold text', :href => 'http://example.org/article')
     page.should have_xpath('//img[@src = "http://example.com/image.jpg"]')

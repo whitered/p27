@@ -24,9 +24,9 @@ describe 'comments/_form.html.haml' do
     page.should have_field(t('activerecord.attributes.comment.body'))
   end
 
-  it 'should have commit button' do
+  it 'should have submit button' do
     render 
-    page.should have_button(t('comments.form.commit'))
+    page.should have_button(t('comments.form.submit'))
   end
 
   it 'should have hidden field for parent_id if it was specified' do

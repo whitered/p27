@@ -10,7 +10,7 @@ feature "User Registration" do
       fill_in t('activerecord.attributes.user.email'), :with => 'john_doe@mail.com'
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('registrations.new.commit')
+      click_link_or_button t('registrations.new.submit')
     end
 
     
@@ -63,7 +63,7 @@ feature "User Registration" do
       fill_in t('activerecord.attributes.user.username'), :with => username
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('registrations.new.commit')
+      click_link_or_button t('registrations.new.submit')
       page.should have_content(t('registrations.create.registered_and_confirmed'))
       ActionMailer::Base.deliveries.should be_empty
       visit group_path(@group)
@@ -78,7 +78,7 @@ feature "User Registration" do
       fill_in t('activerecord.attributes.user.username'), :with => 'username'
       fill_in t('activerecord.attributes.user.password'), :with => 'asdasd'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'asdasd'
-      click_link_or_button t('registrations.new.commit')
+      click_link_or_button t('registrations.new.submit')
       visit invitations_path
       page.should have_content(invitation2.group.name)
       page.should have_content(invitation2.inviter.username)

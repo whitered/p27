@@ -7,7 +7,7 @@ feature "Create Group" do
     visit root_path
     click_link t('home.index.new_group')
     fill_in t('activerecord.attributes.group.name'), :with => 'Alpha Group'
-    click_link_or_button t('groups.new.commit')
+    click_link_or_button t('groups.new.submit')
     page.should have_content('Alpha Group')
   end
 
@@ -15,7 +15,7 @@ feature "Create Group" do
     login User.make!(:username => 'Bill_C')
     visit new_group_path
     fill_in t('activerecord.attributes.group.name'), :with => 'Alpha Group'
-    click_link_or_button t('groups.new.commit')
+    click_link_or_button t('groups.new.submit')
     userlist = page.find('#group_users')
     userlist.should have_selector('.admin', :text => 'Bill_C')
   end

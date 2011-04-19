@@ -27,7 +27,7 @@ describe 'groups/edit.html.haml' do
     page.find_field(t('activerecord.attributes.group.hospitable'))[:checked].should eq(true)
   end
 
-  it 'should have commit button' do
-    page.should have_button(t('groups.edit.commit'))
+  it 'should have submit button' do
+    page.should have_button(t('groups.edit.submit'))
   end
 end

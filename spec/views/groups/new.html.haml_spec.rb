@@ -20,7 +20,7 @@ describe 'groups/new.html.haml' do
 
   it 'should have submit button' do
     render
-    page.should have_button(t('groups.new.commit'))
+    page.should have_button(t('groups.new.submit'))
   end
 
   it 'should render errors for name field' do

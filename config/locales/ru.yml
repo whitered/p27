@@ -3,7 +3,7 @@ ru:
     sessions:
       new:
         title: Вход
-        commit: Войти
+        submit: Войти
   layouts:
     header:
       registration: Регистрация
@@ -16,7 +16,7 @@ ru:
   groups:
     new:
       title: Новая группа
-      commit: Создать группу
+      submit: Создать группу
     remove_member:
       success: '%{username} удален из группы'
       errors:
@@ -50,7 +50,7 @@ ru:
       new_group: Создать новую группу
     edit:
       title: Настройки группы
-      commit: Сохранить изменения
+      submit: Сохранить изменения
     update:
       success: Настройки группы сохранены
   invitations:
@@ -58,7 +58,7 @@ ru:
       title: 'Приглашение новых участников в группу %{group}'
       recipients: Ник или емейл пользователей
       message: Сообщение
-      commit: Пригласить
+      submit: Пригласить
       hint: Вы можете указать ники пользователя или почтовые адреса. Незарегистрированные пользователи получат приглашения по почте и будут добавлены в группу при регистрации. Зарегистрированные пользователи увидят приглашения в своем аккаунте.
     create:
       invitation_sent: Приглашение выслано
@@ -84,17 +84,17 @@ ru:
       registered_and_confirmed: Вы успешно зарегистрированы
     new:
       title: Регистрация
-      commit: Зарегистрироваться
+      submit: Зарегистрироваться
       wrong_invitation: Неверный код приглашения
   posts:
     new:
       title: Новый пост
-      commit: Написать
+      submit: Написать
     show:
       edit: Редактировать
     edit:
       title: Редактировать пост
-      commit: Сохранить
+      submit: Сохранить
     update:
       successful: Изменения сохранены
     post:
@@ -110,7 +110,7 @@ ru:
         other: %{count} новых
   comments:
     form:
-      commit: Написать
+      submit: Написать
     comment:
       reply: Ответить
       parent: ↑
@@ -119,7 +119,7 @@ ru:
   games:
     new:
       title: Новая игра
-      commit: Сохранить
+      submit: Сохранить
     index:
       title: Игры
     game:

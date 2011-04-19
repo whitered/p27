@@ -32,13 +32,13 @@ gem 'sqlite3'
 
 gem 'devise'
 gem 'russian'
-gem 'formtastic'
 gem 'haml-rails'
 gem 'compass'
 gem 'html5-boilerplate'
 gem 'acts_as_commentable_with_threading'
 gem 'sanitize'
 gem 'validates_timeliness'
+gem 'simple_form'
 
 
 group :test, :development do

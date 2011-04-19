@@ -13,7 +13,7 @@ feature 'Use Html In Comment Body' do
     login @user
     visit post_path(@post)
     fill_in 'comment[body]', :with => '<a href="www.site.org">link</a><b>image:</b><img src="image.gif">'
-    click_link_or_button t('comments.form.commit')
+    click_link_or_button t('comments.form.submit')
     page.should have_link('link', :href => 'www.site.org')
     page.should have_selector('b', :text => 'image:')
     page.should have_xpath('.//img[@src = "image.gif"]')

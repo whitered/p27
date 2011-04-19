@@ -14,7 +14,7 @@ feature 'Edit Group' do
     fill_in t('activerecord.attributes.group.name'), :with => 'New name'
     uncheck t('activerecord.attributes.group.private')
     check t('activerecord.attributes.group.hospitable')
-    click_link_or_button t('groups.edit.commit')
+    click_link_or_button t('groups.edit.submit')
 
     visit edit_group_path(@group)
     page.should have_content(t('groups.update.success'))

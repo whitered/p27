@@ -10,7 +10,7 @@ feature "User Registration Confirmation" do
       fill_in t('activerecord.attributes.user.email'), :with => 'john@mail.com'
       fill_in t('activerecord.attributes.user.password'), :with => 'qwerty'
       fill_in t('activerecord.attributes.user.password_confirmation'), :with => 'qwerty'
-      click_link_or_button t('registrations.new.commit')
+      click_link_or_button t('registrations.new.submit')
     end
 
 

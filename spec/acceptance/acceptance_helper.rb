@@ -9,22 +9,22 @@ def login user = nil
   visit new_user_session_path
   fill_in t('activerecord.attributes.user.login'), :with => user.username
   fill_in t('activerecord.attributes.user.password'), :with => user.password
-  click_link_or_button t('devise.sessions.new.commit')
+  click_link_or_button t('devise.sessions.new.submit')
 end
 
 def select_date(field, options = {})
   date     = Date.parse(options[:with])
-  selector = %Q{.//fieldset[contains(./legend, "#{field}")]}
+  selector = %Q{.//div[contains(./label, "#{field}")]}
   within(:xpath, selector) do
     find(:xpath, '//select[contains(@id, "_1i")]').find(:xpath, ::XPath::HTML.option(date.year.to_s)).select_option
-    find(:xpath, '//select[contains(@id, "_2i")]').find(:xpath, ::XPath::HTML.option(I18n.t('date.standalone_month_names')[date.month])).select_option
+    find(:xpath, '//select[contains(@id, "_2i")]').find(:xpath, ::XPath::HTML.option(I18n.t('date.month_names')[date.month])).select_option
     find(:xpath, '//select[contains(@id, "_3i")]').find(:xpath, ::XPath::HTML.option(date.day.to_s)).select_option
   end
 end
 
 def select_time(field, options = {})
   time     = Time.parse(options[:with])
-  selector = %Q{.//fieldset[contains(./legend, "#{field}")]}
+  selector = %Q{.//div[contains(./label, "#{field}")]}
   within(:xpath, selector) do
     find(:xpath, '//select[contains(@id, "_4i")]').find(:xpath, ::XPath::HTML.option(time.hour.to_s.rjust(2,'0'))).select_option
     find(:xpath, '//select[contains(@id, "_5i")]').find(:xpath, ::XPath::HTML.option(time.min.to_s.rjust(2,'0'))).select_option

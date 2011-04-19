@@ -21,7 +21,7 @@ describe 'posts/edit.html.haml' do
     page.should have_field(t('activerecord.attributes.post.body'), :text => 'body')
   end
 
-  it 'should have commit button' do
-    page.should have_button(t('posts.edit.commit'))
+  it 'should have submit button' do
+    page.should have_button(t('posts.edit.submit'))
   end
 end
