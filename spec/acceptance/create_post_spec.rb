@@ -15,7 +15,7 @@ feature "Create Post" do
       visit new_group_post_path(@group)
       fill_in t('activerecord.attributes.post.title'), :with => 'Post #1'
       fill_in t('activerecord.attributes.post.body'), :with => 'Post body has some text'
-      click_link_or_button t('posts.new.commit')
+      click_link_or_button t('posts.new.submit')
       current_path.should eq(post_path(Post.last))
       page.should have_content('Post #1')
       page.should have_content('Post body has some text')

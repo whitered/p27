@@ -17,7 +17,7 @@ feature 'Create Game' do
     select_datetime t('activerecord.attributes.game.date'), :with => datetime.to_s(:db)
     fill_in t('activerecord.attributes.game.description'), :with => 'New Year Tourney'
     fill_in t('activerecord.attributes.game.place'), :with => 'Blogistan'
-    click_link_or_button t('games.new.commit')
+    click_link_or_button t('games.new.submit')
     game = page.find('#game')
     game.should have_content('New Year Tourney')
     game.should have_content('Blogistan')

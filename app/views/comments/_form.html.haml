@@ -4,4 +4,4 @@
   = simple_form_for [@post, @comment] do |f|
     = f.input :body
     = hidden_field_tag 'comment[parent_id]', @comment.parent_id unless @comment.parent_id.nil?
-    = f.submit t('comments.form.commit')
+    = f.submit t('comments.form.submit')

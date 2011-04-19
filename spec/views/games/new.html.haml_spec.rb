@@ -34,8 +34,8 @@ describe "games/new.html.haml" do
     page.should have_field(t('activerecord.attributes.game.place'))
   end
 
-  it 'should have commit button' do
+  it 'should have submit button' do
     render
-    page.should have_button(t('games.new.commit'))
+    page.should have_button(t('games.new.submit'))
   end
 end
