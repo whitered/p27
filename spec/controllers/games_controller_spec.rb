@@ -331,4 +331,51 @@ describe GamesController do
       end
     end
   end
+
+  describe 'edit' do
+
+    before do
+      @user = User.make!
+      @group = Group.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+    end
+
+    def do_edit
+      get :edit, :id => @game.id
+    end
+
+    it 'should require user authentication' do
+      do_edit
+      response.should eq(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authenticated to edit game' do
+      sign_up User.make!
+      lambda do
+        do_edit
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authenticated user' do
+
+      before do
+        sign_in @user
+      end
+
+      it 'should assign @game' do
+        do_edit
+        assigns[:game].should eq(@game)
+      end
+
+      it 'should render :edit template' do
+        do_edit
+        response.should render_template(:edit)
+      end
+
+      it 'should be successful' do
+        do_edit
+        response.should be_successful
+      end
+    end
+  end
 end

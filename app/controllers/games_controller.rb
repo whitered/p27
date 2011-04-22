@@ -48,4 +48,9 @@ class GamesController < ApplicationController
     redirect_to game
   end
 
+  def edit
+    @game = Game.find(params[:id])
+    raise ActiveRecored::RecordNotFound unless @game.can_be_edited_by?(current_user)
+  end
+
 end

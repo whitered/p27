@@ -125,3 +125,5 @@ ru:
     game:
       join: '+1'
       leave: '-1'
+    show:
+      edit: Изменить

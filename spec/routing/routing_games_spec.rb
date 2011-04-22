@@ -20,6 +20,12 @@ describe GamesController do
                                                  :id => '5')
   end
 
+  it 'should route edit' do
+    { :get => '/games/4/edit' }.should route_to(:controller => 'games',
+                                                :action => 'edit',
+                                                :id => '4')
+  end
+
   context 'in group' do
 
     it 'should route new' do
