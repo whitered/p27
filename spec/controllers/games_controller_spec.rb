@@ -379,4 +379,65 @@ describe GamesController do
       end
     end
   end
+
+  describe 'update' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+      @game_params = {
+        :date => 3.days.from_now,
+        :description => 'Completely new description',
+        :rebuy => 1,
+        :buyin => 4,
+        :addon => 7
+      }
+    end
+
+    def do_update
+      put :update, :id => @game.id, :game => @game_params
+    end
+
+    it 'should require user authentication' do
+      do_update
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authorized for editing' do
+      sign_in User.make!
+      lambda do
+        do_update
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      it 'should update game' do
+        do_update
+        @game.reload
+        @game.date.should eq(@game_params[:date])
+        @game.description.should eq(@game_params[:description])
+        @game.rebuy.should eq(@game_params[:rebuy])
+        @game.buyin.should eq(@game_params[:buyin])
+        @game.addon.should eq(@game_params[:addon])
+      end
+
+      it 'should assign @game' do
+        do_update
+        assigns[:game].should eq(@game)
+      end
+
+      it 'should render :show' do
+        do_update
+        response.should render_template(:show)
+      end
+
+    end
+  end
 end

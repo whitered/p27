@@ -20,7 +20,7 @@ feature 'Edit Game' do
       click_link t('games.show.edit')
       #select(t('activerecord.attributes.game.type.cash'), :from => t('activerecord.attributes.game.type'))
       click_link_or_button t('games.edit.submit')
-      current_path.should eq(games_path(@game))
+      current_path.should eq(game_path(@game))
       within('#game') do
         page.should have_content(t('activerecord.attributes.game.type.cash'))
       end
@@ -31,7 +31,7 @@ feature 'Edit Game' do
       #select(t('activerecord.attributes.game.type.tourney'), :from => t('activerecord.attributes.game.type'))
       fill_in t('activerecord.attributes.game.buyin'), :with => '200'
       click_link_or_button t('games.edit.submit')
-      current_path.should eq(games_path(@game))
+      current_path.should eq(game_path(@game))
       within('#game') do
         page.should have_content(t('activerecord.attributes.game.type.tourney'))
         page.should have_content(t('activerecord.attributes.game.buyin'))
@@ -46,7 +46,7 @@ feature 'Edit Game' do
       fill_in t('activerecord.attributes.game.rebuy'), :with => '200'
       fill_in t('activerecord.attributes.game.addon'), :with => '400'
       click_link_or_button t('games.edit.submit')
-      current_path.should eq(games_path(@game))
+      current_path.should eq(game_path(@game))
       within('#game') do
         [
           t('activerecord.attributes.game.type.tourney_with_rebuys'),

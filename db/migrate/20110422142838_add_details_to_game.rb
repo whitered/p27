@@ -1,8 +1,8 @@
 class AddDetailsToGame < ActiveRecord::Migration
   def self.up
-    add_column :games, :buyin, :integer
-    add_column :games, :rebuy, :integer
-    add_column :games, :addon, :integer
+    add_column :games, :buyin, :integer, :null => false, :default => 0
+    add_column :games, :rebuy, :integer, :null => false, :default => 0
+    add_column :games, :addon, :integer, :null => false, :default => 0
   end
 
   def self.down

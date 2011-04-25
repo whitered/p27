@@ -61,4 +61,39 @@ describe "games/show.html.haml" do
     page.should have_no_link(t('games.show.edit'))
     page.should have_no_xpath(".//a[@href = '#{edit_game_path(@game)}']")
   end
+
+  it 'should not render zero costs' do
+    render
+    game_block = page.find('#game')
+    %w(buyin rebuy addon).each do |word|
+      game_block.should have_no_content(t('activerecord.attributes.game.' + word))
+    end
+  end
+
+  it 'should render non-zero buyin' do
+    @game.buyin = 120
+    render
+    page.should have_content(t('activerecord.attributes.game.buyin'))
+    page.should have_content(@game.buyin.to_s)
+  end
+
+  it 'should render non-zero rebuy' do
+    @game.rebuy = 220
+    render
+    page.should have_content(t('activerecord.attributes.game.rebuy'))
+    page.should have_content(@game.rebuy.to_s)
+  end
+
+  it 'should render non-zero addon' do
+    @game.addon = 300
+    render
+    page.should have_content(t('activerecord.attributes.game.addon'))
+    page.should have_content(@game.addon.to_s)
+  end
+
+  it 'should render game type' do
+    @game.buyin = 100
+    render
+    page.should have_content(t('activerecord.attributes.game.type.' + @game.game_type.to_s))
+  end
 end

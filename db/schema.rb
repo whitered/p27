@@ -35,9 +35,9 @@ ActiveRecord::Schema.define(:version => 20110422142838) do
     t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "buyin"
-    t.integer  "rebuy"
-    t.integer  "addon"
+    t.integer  "buyin",        :default => 0, :null => false
+    t.integer  "rebuy",        :default => 0, :null => false
+    t.integer  "addon",        :default => 0, :null => false
   end
 
   create_table "groups", :force => true do |t|

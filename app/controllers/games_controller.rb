@@ -53,4 +53,11 @@ class GamesController < ApplicationController
     raise ActiveRecord::RecordNotFound unless @game.can_be_edited_by?(current_user)
   end
 
+  def update
+    @game = Game.find(params[:id])
+    raise ActiveRecord::RecordNotFound unless @game.can_be_edited_by?(current_user)
+    @game.update_attributes(params[:game])
+    render :show
+  end
+
 end
