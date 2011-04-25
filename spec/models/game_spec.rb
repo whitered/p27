@@ -52,4 +52,90 @@ describe Game do
     Game.new.should respond_to(:users)
   end
 
+  it 'should have can_be_edited_by? method' do
+    Game.new.should respond_to(:can_be_edited_by?)
+  end
+
+  describe 'can_be_edited_by?' do
+
+    before do
+      @announcer = User.make!
+      @group = Group.make!
+      @game = Game.make!(:announcer => @announcer, :group => @group)
+    end
+    
+    it 'should be false for nil' do
+      @game.can_be_edited_by?(nil).should be_false
+    end
+
+    it 'should be false for outsider' do
+      @game.can_be_edited_by?(User.make!).should be_false
+    end
+
+    it 'should be false for outsider even if he have announced it' do
+      @game.can_be_edited_by?(@announcer).should be_false
+    end
+
+    it 'should be false for group member' do
+      member = User.make!(:groups => [@group])
+      @game.can_be_edited_by?(member).should be_false
+    end
+
+    it 'should be true for game announder while he is a member of the group' do
+      @group.users << @announcer
+      @game.can_be_edited_by?(@announcer).should be_true
+    end
+
+    it 'should be true for group admin' do
+      admin = User.make!
+      @group.users << admin
+      @group.set_admin_status admin, true
+      @game.can_be_edited_by?(admin).should be_true
+    end
+
+  end
+
+  #it 'should have game_type' do
+    #Game.new.should respond_to(:game_type)
+  #end
+
+  #describe 'game_type' do
+
+    #before do
+      #@game = Game.make(:announcer => User.make!, :group => Group.make!)
+    #end
+
+    #it 'should not be empty' do
+      #@game.game_type = nil
+      #@game.should be_invalid
+      #@game.errors[:game_type].should_not be_empty
+    #end
+
+    #it 'can be cash' do
+      #@game.game_type = 'cash'
+      #@game.should be_valid
+    #end
+
+    #it 'can be tourney' do
+      #@game.game_type = 'tourney'
+      #@game.should be_valid
+    #end
+
+    #it 'can be rebuys' do
+      #@game.game_type = 'rebuys'
+      #@game.should be_valid
+    #end
+  #end
+
+  it 'should have buyin' do
+    Game.new.should respond_to(:buyin)
+  end
+
+  it 'should have rebuy' do
+    Game.new.should respond_to(:rebuy)
+  end
+
+  it 'should have addon' do
+    Game.new.should respond_to(:addon)
+  end
 end

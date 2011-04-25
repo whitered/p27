@@ -5,6 +5,7 @@ feature 'Edit Game' do
   background do
     @user = User.make!
     @group = Group.make!
+    @group.users << @user
     @game = Game.make!(:announcer => @user, :group => @group)
   end
 
@@ -17,7 +18,7 @@ feature 'Edit Game' do
     scenario 'sets cash game' do
       visit game_path(@game)
       click_link t('games.show.edit')
-      select(t('activerecord.attributes.game.type.cash'), :from => t('activerecord.attributes.game.type'))
+      #select(t('activerecord.attributes.game.type.cash'), :from => t('activerecord.attributes.game.type'))
       click_link_or_button t('games.edit.submit')
       current_path.should eq(games_path(@game))
       within('#game') do
@@ -27,7 +28,7 @@ feature 'Edit Game' do
 
     scenario 'sets tourney' do
       visit edit_game_path(@game)
-      select(t('activerecord.attributes.game.type.tourney'), :from => t('activerecord.attributes.game.type'))
+      #select(t('activerecord.attributes.game.type.tourney'), :from => t('activerecord.attributes.game.type'))
       fill_in t('activerecord.attributes.game.buyin'), :with => '200'
       click_link_or_button t('games.edit.submit')
       current_path.should eq(games_path(@game))
@@ -40,7 +41,7 @@ feature 'Edit Game' do
 
     scenario 'sets tourney with rebuys' do
       visit edit_game_path(@game)
-      select(t('activerecord.attributes.game.type.tourney_with_rebuys'), :from => t('activerecord.attributes.game.type'))
+      #select(t('activerecord.attributes.game.type.tourney_with_rebuys'), :from => t('activerecord.attributes.game.type'))
       fill_in t('activerecord.attributes.game.buyin'), :with => '150'
       fill_in t('activerecord.attributes.game.rebuy'), :with => '200'
       fill_in t('activerecord.attributes.game.addon'), :with => '400'

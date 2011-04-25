@@ -346,11 +346,11 @@ describe GamesController do
 
     it 'should require user authentication' do
       do_edit
-      response.should eq(new_user_session_path)
+      response.should redirect_to(new_user_session_path)
     end
 
     it 'should raise NotFound if user is not authenticated to edit game' do
-      sign_up User.make!
+      sign_in User.make!
       lambda do
         do_edit
       end.should raise_exception(ActiveRecord::RecordNotFound)
@@ -359,6 +359,7 @@ describe GamesController do
     context 'for authenticated user' do
 
       before do
+        @group.users << @user
         sign_in @user
       end
 

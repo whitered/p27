@@ -50,7 +50,7 @@ class GamesController < ApplicationController
 
   def edit
     @game = Game.find(params[:id])
-    raise ActiveRecored::RecordNotFound unless @game.can_be_edited_by?(current_user)
+    raise ActiveRecord::RecordNotFound unless @game.can_be_edited_by?(current_user)
   end
 
 end

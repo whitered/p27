@@ -48,4 +48,17 @@ describe "games/show.html.haml" do
     render
     page.should have_content(@game.announcer.username)
   end
+
+  it 'should render link to edit game if user authorized to' do
+    @game.group.users << @game.announcer
+    sign_in @game.announcer
+    render
+    page.should have_link(t('games.show.edit'), :href => edit_game_path(@game))
+  end
+
+  it 'should not render link to edit game for not authorized user' do
+    render
+    page.should have_no_link(t('games.show.edit'))
+    page.should have_no_xpath(".//a[@href = '#{edit_game_path(@game)}']")
+  end
 end

@@ -127,3 +127,5 @@ ru:
       leave: '-1'
     show:
       edit: Изменить
+    edit:
+      submit: Сохранить
