@@ -48,8 +48,8 @@ describe Game do
     Game.new.should respond_to(:description)
   end
 
-  it 'should have users' do
-    Game.new.should respond_to(:users)
+  it 'should have players' do
+    Game.new.should respond_to(:players)
   end
 
   it 'should have can_be_edited_by? method' do

@@ -40,7 +40,7 @@ feature "Join Game" do
 
     before do
       @group.users << @user
-      @game.users << @user
+      @game.players << @user
     end
 
     scenario 'leaves game from the group games page' do

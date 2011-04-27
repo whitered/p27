@@ -4,7 +4,7 @@ class Game < ActiveRecord::Base
   belongs_to :announcer, :class_name => 'User'
 
   has_many :participations
-  has_many :users, :through => :participations
+  has_many :players, :through => :participations, :source => :user
 
   validates_presence_of :group_id
   validates_presence_of :announcer_id

@@ -247,7 +247,7 @@ describe GamesController do
 
     it 'should raise MethodNotAllowed if user has already joined the game' do
       @group.users << @user
-      @game.users << @user
+      @game.players << @user
       sign_in @user
       lambda do
         do_join
@@ -314,7 +314,7 @@ describe GamesController do
 
       before do
         @group.users << @user
-        @game.users << @user
+        @game.players << @user
         sign_in @user
       end
 

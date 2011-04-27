@@ -35,11 +35,11 @@ describe "games/show.html.haml" do
   end
 
   it 'should render game players' do
-    @game.users << User.make!(3)
+    @game.players << User.make!(3)
     render
     page.should have_selector('.game_players')
     game_players = page.find('.game_players')
-    @game.users.each do |user|
+    @game.players.each do |user|
       game_players.should have_content(user.username)
     end
   end

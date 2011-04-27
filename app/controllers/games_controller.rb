@@ -35,7 +35,7 @@ class GamesController < ApplicationController
   def join
     game = Game.find(params[:id])
     raise ActiveRecord::RecordNotFound unless game.group.users.include?(current_user)
-    raise ActionController::MethodNotAllowed if game.users.include?(current_user)
+    raise ActionController::MethodNotAllowed if game.players.include?(current_user)
     game.participations.create!(:user => current_user)
     redirect_to game
   end
@@ -43,8 +43,8 @@ class GamesController < ApplicationController
   def leave
     game = Game.find(params[:id])
     raise ActiveRecord::RecordNotFound unless game.group.users.include?(current_user)
-    raise ActionController::MethodNotAllowed unless game.users.include?(current_user)
-    game.users.delete(current_user)
+    raise ActionController::MethodNotAllowed unless game.players.include?(current_user)
+    game.players.delete(current_user)
     redirect_to game
   end
 
