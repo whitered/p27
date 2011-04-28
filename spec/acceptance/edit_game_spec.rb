@@ -62,5 +62,35 @@ feature 'Edit Game' do
       end
 
     end
+
+  end
+
+  context 'in game with some registered players' do
+
+    before do 
+      @game.update_attribute :buyin, 100
+      @game.players << User.make!(3)
+      login @user
+    end
+
+    scenario 'enter game results' do
+      visit edit_game_path(@game)
+      within '#player_' + @game.players.first.id.to_s do
+        fill_in t('activerecord.attributes.participation.win'), :with => 250
+      end
+      within '#player_' + @game.players.second.id.to_s do
+        fill_in t('activerecord.attributes.participation.win'), :with => 50
+      end
+      click_link_or_button t('games.edit.submit')
+      current_path.should eq(game_path(@game))
+      within '#players' do
+        within '#player_' + @game.players.first.id.to_s do
+          page.should have_content('250')
+        end
+        within '#player_' + @game.players.second.id.to_s do
+          page.should have_content('50')
+        end
+      end
+    end
   end
 end
