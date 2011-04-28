@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110422142838) do
+ActiveRecord::Schema.define(:version => 20110428112103) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -77,6 +77,10 @@ ActiveRecord::Schema.define(:version => 20110422142838) do
     t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "rebuys",     :default => 0,     :null => false
+    t.boolean  "addon",      :default => false, :null => false
+    t.integer  "place"
+    t.integer  "win"
   end
 
   create_table "posts", :force => true do |t|
