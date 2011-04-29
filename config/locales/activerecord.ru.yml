@@ -29,4 +29,7 @@ ru:
           cash: Кэш
           tourney: Турнир
           tourney_with_rebuys: Турнир с ребаями
-
+      participation:
+        win: Выигрыш
+        addon: Аддон
+        rebuys: Ребаи
