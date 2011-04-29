@@ -201,4 +201,23 @@ describe Game do
       game.game_type.should eq(:tourney_with_rebuys)
     end
   end
+
+  it 'should accept nested attributes for participations' do
+    game = Game.new(:participations_attributes => [
+      {:user_id => 1, :rebuys => 10, :addon => true, :win => 120},
+      {:user_id => 4, :rebuys => 0, :addon => false, :win => 200}
+    ])
+    game.participations.size.should == 2
+    first, second = game.participations
+
+    first.user_id.should == 1
+    first.rebuys.should == 10
+    first.addon.should == true
+    first.win.should == 120
+
+    second.user_id.should == 4
+    second.rebuys.should == 0
+    second.addon.should == false
+    second.win.should == 200
+  end
 end

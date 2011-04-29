@@ -13,6 +13,8 @@ class Game < ActiveRecord::Base
   validates_presence_of :rebuy
   validates_presence_of :addon
 
+  accepts_nested_attributes_for :participations
+
   def can_be_edited_by? user
     group.user_is_admin?(user) || (group.users.include?(user) && announcer == user)
   end
