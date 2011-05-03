@@ -1,10 +1,19 @@
 #game
+  %p= t('activerecord.attributes.game.type.' + @game.game_type.to_s)
   %p= @game.description
+  %p
+    - unless @game.buyin.zero?
+      = t('activerecord.attributes.game.buyin') + ': ' + @game.buyin.to_s
+    - unless @game.rebuy.zero?
+      = t('activerecord.attributes.game.rebuy') + ': ' + @game.rebuy.to_s
+    - unless @game.addon.zero?
+      = t('activerecord.attributes.game.addon') + ': ' + @game.addon.to_s
   %p= @game.place
   %p
     = l @game.date
     = link_to @game.group.name, @game.group
     = render @game.announcer
     = participation_link @game, current_user
-  .game_players
-    = render @game.users
+    = link_to t('.edit'), edit_game_path(@game) if @game.can_be_edited_by?(current_user)
+  #players
+    = render @game.participations

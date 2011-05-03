@@ -15,3 +15,7 @@ use formtastic hints
 input time in a textfield with chronic gem (railscast 32)
 
 
+VULNERABILITIES:
+any user can be added to a game through nested attributes
+
+

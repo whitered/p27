@@ -247,7 +247,7 @@ describe GamesController do
 
     it 'should raise MethodNotAllowed if user has already joined the game' do
       @group.users << @user
-      @game.users << @user
+      @game.players << @user
       sign_in @user
       lambda do
         do_join
@@ -314,7 +314,7 @@ describe GamesController do
 
       before do
         @group.users << @user
-        @game.users << @user
+        @game.players << @user
         sign_in @user
       end
 
@@ -329,6 +329,115 @@ describe GamesController do
         do_leave
         response.should redirect_to(game_path(@game))
       end
+    end
+  end
+
+  describe 'edit' do
+
+    before do
+      @user = User.make!
+      @group = Group.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+    end
+
+    def do_edit
+      get :edit, :id => @game.id
+    end
+
+    it 'should require user authentication' do
+      do_edit
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authenticated to edit game' do
+      sign_in User.make!
+      lambda do
+        do_edit
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authenticated user' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      it 'should assign @game' do
+        do_edit
+        assigns[:game].should eq(@game)
+      end
+
+      it 'should render :edit template' do
+        do_edit
+        response.should render_template(:edit)
+      end
+
+      it 'should be successful' do
+        do_edit
+        response.should be_successful
+      end
+    end
+  end
+
+  describe 'update' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+      @game_params = {
+        :date => 3.days.from_now,
+        :description => 'Completely new description',
+        :rebuy => 1,
+        :buyin => 4,
+        :addon => 7
+      }
+    end
+
+    def do_update
+      put :update, :id => @game.id, :game => @game_params
+    end
+
+    it 'should require user authentication' do
+      do_update
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authorized for editing' do
+      sign_in User.make!
+      lambda do
+        do_update
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      it 'should update game' do
+        do_update
+        @game.reload
+        @game.date.should eq(@game_params[:date])
+        @game.description.should eq(@game_params[:description])
+        @game.rebuy.should eq(@game_params[:rebuy])
+        @game.buyin.should eq(@game_params[:buyin])
+        @game.addon.should eq(@game_params[:addon])
+      end
+
+      it 'should assign @game' do
+        do_update
+        assigns[:game].should eq(@game)
+      end
+
+      it 'should render :show' do
+        do_update
+        response.should render_template(:show)
+      end
+
     end
   end
 end
