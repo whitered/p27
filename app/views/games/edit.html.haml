@@ -6,4 +6,10 @@
     = f.input :buyin
     = f.input :rebuy
     = f.input :addon
+    = f.simple_fields_for :participations do |p|
+      %div[p.object.user]
+        = p.object.user.username
+        = p.input :rebuys
+        = p.input :addon
+        = p.input :win
     = f.submit t('.submit')

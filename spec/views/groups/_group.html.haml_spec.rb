@@ -5,7 +5,7 @@ describe 'groups/_group.html.haml' do
   before do 
     @group = Group.make!
     @group.users << User.make!(2)
-    render :partial => 'groups/group.html.haml', :locals => { :group => @group }
+    render :partial => 'groups/group', :locals => { :group => @group }
   end
 
   let(:page) { Capybara.string rendered }

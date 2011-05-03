@@ -37,4 +37,17 @@ describe 'games/edit.html.haml' do
     render
     page.should have_button(t('games.edit.submit'))
   end
+
+  it 'should have fields for each participation' do
+    @game.update_attributes(:buyin => 200, :rebuy => 100)
+    @game.players << User.make!(2)
+    render
+    @game.players.each do |player|
+      selector = '#user_' + player.id.to_s
+      page.should have_selector(selector)
+      node = page.find(selector)
+      node.should have_field(t('activerecord.attributes.participation.rebuys'))
+      node.should have_field(t('activerecord.attributes.participation.addon'))
+    end
+  end
 end

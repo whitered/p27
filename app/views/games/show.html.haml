@@ -15,5 +15,5 @@
     = render @game.announcer
     = participation_link @game, current_user
     = link_to t('.edit'), edit_game_path(@game) if @game.can_be_edited_by?(current_user)
-  .game_players
-    = render @game.players
+  #players
+    = render @game.participations
