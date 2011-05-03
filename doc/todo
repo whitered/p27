@@ -1,21 +1,34 @@
-add/remove user to game by admin
-add/remove fake player to game by admin
-close game providing results
-restrict game date created by regular group member
+navigation:
+  group avatars
+  group renderers
+  common navigation menu
 
-restrict post editing
-use nicer dates format
+game management:
+  add/remove user to game by admin
+  add/remove fake player to game by admin
+  close game providing results
+  restrict game date created by regular group member
 
-allow to change email after registration
+post authoring:
+  restrict post editing
 
-use paranoid mass assignment protection
-dependent => :destroy on joining models (railscast 167)
-use validation_reflection gem to review required fields in formtastic forms (railscast 185)
-use formtastic hints
-input time in a textfield with chronic gem (railscast 32)
+styling:
+  use nicer dates format
+
+profile:
+  allow to change email after registration
+
+forms:
+  hints in forms
+  required fields
+  input time in a textfield with chronic gem (railscast 32)
+
+other:
+  use paranoid mass assignment protection
+  dependent => :destroy on joining models (railscast 167)
 
 
 VULNERABILITIES:
-any user can be added to a game through nested attributes
+  any user can be added to a game through nested attributes
 
 
