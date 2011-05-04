@@ -15,9 +15,14 @@ describe PostsController do
   end
 
   it 'should route update' do
-    { :put => 'posts/4' }.should route_to(:controller => 'posts',
+    { :put => '/posts/4' }.should route_to(:controller => 'posts',
                                           :action => 'update',
                                           :id => '4')
+  end
+
+  it 'should route index' do
+    { :get => '/posts' }.should route_to(:controller => 'posts',
+                                         :action => 'index')
   end
 
   context 'in groups' do

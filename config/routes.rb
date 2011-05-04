@@ -34,7 +34,7 @@ P27::Application.routes.draw do
     end
   end
 
-  resources :posts, :only => [:show, :edit, :update] do
+  resources :posts, :only => [:show, :edit, :update, :index] do
     resources :comments, :only => [:create]
   end
 

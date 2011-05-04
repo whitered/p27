@@ -364,4 +364,56 @@ describe PostsController do
 
     end
   end
+
+  describe 'index' do
+
+    it 'should assign @posts' do
+      get :index
+      assigns[:posts].should_not be_nil
+    end
+
+    describe '@posts' do
+
+      before do
+        @public_groups = Group.make!(2, :private => false)
+        @private_groups = Group.make!(2, :private => true)
+        author = User.make!
+        (@public_groups + @private_groups).each_with_index do |group, index|
+          group.posts << Post.make!(:author => author, :created_at => Date.today + 2 * index)
+          group.posts << Post.make!(:author => author, :created_at => Date.today + 2 * index + 1)
+        end
+      end
+
+      let(:posts) { assigns[:posts] }
+
+      it 'should include all posts from public groups' do
+        get :index
+        @public_groups.map { |g| g.posts }.flatten.each do |post|
+          posts.should include(post)
+        end
+      end
+
+      it 'should not include any posts from private groups' do
+        get :index
+        @private_groups.map { |g| g.posts }.flatten.each do |post|
+          posts.should_not include(post)
+        end
+      end
+
+      it 'should be ordered by creation date' do
+        get :index
+        posts.should == @public_groups.map { |g| g.posts }.flatten.reverse
+      end
+    end
+
+    it 'should render :index template' do
+      get :index
+      response.should render_template(:index)
+    end
+
+    it 'should be successful' do
+      get :index
+      response.should be_successful
+    end
+  end
 end
