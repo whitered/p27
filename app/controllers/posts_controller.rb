@@ -1,7 +1,7 @@
 class PostsController < ApplicationController
 
   before_filter :find_group, :only => [:new, :create]
-  skip_before_filter :authenticate_user!, :only => :show
+  skip_before_filter :authenticate_user!, :only => [:show, :index]
 
   def new
     raise AccessDenied unless @group.user_can_post?(current_user)
@@ -49,6 +49,10 @@ class PostsController < ApplicationController
     @post.update_attributes(params[:post])
     flash[:notice] = t('posts.update.successful')
     redirect_to @post
+  end
+
+  def index
+    @posts = Post.joins(:group).where(:groups => { :private => false }).order('created_at DESC')
   end
 
 private
