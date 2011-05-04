@@ -177,46 +177,104 @@ describe GamesController do
 
   describe 'index' do
 
-    before do
-      @group = Group.make!
-      announcer = User.make!
-      @games = (1..3).map do |n|
-        Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
-      end
-    end
-
-    def get_index
-      get :index, :group_id => @group.id
-    end
-
-    it 'should raise NotFound for not authenticated user' do
-      @group.update_attribute(:private, true)
-      lambda do
-        get_index
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-
-    context 'for authorized user' do
+    context 'top level' do
 
       it 'should assign @games' do
-        get_index
-        assigns[:games].should eq(@games.reverse)
+        get :index
+        assigns[:games].should_not be_nil
       end
 
-      it 'should not find games that belong to another group' do
-        game = Game.make!(:announcer => User.make!, :group => Group.make!)
-        get_index
-        assigns[:games].should_not include(game)
+      describe '@games' do
+
+        before do
+          @public_groups = Group.make!(2, :private => false)
+          @private_groups = Group.make!(2, :private => true)
+          announcer = User.make!
+          (@public_groups + @private_groups).each_with_index do |group, index|
+            (0..1).map{ |d| 2 * index + d }.each do |day|
+              group.games << Game.make(:date => Date.today + day, :announcer => announcer)
+            end
+          end
+        end
+
+        let(:games) { assigns[:games] }
+
+        it 'should contain all public games' do
+          get :index
+          @public_groups.map { |g| g.games }.flatten.each do |game|
+            games.should include(game)
+          end
+        end
+
+        it 'should not contain any of the private games' do
+          get :index
+          @private_groups.map{ |g| g.games }.flatten.each do |game|
+            games.should_not include(game)
+          end
+        end
+
+        it 'should have games ordered by date' do
+          get :index
+          games.should == @public_groups.map{ |g| g.games }.flatten.reverse
+        end
+
       end
 
       it 'should render :index template' do
-        get_index
+        get :index
         response.should render_template(:index)
       end
 
       it 'should be successful' do
-        get_index
+        get :index
         response.should be_successful
+      end
+
+    end
+
+    context 'inside a group' do
+
+      before do
+        @group = Group.make!
+        announcer = User.make!
+        @games = (1..3).map do |n|
+          Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
+        end
+      end
+
+      def get_index
+        get :index, :group_id => @group.id
+      end
+
+      it 'should raise NotFound for not authenticated user' do
+        @group.update_attribute(:private, true)
+        lambda do
+          get_index
+        end.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      context 'for authorized user' do
+
+        it 'should assign @games' do
+          get_index
+          assigns[:games].should eq(@games.reverse)
+        end
+
+        it 'should not find games that belong to another group' do
+          game = Game.make!(:announcer => User.make!, :group => Group.make!)
+          get_index
+          assigns[:games].should_not include(game)
+        end
+
+        it 'should render :index template' do
+          get_index
+          response.should render_template(:index)
+        end
+
+        it 'should be successful' do
+          get_index
+          response.should be_successful
+        end
       end
     end
   end

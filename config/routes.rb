@@ -38,7 +38,7 @@ P27::Application.routes.draw do
     resources :comments, :only => [:create]
   end
 
-  resources :games, :only => [:show, :edit, :update] do
+  resources :games, :only => [:show, :edit, :update, :index] do
     member do
       post :join
       post :leave

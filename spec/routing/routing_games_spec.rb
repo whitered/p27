@@ -32,6 +32,11 @@ describe GamesController do
                                            :id => '5')
   end
 
+  it 'should route index' do
+    { :get => '/games' }.should route_to(:controller => 'games',
+                                         :action => 'index')
+  end
+
   context 'in group' do
 
     it 'should route new' do

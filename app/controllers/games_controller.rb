@@ -27,9 +27,13 @@ class GamesController < ApplicationController
   end
 
   def index
-    group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless group.public? || (user_signed_in? && group.users.inlude?(current_user))
-    @games = group.games.order('date DESC')
+    if params[:group_id].nil?
+      @games = Game.joins(:group).where(:groups => { :private => false }).order('date DESC')
+    else
+      group = Group.find(params[:group_id])
+      raise ActiveRecord::RecordNotFound unless group.public? || (user_signed_in? && group.users.inlude?(current_user))
+      @games = group.games.order('date DESC')
+    end
   end
 
   def join
