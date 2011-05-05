@@ -1,7 +1,6 @@
-navigation:
+groups:
   group avatars
   group renderers
-  common navigation menu
 
 game management:
   add/remove user to game by admin

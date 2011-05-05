@@ -61,10 +61,20 @@ header {
     float:right;
     margin: 1em;
   }
+
+  nav#sections {
+    margin: 1em 0;
+    li {
+      display:inline;
+      margin: 1em 2em;
+    }
+  }
 }
 
 #main {
   margin: 1em 3em;
+
+  h1 { font-size: 1.5em; }
 
   .post { margin: 3em 0; } 
   .comment { margin-top: 2em; }
