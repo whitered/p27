@@ -86,8 +86,10 @@ header {
 
   form.simple_form {
     margin: 2em 0;
-    label { width: 12em; float: left; }
-    .input { margin: 1em 0; }
+
+    p.input { margin: 1em 0; }
+    label { width: 12em; display: inline-block; }
+    input.boolean { margin: 0 0.5em 0 12em; }
   }
 
 }

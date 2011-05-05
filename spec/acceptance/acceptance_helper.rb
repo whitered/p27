@@ -14,7 +14,7 @@ end
 
 def select_date(field, options = {})
   date     = Date.parse(options[:with])
-  selector = %Q{.//div[contains(./label, "#{field}")]}
+  selector = %Q{.//p[contains(./label, "#{field}")]}
   within(:xpath, selector) do
     find(:xpath, '//select[contains(@id, "_1i")]').find(:xpath, ::XPath::HTML.option(date.year.to_s)).select_option
     find(:xpath, '//select[contains(@id, "_2i")]').find(:xpath, ::XPath::HTML.option(I18n.t('date.month_names')[date.month])).select_option
@@ -24,7 +24,7 @@ end
 
 def select_time(field, options = {})
   time     = Time.parse(options[:with])
-  selector = %Q{.//div[contains(./label, "#{field}")]}
+  selector = %Q{.//p[contains(./label, "#{field}")]}
   within(:xpath, selector) do
     find(:xpath, '//select[contains(@id, "_4i")]').find(:xpath, ::XPath::HTML.option(time.hour.to_s.rjust(2,'0'))).select_option
     find(:xpath, '//select[contains(@id, "_5i")]').find(:xpath, ::XPath::HTML.option(time.min.to_s.rjust(2,'0'))).select_option
