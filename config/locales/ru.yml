@@ -9,6 +9,9 @@ ru:
       registration: Регистрация
       login: Вход
       logout: Выход
+      groups: Группы
+      posts: Посты
+      games: Игры
   home:
     index:
       new_group: Создать новую группу
