@@ -6,6 +6,7 @@
     = f.input :buyin
     = f.input :rebuy
     = f.input :addon
+    = f.input :archived
     = f.simple_fields_for :participations do |p|
       %div[p.object.user]
         = p.object.user.username

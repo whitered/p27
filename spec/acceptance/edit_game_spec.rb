@@ -92,5 +92,13 @@ feature 'Edit Game' do
         end
       end
     end
+
+    scenario 'archieves game' do
+      visit edit_game_path(@game)
+      check t('activerecord.attributes.game.archived')
+      click_link_or_button t('games.edit.submit')
+      current_path.should eq(game_path(@game))
+      page.find('#game').should have_content(t('games.show.archived'))
+    end
   end
 end

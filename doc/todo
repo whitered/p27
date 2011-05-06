@@ -10,6 +10,7 @@ game management:
 
 post authoring:
   restrict post editing
+  post privacy should be independent of group privacy
 
 styling:
   use nicer dates format

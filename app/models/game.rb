@@ -12,6 +12,7 @@ class Game < ActiveRecord::Base
   validates_presence_of :buyin
   validates_presence_of :rebuy
   validates_presence_of :addon
+  validates_inclusion_of :archived, :in => [true, false]
 
   accepts_nested_attributes_for :participations
 
