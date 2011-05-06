@@ -227,7 +227,7 @@ describe GamesController do
 
         it 'should have games ordered by date' do
           get :index
-          games.should == @public_games[0..1].reverse
+          games.should == @public_games[0..1]
         end
 
       end
@@ -281,7 +281,7 @@ describe GamesController do
 
         it 'should not include archive games if params[:archive] is not specified' do
           get_index
-          assigns[:games].should == [@games[2], @games[0]]
+          assigns[:games].should == [@games[0], @games[2]]
         end
 
         it 'should not include current games if params[:archive] is specified' do
