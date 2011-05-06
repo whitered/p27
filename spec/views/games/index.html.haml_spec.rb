@@ -14,6 +14,12 @@ describe 'games/index.html.haml' do
     page.should have_content(t('games.index.title'))
   end
 
+  it 'should have archive title in archive' do
+    params[:archive] = true
+    render
+    page.should have_content(t('games.index.archive_title'))
+  end
+
   it 'should have #games selector' do
     render
     page.should have_selector('#games')

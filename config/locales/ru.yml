@@ -12,6 +12,7 @@ ru:
       groups: Группы
       posts: Посты
       games: Игры
+      archive: Архив
   home:
     index:
       new_group: Создать новую группу
@@ -43,6 +44,7 @@ ru:
       new_post: Написать пост
       new_game: Объявить игру
       games: Игры
+      archive: Архив
     join:
       errors:
         not_hospitable: Вступить в эту группу можно только по приглашению
@@ -127,6 +129,7 @@ ru:
       submit: Сохранить
     index:
       title: Игры
+      archive_title: Архив
     game:
       join: '+1'
       leave: '-1'

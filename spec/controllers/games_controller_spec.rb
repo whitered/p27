@@ -252,6 +252,7 @@ describe GamesController do
         @games = (1..3).map do |n|
           Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
         end
+        @games[1].update_attribute(:archived, true)
       end
 
       def get_index
@@ -269,13 +270,23 @@ describe GamesController do
 
         it 'should assign @games' do
           get_index
-          assigns[:games].should eq(@games.reverse)
+          assigns[:games].should_not be_nil
         end
 
         it 'should not find games that belong to another group' do
           game = Game.make!(:announcer => User.make!, :group => Group.make!)
           get_index
           assigns[:games].should_not include(game)
+        end
+
+        it 'should not include archive games if params[:archive] is not specified' do
+          get_index
+          assigns[:games].should == [@games[2], @games[0]]
+        end
+
+        it 'should not include current games if params[:archive] is specified' do
+          get :index, :group_id => @group.id, :archive => true
+          assigns[:games].should == [@games[1]]
         end
 
         it 'should render :index template' do
