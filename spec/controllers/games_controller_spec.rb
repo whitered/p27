@@ -186,36 +186,48 @@ describe GamesController do
 
       describe '@games' do
 
-        before do
-          @public_groups = Group.make!(2, :private => false)
-          @private_groups = Group.make!(2, :private => true)
+        before do 
+          public_groups = Group.make!(2, :private => false)
+          private_group = Group.make!(:private => true)
           announcer = User.make!
-          (@public_groups + @private_groups).each_with_index do |group, index|
-            (0..1).map{ |d| 2 * index + d }.each do |day|
-              group.games << Game.make(:date => Date.today + day, :announcer => announcer)
-            end
+          games = (1..5).map do |day|
+            Game.make(:announcer => User.make!, :date => Date.today + day)
           end
+          public_groups[0].games << games[0]
+          public_groups[1].games << games[1..2]
+          private_group.games << games[3..4]
+          games[2..3].each { |game| game.update_attribute(:archived, true) }
+          @public_games = games[0..2]
+          @private_games = games[3..4]
+          @archived_games = games[2..3]
         end
 
         let(:games) { assigns[:games] }
 
-        it 'should contain all public games' do
+        it 'should contain all public unarchived games' do
           get :index
-          @public_groups.map { |g| g.games }.flatten.each do |game|
+          (@public_games - @archived_games).each do |game|
             games.should include(game)
           end
         end
 
         it 'should not contain any of the private games' do
           get :index
-          @private_groups.map{ |g| g.games }.flatten.each do |game|
+          @private_games.each do |game|
+            games.should_not include(game)
+          end
+        end
+
+        it 'should not contain any of the archived games' do
+          get :index
+          @archived_games.each do |game|
             games.should_not include(game)
           end
         end
 
         it 'should have games ordered by date' do
           get :index
-          games.should == @public_groups.map{ |g| g.games }.flatten.reverse
+          games.should == @public_games[0..1].reverse
         end
 
       end

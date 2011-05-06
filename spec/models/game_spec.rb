@@ -238,4 +238,25 @@ describe Game do
       game.should be_valid
     end
   end
+
+  describe 'scopes' do
+    before do
+      announcer = User.make!
+      group = Group.make!
+      @current_games = Game.make!(2, :announcer => announcer, :group => group)
+      @archive_games = Game.make!(2, :announcer => announcer, :group => group, :archived => true)
+    end
+
+    describe 'archive' do
+      it 'should contain all archived games' do
+        Game.archive.should == @archive_games
+      end
+    end
+
+    describe 'current' do
+      it 'should contain all current games' do
+        Game.current.should == @current_games
+      end
+    end
+  end
 end

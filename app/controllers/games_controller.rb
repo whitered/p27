@@ -28,7 +28,7 @@ class GamesController < ApplicationController
 
   def index
     if params[:group_id].nil?
-      @games = Game.joins(:group).where(:groups => { :private => false }).order('date DESC')
+      @games = Game.current.joins(:group).where(:groups => { :private => false }).order('date DESC')
     else
       group = Group.find(params[:group_id])
       raise ActiveRecord::RecordNotFound unless group.public? || (user_signed_in? && group.users.inlude?(current_user))
