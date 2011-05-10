@@ -316,9 +316,9 @@ describe GroupsController do
 
     it 'should require user to be group owner' do
       sign_in @admin
-      do_manage_admins :set => @member.username
-      response.should redirect_to(@group)
-      flash[:alert].should eq(t('groups.manage_admins.errors.not_permitted'))
+      lambda do
+        do_manage_admins :set => @member.username
+      end.should raise_exception(ActiveRecord::RecordNotFound)
     end
 
     it 'should raise NotFound exception for outsider' do

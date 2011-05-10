@@ -47,11 +47,8 @@ class GroupsController < ApplicationController
   end
 
   def manage_admins
-    group = current_user.groups.find_by_id(params[:id]) || current_user.own_groups.find_by_id(params[:id])
-    raise ActiveRecord::RecordNotFound if group.nil?
-    if group.owner != current_user
-      flash[:alert] = t('groups.manage_admins.errors.not_permitted')
-    elsif params[:set].blank? && params[:unset].blank?
+    group = current_user.own_groups.find_by_id!(params[:id])
+    if params[:set].blank? && params[:unset].blank?
       flash[:alert] = t('groups.manage_admins.errors.no_name_given')
     else
       wrong_names = []

@@ -31,7 +31,6 @@ ru:
     manage_admins:
       errors:
         wrong_names: 'Таких пользователей нет в группе: %{names}'
-        not_permitted: Только владелец группы может назначить администратора
         no_name_given: Не указано имя пользователя
     show:
       join: Вступить в группу
