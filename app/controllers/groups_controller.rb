@@ -2,6 +2,8 @@ class GroupsController < ApplicationController
 
   skip_before_filter :authenticate_user!, :only => [:show, :index]
 
+  before_filter :find_own_group, :only => [:edit, :update]
+
   def new
     @group = Group.new
   end
@@ -105,14 +107,18 @@ class GroupsController < ApplicationController
   end
 
   def edit
-    @group = current_user.own_groups.find(params[:id])
   end
 
   def update
-    @group = current_user.own_groups.find(params[:id])
     @group.update_attributes(params[:group])
     flash[:notice] = t('groups.update.success')
     render :edit
+  end
+
+private
+
+  def find_own_group
+    @group = current_user.own_groups.find(params[:id])
   end
 
 end

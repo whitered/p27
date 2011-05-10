@@ -1,14 +1,12 @@
 class InvitationsController < ApplicationController
 
+  before_filter :find_group, :only => [:new, :create]
+  before_filter :find_invitation, :only => [:accept, :decline]
+
   def new
-    @group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
   end
 
   def create
-    @group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
-
     sent_invitations = 0
     wrong_emails = []
     members = []
@@ -57,16 +55,26 @@ class InvitationsController < ApplicationController
   end
 
   def accept
-    invitation = current_user.invitations.find(params[:id])
-    invitation.accept!
-    flash[:notice] = t('invitations.accept.successful', :group => invitation.group.name)
+    @invitation.accept!
+    flash[:notice] = t('invitations.accept.successful', :group => @invitation.group.name)
     redirect_to invitations_url
   end
 
   def decline
-    invitation = current_user.invitations.find(params[:id])
-    invitation.destroy
-    flash[:notice] = t('invitations.decline.successful', :group => invitation.group.name)
+    @invitation.destroy
+    flash[:notice] = t('invitations.decline.successful', :group => @invitation.group.name)
     redirect_to invitations_url
   end
+
+private
+
+  def find_group
+    @group = Group.find(params[:group_id])
+    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
+  end
+
+  def find_invitation
+    @invitation = current_user.invitations.find(params[:id])
+  end
+
 end

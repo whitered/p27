@@ -1,15 +1,16 @@
 class PostsController < ApplicationController
 
-  before_filter :find_group, :only => [:new, :create]
   skip_before_filter :authenticate_user!, :only => [:show, :index]
 
+  before_filter :find_group, :only => [:new, :create]
+  before_filter :find_post, :only => [:show, :edit, :update]
+  before_filter :ensure_post_editable, :only => [:edit, :update]
+
   def new
-    raise AccessDenied unless @group.user_can_post?(current_user)
     @post = Post.new
   end
 
   def create
-    raise AccessDenied unless @group.user_can_post?(current_user)
     post = @group.posts.build(params[:post])
     post.author = current_user
     post.save!
@@ -17,7 +18,6 @@ class PostsController < ApplicationController
   end
 
   def show
-    @post = Post.find(params[:id])
     if @post.group.private?
       raise ActiveRecord::RecordNotFound unless user_signed_in? && current_user.is_insider_of?(@post.group)
     end
@@ -39,13 +39,9 @@ class PostsController < ApplicationController
   end
 
   def edit
-    @post = Post.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless @post.can_be_edited_by?(current_user)
   end
 
   def update
-    @post = Post.find(params[:id])
-    raise ActiveRecord::RecordNotFound unless @post.can_be_edited_by?(current_user)
     @post.update_attributes(params[:post])
     flash[:notice] = t('posts.update.successful')
     redirect_to @post
@@ -59,6 +55,15 @@ private
 
   def find_group
     @group = Group.find(params[:group_id])
+    raise AccessDenied unless @group.user_can_post?(current_user)
+  end
+
+  def find_post
+    @post = Post.find(params[:id])
+  end
+
+  def ensure_post_editable
+    raise ActiveRecord::RecordNotFound unless @post.can_be_edited_by?(current_user)
   end
 
 end
