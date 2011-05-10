@@ -13,7 +13,7 @@
   %p= @game.place
   %p
     = l @game.date
-    = link_to @game.group.name, @game.group
+    = link_to @game.group_name, @game.group
     = render @game.announcer
     = participation_link @game, current_user
     = link_to t('.edit'), edit_game_path(@game) if @game.can_be_edited_by?(current_user)

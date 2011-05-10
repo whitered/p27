@@ -19,6 +19,8 @@ class Game < ActiveRecord::Base
   scope :current, where(:archived => false)
   scope :archive, where(:archived => true)
 
+  delegate :name, :to => :group, :prefix => true
+
   def can_be_edited_by? user
     group.user_is_admin?(user) || (group.users.include?(user) && announcer == user)
   end

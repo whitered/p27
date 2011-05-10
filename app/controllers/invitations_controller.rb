@@ -56,13 +56,13 @@ class InvitationsController < ApplicationController
 
   def accept
     @invitation.accept!
-    flash[:notice] = t('invitations.accept.successful', :group => @invitation.group.name)
+    flash[:notice] = t('invitations.accept.successful', :group => @invitation.group_name)
     redirect_to invitations_url
   end
 
   def decline
     @invitation.destroy
-    flash[:notice] = t('invitations.decline.successful', :group => @invitation.group.name)
+    flash[:notice] = t('invitations.decline.successful', :group => @invitation.group_name)
     redirect_to invitations_url
   end
 
