@@ -23,9 +23,7 @@ class GamesController < ApplicationController
   end
 
   def show
-    unless @game.group.public? || (user_signed_in? && @game.group.users.include?(current_user))
-      raise ActiveRecord::RecordNotFound
-    end
+    raise ActiveRecord::RecordNotFound unless @game.group.user_can_view?(current_user)
   end
 
   def index

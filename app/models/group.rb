@@ -32,4 +32,8 @@ class Group < ActiveRecord::Base
   def user_can_announce_game? user
     users.include? user
   end
+
+  def user_can_view? user
+    public? || (user && user.is_insider_of?(self))
+  end
 end
