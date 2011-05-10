@@ -5,10 +5,11 @@ describe 'posts/post' do
   before do
     stub_template 'users/_user' => '<div class="user"><%= user.username %></div>'
     @post = Post.make!(:author => User.make!, :group => Group.make!)
+    @locals = { :post => @post }
   end
 
   def do_render
-    render :partial => 'posts/post', :locals => { :post => @post }
+    render :partial => 'posts/post', :locals => @locals
   end
 
   let(:page) { Capybara.string rendered }
@@ -38,10 +39,10 @@ describe 'posts/post' do
     page.should have_link(@post.group.name, group_path(@post.group))
   end
 
-  it 'should not render group name if @group is defined' do
-    @group = @post.group
+  it 'should not render group name if group is defined' do
+    @locals[:group] = @post.group
     do_render
-    page.should have_no_content(@group.name)
+    page.should have_no_content(@post.group.name)
   end
 
   context 'with comments' do
