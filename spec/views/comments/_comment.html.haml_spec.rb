@@ -12,7 +12,8 @@ describe 'comments/_comment.html.haml' do
       :comment => @current_comment, 
       :reply => false, 
       :last_visit => nil, 
-      :new_comment => nil 
+      :new_comment => nil,
+      :post => p
     }
   end
 

@@ -8,7 +8,7 @@
 -#- if new_comment_for?(comment)
 - if new_comment.present? && new_comment.parent == comment
   %div{ :class => 'indent_' + indent.to_s }
-    = render 'comments/form'
+    = render 'comments/form', :post => post, :comment => new_comment
 
 = render comment.children,
   :partial => 'comments/comment',
