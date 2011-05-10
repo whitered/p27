@@ -8,8 +8,8 @@ class CommentsController < ApplicationController
     #@comment = Comment.build_from(@post, current_user.id, params[:comment][:body])
     #@comment.parent_id = params[:comment][:parent_id]
 
-    @comment = @post.comment_threads.build(:user => current_user, 
-                                    :body => params[:comment][:body], 
+    @comment = @post.comment_threads.build(:user => current_user,
+                                    :body => params[:comment][:body],
                                     :parent_id => params[:comment][:parent_id])
     if @comment.save
       redirect_to @comment.commentable

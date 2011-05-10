@@ -8,7 +8,12 @@ describe 'comments/_comment.html.haml' do
     p = Post.make!(:author => User.make!)
     @current_comment = Comment.build_from(p, User.make!.id, Faker::Lorem.sentence)
     @current_comment.save!
-    @locals = { :comment => @current_comment, :reply => false }
+    @locals = { 
+      :comment => @current_comment, 
+      :reply => false, 
+      :last_visit => nil, 
+      :new_comment => nil 
+    }
   end
 
   def do_render
@@ -42,8 +47,8 @@ describe 'comments/_comment.html.haml' do
     page.should have_content(l(@current_comment.created_at))
   end
 
-  it 'should have reply link if @comment is assigned' do
-    @comment = Comment.build_from(@current_comment.commentable, User.make!.id, Faker::Lorem.sentence)
+  it 'should have reply link if new_comment is assigned' do
+    @locals[:new_comment] = Comment.build_from(@current_comment.commentable, User.make!.id, Faker::Lorem.sentence)
     do_render
     page.should have_link(t('comments.comment.reply'), :href => post_path(@current_comment.commentable, :comment_id => @current_comment.id))
   end
@@ -89,27 +94,32 @@ describe 'comments/_comment.html.haml' do
     page.find('.indent_4').should have_content(child.body)
   end
 
-  it 'should render reply form if current_comment is a parent of the new one' do
-    @post = @current_comment.commentable
-    @comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
-    @comment.parent = @current_comment
-    do_render
-    page.should render_template('comments/_form')
+  context 'with new_comment assigned' do
+
+    before do
+      @post = @current_comment.commentable
+      @locals[:new_comment] = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+    end
+
+    it 'should render reply form if current_comment is a parent of the new one' do
+      @locals[:new_comment].parent = @current_comment
+      do_render
+      page.should render_template('comments/_form')
+    end
+
+    it 'should not render reply form if current comment is not a parent of the new one' do
+      parent = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
+      parent.save!
+      @locals[:new_comment].parent = parent
+      do_render
+      page.should_not render_template('comment/_form')
+    end
+
   end
 
-  it 'should not render reply form if current comment is not a parent of the new one' do
-    @post = @current_comment.commentable
-    parent = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
-    parent.save!
-    @comment = Comment.build_from(@post, User.make!.id, Faker::Lorem.sentence)
-    @comment.parent = parent
-    do_render
-    page.should_not render_template('comment/_form')
-  end
-
-  it 'should set class .new if @last_visit is defined and older then comment time' do
+  it 'should set class .new if last_visit is defined and older then comment time' do
     @current_comment.update_attribute(:created_at, 5.minutes.ago)
-    @last_visit = 10.minutes.ago
+    @locals[:last_visit] = 10.minutes.ago
     do_render
     page.should have_selector('.comment.new')
   end
