@@ -33,6 +33,11 @@ describe 'games/edit.html.haml' do
     page.should have_field(t('activerecord.attributes.game.addon'))
   end
 
+  it 'should have archived checkbox' do
+    render
+    page.should have_field(t('activerecord.attributes.game.archived'))
+  end
+
   it 'should have submit button' do
     render
     page.should have_button(t('games.edit.submit'))

@@ -43,6 +43,11 @@ describe 'games/_game.html.haml' do
     page.should have_content(l(@game.date))
   end
 
+  it 'should have link to game page' do
+    do_render
+    page.should have_xpath(".//a[@href = '#{game_path(@game)}']")
+  end
+
   context 'for group member' do
 
     before do

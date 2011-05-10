@@ -220,4 +220,43 @@ describe Game do
     second.addon.should == false
     second.win.should == 200
   end
+
+  it 'should have archived attribute' do
+    Game.new.should respond_to(:archived?)
+  end
+
+  describe 'archived' do
+    it 'should be false by default' do
+      Game.new.archived?.should be_false
+    end
+    
+    it 'should not be nil' do
+      game = Game.make(:announcer_id => 1, :group_id => 2, :archived => nil)
+      game.should be_invalid
+      game.errors[:archived].should_not be_nil
+      game.archived = false
+      game.should be_valid
+    end
+  end
+
+  describe 'scopes' do
+    before do
+      announcer = User.make!
+      group = Group.make!
+      @current_games = Game.make!(2, :announcer => announcer, :group => group)
+      @archive_games = Game.make!(2, :announcer => announcer, :group => group, :archived => true)
+    end
+
+    describe 'archive' do
+      it 'should contain all archived games' do
+        Game.archive.should == @archive_games
+      end
+    end
+
+    describe 'current' do
+      it 'should contain all current games' do
+        Game.current.should == @current_games
+      end
+    end
+  end
 end

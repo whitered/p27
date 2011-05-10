@@ -5,20 +5,35 @@ feature "View Games" do
   background do
     user = User.make!
     @group = Group.make!
-    @games = Game.make!(3, :announcer => user, :group => @group)
-    @group.games << @games
+    @current_games = Game.make!(3, :announcer => user, :group => @group)
+    @archive_game = Game.make!(:announcer => user, :group => @group, :archived => true)
+    @group.games << @current_games << @archive_game
   end
 
-  scenario 'view games' do
+  scenario 'view current games' do
     visit group_path(@group)
-    click_link t('groups.show.games')
-    page.should have_selector('.games')
-    gamelist = page.find('.games')
-    @games.each do |game|
-      gamelist.should have_content(game.description)
-      gamelist.should have_content(game.place)
+    within '#group' do
+      click_link t('groups.show.games')
     end
 
+    current_path.should == group_games_path(@group)
+    within '#games' do
+      @current_games.each do |game|
+        page.should have_selector('article#game_' + game.id.to_s)
+      end
+    end
+  end
+
+  scenario 'view archive' do
+    visit group_path(@group)
+    within '#group' do
+      click_link t('groups.show.archive')
+    end
+
+    current_path.should include(group_games_path(@group))
+    within '#games' do
+      page.should have_selector('article#game_' + @archive_game.id.to_s)
+    end
   end
 
 end

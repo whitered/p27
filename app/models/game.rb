@@ -12,8 +12,12 @@ class Game < ActiveRecord::Base
   validates_presence_of :buyin
   validates_presence_of :rebuy
   validates_presence_of :addon
+  validates_inclusion_of :archived, :in => [true, false]
 
   accepts_nested_attributes_for :participations
+
+  scope :current, where(:archived => false)
+  scope :archive, where(:archived => true)
 
   def can_be_edited_by? user
     group.user_is_admin?(user) || (group.users.include?(user) && announcer == user)

@@ -1,7 +1,8 @@
-%div[game]
+%article[game]
   %p= game.description
   %p
     = l game.date
     = game.place
     = render game.announcer
     = participation_link game, current_user
+    = link_to t('.show'), game_path(game)

@@ -94,4 +94,10 @@ describe "games/show.html.haml" do
     page.should render_template('participations/_participation')
     page.all('#game #players .user').size.should == 3
   end
+
+  it 'should mark archived game' do
+    @game.update_attribute(:archived, true)
+    render
+    page.should have_content(t('games.show.archived'))
+  end
 end

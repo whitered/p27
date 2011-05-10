@@ -29,6 +29,7 @@ ru:
           cash: Кэш
           tourney: Турнир
           tourney_with_rebuys: Турнир с ребаями
+        archived: Архив
       participation:
         win: Выигрыш
         addon: Аддон
