@@ -1,5 +1,5 @@
 #game
-  %p 
+  %p
     = t('.archived') if @game.archived?
     = t('activerecord.attributes.game.type.' + @game.game_type.to_s)
   %p= @game.description

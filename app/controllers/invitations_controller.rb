@@ -12,7 +12,7 @@ class InvitationsController < ApplicationController
     sent_invitations = 0
     wrong_emails = []
     members = []
-    
+
     recipients = params[:recipients].blank? ? [] : params[:recipients].split(/[\s;,]+/)
 
     if recipients.empty?
@@ -30,15 +30,15 @@ class InvitationsController < ApplicationController
           end
         elsif user.groups.exists?(@group)
           members << name
-        else 
+        else
           invitation = Invitation.create(:user => user, :group => @group, :inviter => current_user)
           sent_invitations += 1
         end
       end
 
       if sent_invitations == recipients.size
-        flash[:notice] = sent_invitations > 1 ? 
-          t('invitations.create.invitations_sent') : 
+        flash[:notice] = sent_invitations > 1 ?
+          t('invitations.create.invitations_sent') :
           t('invitations.create.invitation_sent')
       elsif wrong_emails.size + members.size > 1
         flash[:alert] = t('invitations.create.invitations_failed', :recipients => [wrong_emails + members].join(', '))
@@ -46,14 +46,14 @@ class InvitationsController < ApplicationController
         flash[:alert] = t('invitations.create.wrong_email', :recipient => wrong_emails.first)
       elsif members.any?
         flash[:alert] = t('invitations.create.user_is_member', :recipient => members.first)
-      end                  
+      end
     end
 
     render :new
   end
 
   def index
-    @invitations = Invitation.find(:all, :conditions => { :user_id => current_user.id })
+    @invitations = Invitation.find_all_by_user_id(current_user.id)
   end
 
   def accept

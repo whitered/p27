@@ -11,20 +11,20 @@ class RegistrationsController < Devise::RegistrationsController
 
     unless @invitation.nil?
       @user.email = @invitation.email
-      @user.skip_confirmation! 
+      @user.skip_confirmation!
     end
 
     if @user.save
       @invitation.accept! @user unless @invitation.nil?
 
-      invitations = Invitation.find(:all, :conditions => [ 'lower(email) = ?', @user.email.downcase ])
+      invitations = Invitation.find_by_email_downcase(@user.email)
       invitations.each do |invitation|
         invitation.user = @user
         invitation.email = nil
         invitation.save
       end
 
-      if @user.confirmed? 
+      if @user.confirmed?
         flash[:notice] = t('registrations.create.registered_and_confirmed')
       else
         flash[:notice] = t('registrations.create.confirm_registration')

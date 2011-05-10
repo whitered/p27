@@ -6,7 +6,7 @@ P27::Application.routes.draw do
     get '/login' => 'devise/sessions#new', :as => :new_user_session
     post '/login' => 'devise/sessions#create', :as => :user_session
     get '/logout' => 'devise/sessions#destroy', :as => :destroy_user_session
-    
+
     get '/registration' => 'registrations#new', :as => :new_user_registration
     post '/registration' => 'registrations#create', :as => :user_registration
     get '/profile' => 'registrations#edit', :as => :edit_user_registration

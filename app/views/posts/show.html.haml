@@ -1,5 +1,5 @@
 %h1= @post.title
-#sub_header= link_to @post.group.name, @post.group
+#sub_header= render @post.group
 #post.post
   %p= @post.body.html_safe
   .post_data
@@ -8,5 +8,5 @@
     = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
 #post_comments
   = render @post.root_comments
-= render 'comments/form' if @comment.present? and @comment.parent_id.nil?
+= render 'comments/form' if new_root_comment?
 

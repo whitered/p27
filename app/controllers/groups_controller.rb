@@ -29,13 +29,13 @@ class GroupsController < ApplicationController
       end
     end
 
-    if params[:username].blank? 
+    if params[:username].blank?
       flash[:alert] = t('groups.remove_member.errors.name_not_given')
     else
       user = group.users.find(:first, :conditions => [ 'lower(username) = ?', params[:username].downcase ])
       if user.nil?
         flash[:alert] = t('groups.remove_member.errors.user_not_member', :username => params[:username])
-      else 
+      else
         group.users.delete(user)
         flash[:notice] = t('groups.remove_member.success', :username => params[:username])
       end
@@ -53,7 +53,7 @@ class GroupsController < ApplicationController
       flash[:alert] = t('groups.manage_admins.errors.no_name_given')
     else
       wrong_names = []
-      
+
       unless params[:set].blank?
         params[:set].split(/\W+/).each do |name|
           user = group.users.find(:first, :conditions => [ 'lower(username) = ?', name.downcase ])
@@ -101,7 +101,7 @@ class GroupsController < ApplicationController
   end
 
   def index
-    @groups = Group.find(:all, :conditions => { :private => false })
+    @groups = Group.find_all_by_private(false)
   end
 
   def edit

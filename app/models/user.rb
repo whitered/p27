@@ -34,8 +34,12 @@ class User < ActiveRecord::Base
     where(["username = :value OR email = :value", { :value => name }]).first
   end
 
+  def self.find_by_username_downcase name
+    where([ 'lower(username) = ?', name.downcase ]).first
+  end
+
 protected
-  
+
   def self.find_for_database_authentication(conditions)
     login = conditions.delete(:login)
     where(conditions).where(["username = :value OR email = :value", { :value => login }]).first

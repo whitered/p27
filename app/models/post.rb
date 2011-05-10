@@ -18,7 +18,7 @@ class Post < ActiveRecord::Base
   validates_presence_of :author_id
 
   def can_be_edited_by? user
-    user && (author == user || group && (group.user_is_admin?(user) || group.owner == user))  
+    user && (author == user || group && (group.user_is_admin?(user) || group.owner == user))
   end
 
   def can_be_commented_by? user
@@ -27,7 +27,7 @@ class Post < ActiveRecord::Base
 
   def new_comments_count_for user
     unless user.nil?
-      visit = visits.find(:first, :conditions => { :user_id => user.id })
+      visit = visits.find_by_user_id(user.id)
       if visit.nil?
         comment_threads.size
       else
