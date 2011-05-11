@@ -31,10 +31,9 @@ class GamesController < ApplicationController
       @games = Game.current.joins(:group).where(:groups => { :private => false }).order('date')
     else
       group = Group.find(params[:group_id])
-      raise ActiveRecord::RecordNotFound unless group.public? || (user_signed_in? && group.users.inlude?(current_user))
-      @games = params[:archive] ?
-        group.games.archive.order('date DESC') :
-        group.games.current.order('date')
+      raise ActiveRecord::RecordNotFound unless group.user_can_view?(current_user)
+      games = group.games
+      @games = params[:archive] ? games.archive.order('date DESC') : games.current.order('date')
     end
   end
 
