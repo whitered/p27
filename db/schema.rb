@@ -47,7 +47,6 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
     t.integer  "owner_id"
     t.boolean  "private",    :default => false, :null => false
-    t.boolean  "open",       :default => true
     t.boolean  "hospitable", :default => true,  :null => false
   end
 
