@@ -18,32 +18,7 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
     raise ActiveRecord::RecordNotFound unless @group.user_can_view?(current_user)
-  end
-
-  def remove_member
-    group = current_user.own_groups.find_by_id(params[:id])
-    if group.nil?
-      group = current_user.groups.find(params[:id])
-      unless group.user_is_admin?(current_user)
-        flash[:alert] = t('groups.remove_member.errors.not_permitted')
-        redirect_to group
-        return
-      end
-    end
-
-    if params[:username].blank?
-      flash[:alert] = t('groups.remove_member.errors.name_not_given')
-    else
-      user = group.users.find(:first, :conditions => [ 'lower(username) = ?', params[:username].downcase ])
-      if user.nil?
-        flash[:alert] = t('groups.remove_member.errors.user_not_member', :username => params[:username])
-      else
-        group.users.delete(user)
-        flash[:notice] = t('groups.remove_member.success', :username => params[:username])
-      end
-    end
-
-    redirect_to group
+    @membership = user_signed_in? ? current_user.memberships.find_by_group_id(@group.id) : nil
   end
 
   def manage_admins
@@ -79,24 +54,6 @@ class GroupsController < ApplicationController
     end
 
     redirect_to group
-  end
-
-  def join
-    group = Group.find(params[:id])
-    raise ActiveRecord::RecordNotFound if group.private?
-    if group.hospitable?
-      group.users << current_user unless group.users.exists? current_user
-    else
-      flash[:alert] = t('groups.join.errors.not_hospitable')
-    end
-    redirect_to group
-  end
-
-  def leave
-    group = current_user.groups.find(params[:id])
-    group.users.delete current_user
-    flash[:notice] = t('groups.leave.success', :group => group.name)
-    redirect_to (group.public? ? group : root_path)
   end
 
   def index

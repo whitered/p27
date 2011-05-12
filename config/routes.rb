@@ -14,15 +14,13 @@ P27::Application.routes.draw do
 
   resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do
     member do
-      post :remove_member
       post :manage_admins
-      post :leave
-      post :join
     end
 
     resources :invitations, :only => [:new, :create]
     resources :posts, :only => [:new, :create]
     resources :games, :only => [:new, :create, :index]
+    resources :memberships, :only => [:create]
   end
 
   resources :users, :only => [:show]
@@ -44,6 +42,8 @@ P27::Application.routes.draw do
       post :leave
     end
   end
+
+  resources :memberships, :only => [:destroy]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

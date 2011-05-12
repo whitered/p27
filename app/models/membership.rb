@@ -8,4 +8,11 @@ class Membership < ActiveRecord::Base
   validates_inclusion_of :is_admin, :in => [true, false]
   validates_uniqueness_of :user_id, :scope => :group_id
 
+  delegate :name, :to => :group, :prefix => true
+  delegate :username, :to => :user, :prefix => true
+
+  def user_can_destroy? user
+    user && (user == self.user || group.user_is_admin?(user) || group.owner == user)
+  end
+
 end

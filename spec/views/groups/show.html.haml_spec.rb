@@ -2,8 +2,6 @@ require 'spec_helper'
 
 describe "groups/show.html.haml" do
 
-  let(:page) { Capybara.string rendered }
-
   before do
     stub_template 'posts/_post' => '<div class="stub_template_post"/>'
     stub_template 'users/_user' => '<div class="stub_template_user"><%= user.username %></div>'
@@ -11,8 +9,11 @@ describe "groups/show.html.haml" do
     @group = Group.make!
     @group.users << @user << @member << @admin
     @group.set_admin_status @admin, true
+    @membership = @group.memberships.find_by_user_id(@user.id) 
     sign_in @user
   end
+
+  let(:page) { Capybara.string rendered }
 
   it 'should render group name' do
     render
@@ -63,7 +64,7 @@ describe "groups/show.html.haml" do
 
       it 'should have link to leave group' do
         render
-        group_users.should have_link(t('groups.show.leave'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.show.leave'), :href => membership_path(@membership), :method => :delete)
       end
 
       it 'should not have link to join group' do
@@ -77,15 +78,15 @@ describe "groups/show.html.haml" do
     context 'for an admin' do
 
       before do
-        @group.set_admin_status @user, true
+        @membership.update_attribute(:is_admin, true)
       end
 
       it 'should have links to remove any user from the group' do
         render
-        group_users.all(:xpath, ".//a[. = '#{t('groups.show.remove_member')}']").count.should eq(@group.users.count)
+        group_users.all(:xpath, ".//a[. = '#{t('groups.show.remove_member')}']").count.should == @group.users.count
         group_users.all('li').each do |node|
           username = node.first('.stub_template_user').text
-          node.should have_link(t('groups.show.remove_member'), :href => remove_member_group_path(@group, :username => username))
+          node.should have_link(t('groups.show.remove_member'), :href => membership_path(@group.memberships.find_by_user_id(User.find_by_username(username).id)), :method => :delete)
         end
       end
 
@@ -101,7 +102,7 @@ describe "groups/show.html.haml" do
 
       it 'should have link to leave group' do
         render
-        group_users.should have_link(t('groups.show.leave'), :href => leave_group_path(@group))
+        group_users.should have_link(t('groups.show.leave'), :href => membership_path(@membership))
       end
 
       it 'should have link to the new invitation page' do
@@ -143,6 +144,7 @@ describe "groups/show.html.haml" do
     context 'for guest' do
       before do
         @group.users.delete @user
+        @membership = nil
       end
 
       it 'should not have leave link' do
@@ -158,7 +160,7 @@ describe "groups/show.html.haml" do
 
         it 'should have link to join group' do
           render
-          group_users.should have_link(t('groups.show.join'), :href => join_group_path(@group))
+          group_users.should have_link(t('groups.show.join'), :href => group_memberships_path(@group), :method => :post)
         end
 
       end
@@ -202,7 +204,7 @@ describe "groups/show.html.haml" do
     3.times { Post.make!(:group => @group, :author => User.make!) }
     render
     page.should have_selector('#posts')
-    page.all('#posts .stub_template_post').size.should eq(3)
+    page.all('#posts .stub_template_post').size.should == 3
   end
 
   it 'should have new post link for authorized user' do

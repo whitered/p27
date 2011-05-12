@@ -139,3 +139,10 @@ ru:
     edit:
       submit: Сохранить
     addon: Аддон
+  memberships:
+    create:
+      not_hospitable: Вступить в эту группу можно только по приглашению
+    destroy:
+      leave_successful: 'Вы вышли из группы %{group}'
+      user_removed_successful: '%{username} удален из группы'
+      not_permitted: Исключить из группы может только администратор

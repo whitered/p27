@@ -5,20 +5,20 @@
   = link_to t('.archive'), group_games_path(@group, :archive => true)
   #group_users
     - if user_signed_in?
-      - if @group.users.exists? current_user
-        = link_to t('.leave'), leave_group_path(@group), :method => :post
+      - if @membership.present?
+        = link_to t('.leave'), membership_path(@membership), :method => :delete
       - elsif @group.hospitable?
-        = link_to t('.join'), join_group_path(@group), :method => :post
+        = link_to t('.join'), group_memberships_path(@group), :method => :post
     %ul
-      - @group.users.each do |user|
+      - @group.memberships.each do |membership|
         %li
-          = content_tag :span, render(user), :class => (@group.user_is_admin?(user) ? 'admin' : nil)
-          = link_to t('.remove_member'), remove_member_group_path(@group, :username => user.username), :method => :post if @group.user_is_admin?(current_user)
+          = content_tag :span, render(membership.user), :class => (membership.is_admin? ? 'admin' : nil)
+          = link_to t('.remove_member'), membership_path(membership), :method => :delete if @membership.present? && @membership.is_admin?
           - if @group.owner == current_user
-            - if @group.user_is_admin?(user)
-              = link_to t('.unset_admin'), manage_admins_group_path(@group, :unset => user.username), :method => :post
+            - if membership.is_admin?
+              = link_to t('.unset_admin'), manage_admins_group_path(@group, :unset => membership.user_username), :method => :post
             - else
-              = link_to t('.set_admin'), manage_admins_group_path(@group, :set => user.username), :method => :post
+              = link_to t('.set_admin'), manage_admins_group_path(@group, :set => membership.user_username), :method => :post
     = link_to t('.new_invitation'), new_group_invitation_path(@group) if user_signed_in? && @group.user_is_admin?(current_user)
   #posts
     = render @group.posts
