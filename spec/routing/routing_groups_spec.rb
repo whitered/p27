@@ -18,12 +18,6 @@ describe GroupsController do
                                             :id => '2')
   end
 
-  it 'should route manage_admins' do
-    { :post => '/groups/3/manage_admins' }.should route_to(:controller => 'groups',
-                                                           :action => 'manage_admins',
-                                                           :id => '3')
-  end
-
   it 'should route index' do
     { :get => '/groups' }.should route_to(:controller => 'groups',
                                           :action => 'index')

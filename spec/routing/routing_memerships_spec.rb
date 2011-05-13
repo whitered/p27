@@ -8,6 +8,12 @@ describe MembershipsController do
                                                      :id => '34')
   end
 
+  it 'should route update' do
+    { :put => '/memberships/4' }.should route_to(:controller => 'memberships',
+                                                 :action => 'update',
+                                                 :id => '4')
+  end
+
   context 'inside group' do
 
     it 'should route create' do

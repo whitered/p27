@@ -28,10 +28,6 @@ ru:
         not_permitted: Исключить из группы может только администратор
         user_not_found: 'Пользователь с ником %{username} не найден'
         user_not_member: '%{username} не состоит в группе'
-    manage_admins:
-      errors:
-        wrong_names: 'Таких пользователей нет в группе: %{names}'
-        no_name_given: Не указано имя пользователя
     show:
       join: Вступить в группу
       leave: Выйти из группы

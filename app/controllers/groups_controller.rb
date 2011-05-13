@@ -21,41 +21,6 @@ class GroupsController < ApplicationController
     @membership = user_signed_in? ? current_user.memberships.find_by_group_id(@group.id) : nil
   end
 
-  def manage_admins
-    group = current_user.own_groups.find_by_id!(params[:id])
-    if params[:set].blank? && params[:unset].blank?
-      flash[:alert] = t('groups.manage_admins.errors.no_name_given')
-    else
-      wrong_names = []
-
-      unless params[:set].blank?
-        params[:set].split(/\W+/).each do |name|
-          user = group.users.find(:first, :conditions => [ 'lower(username) = ?', name.downcase ])
-          if user.nil?
-            wrong_names << name
-          else
-            group.set_admin_status user, true
-          end
-        end
-      end
-
-      unless params[:unset].blank?
-        params[:unset].split(/\W+/).each do |name|
-          user = group.users.find(:first, :conditions => [ 'lower(username) = ?', name.downcase ])
-          if user.nil?
-            wrong_names << name
-          else
-            group.set_admin_status user, false
-          end
-        end
-      end
-
-      flash[:alert] = t('groups.manage_admins.errors.wrong_names', :names => wrong_names.join(', ')) unless wrong_names.empty?
-    end
-
-    redirect_to group
-  end
-
   def index
     @groups = Group.find_all_by_private(false)
   end

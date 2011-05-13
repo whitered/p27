@@ -139,4 +139,79 @@ describe MembershipsController do
 
   end
            
+  describe 'update' do
+
+    before do
+      @group = Group.make!
+      @member = User.make!
+      @membership = Membership.make!(:group => @group, :user => @member, :is_admin => false)
+      @params = {
+        :id => @membership.id,
+        :membership => { :is_admin => true }
+      }
+    end
+
+    def do_update
+      put :update, @params
+      @membership.reload
+    end
+
+    it 'should require user authentication' do
+      do_update
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise exception if user is not owner of the memberships group' do
+      admin = User.make!
+      @group.users << admin
+      @group.set_admin_status admin, true
+      sign_in admin
+      lambda do
+        do_update
+      end.should raise_exception
+    end
+
+    context 'by group owner' do
+
+      before do
+        @group.owner = User.make!
+        @group.save!
+        sign_in @group.owner
+      end
+
+      it 'should update is_admin property' do
+        lambda do
+          do_update
+        end.should change(@membership, :is_admin).from(false).to(true)
+
+      end
+
+      it 'should not update group_id' do
+        @params[:membership][:group_id] = 0
+        lambda do
+          do_update
+        end.should_not change(@membership, :group_id)
+      end
+
+      it 'should not update user_id' do
+        @params[:membership][:user_id] = 0
+        lambda do
+          do_update
+        end.should_not change(@membership, :user_id)
+      end
+
+      it 'should not update inviter_id' do
+        @params[:membership][:inviter_id] = 332
+        lambda do
+          do_update
+        end.should_not change(@membership, :inviter_id)
+      end
+
+      it 'should redirect to group page' do
+        do_update
+        response.should redirect_to(group_path(@group))
+      end
+
+    end
+  end
 end

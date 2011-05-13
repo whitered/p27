@@ -25,4 +25,12 @@ class MembershipsController < ApplicationController
     redirect_to leaving ? root_path : group_path(membership.group)
   end
 
+  def update
+    membership = Membership.find(params[:id])
+    raise 'Permission Denied' unless membership.group.owner == current_user
+    is_admin = params[:membership] && params[:membership][:is_admin]
+    membership.update_attribute(:is_admin, is_admin) unless is_admin.nil?
+    redirect_to membership.group
+  end
+
 end

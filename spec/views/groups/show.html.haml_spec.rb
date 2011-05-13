@@ -120,12 +120,20 @@ describe "groups/show.html.haml" do
 
       it 'should have links to set admin for regular members' do
         render
-        find_user_item(@member.username).should have_link(t('groups.show.set_admin'), :href => manage_admins_group_path(@group, :set => @member.username))
+        link_params = {
+          :href => membership_path(@group.memberships.find_by_user_id(@member.id), :membership => { :is_admin => true }), 
+          :method => :put
+        }
+        find_user_item(@member.username).should have_link(t('groups.show.set_admin'), link_params)
       end
 
       it 'should have links to unset admin for admins' do
         render
-        find_user_item(@admin.username).should have_link(t('groups.show.unset_admin'), :href => manage_admins_group_path(@group, :unset => @admin.username))
+        link_params = {
+          :href => membership_path(@group.memberships.find_by_user_id(@admin.id), :membership => { :is_admin => false }),
+          :method => :put
+        }
+        find_user_item(@admin.username).should have_link(t('groups.show.unset_admin'), link_params)
       end
 
       it 'should not have link to set admin for admin' do
