@@ -267,4 +267,28 @@ describe Group do
     end
 
   end
+
+  it 'should have add_user method' do
+    Group.new.should respond_to(:add_user)
+  end
+
+  describe 'add_user' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+    end
+
+    it 'should add new user' do
+      @group.add_user @user
+      @group.users.should include(@user)
+    end
+
+    it 'should not add user twice' do
+      @group.users << @user
+      @group.add_user @user
+      @group.reload
+      @group.users.count.should == 1
+    end
+  end
 end

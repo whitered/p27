@@ -45,6 +45,13 @@ describe MembershipsController do
           m.user.should == @user
           m.group.should == @group
         end
+
+        it 'should not create secondary membership' do
+          @group.users << @user
+          lambda do
+            do_create
+          end.should_not change(Membership, :count)
+        end
       end
 
       context 'for not hospitable group' do 

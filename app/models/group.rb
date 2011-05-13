@@ -36,4 +36,8 @@ class Group < ActiveRecord::Base
   def user_can_view? user
     public? || (user && user.is_insider_of?(self))
   end
+
+  def add_user user
+    users << user unless users.include? user
+  end
 end
