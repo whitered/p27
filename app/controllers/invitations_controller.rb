@@ -6,7 +6,7 @@ class InvitationsController < ApplicationController
   def new
   end
 
-  def create
+  def create # ignore_rbp
     sent_invitations = 0
     wrong_emails = []
     members = []

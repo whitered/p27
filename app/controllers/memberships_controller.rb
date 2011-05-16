@@ -13,7 +13,7 @@ class MembershipsController < ApplicationController
     redirect_to group
   end
 
-  def destroy
+  def destroy # ignore_rbp
     leaving = current_user == @membership.user
     if @membership.user_can_destroy?(current_user)
       @membership.destroy
@@ -27,7 +27,7 @@ class MembershipsController < ApplicationController
   end
 
   def update
-    raise ActiveRecord::RecordNotFound unless @membership.group_owner == current_user
+    raise ActiveRecord::RecordNotFound unless @membership.group_owner == current_user # ignore_rbp
     is_admin = params[:membership] && params[:membership][:is_admin]
     @membership.update_attribute(:is_admin, is_admin) unless is_admin.nil?
     redirect_to @membership.group

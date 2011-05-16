@@ -4,7 +4,7 @@ class RegistrationsController < Devise::RegistrationsController
 
   before_filter :find_invitation, :only => [:new, :create]
 
-  def create
+  def create # ignore_rbp
     @user = User.new(params[:user])
 
     @user.skip_confirmation! if Rails.env.development?

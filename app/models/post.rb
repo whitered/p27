@@ -36,4 +36,20 @@ class Post < ActiveRecord::Base
     end
   end
 
+  def can_be_viewed_by? user
+    group.user_can_view? user
+  end
+
+  def update_visit user
+    visit = visits.find_by_user_id(user.id)
+    if visit.nil?
+      visits.create(:user => user, :existing_comments => comment_threads.size)
+      last_visit = created_at
+    else
+      last_visit = visit.updated_at
+      visit.update_attribute(:existing_comments, comment_threads.size)
+    end
+    last_visit
+  end
+
 end
