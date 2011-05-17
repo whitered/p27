@@ -4,27 +4,27 @@ class RegistrationsController < Devise::RegistrationsController
 
   before_filter :find_invitation, :only => [:new, :create]
 
-  def create
+  def create # ignore_rbp
     @user = User.new(params[:user])
 
     @user.skip_confirmation! if Rails.env.development?
 
     unless @invitation.nil?
       @user.email = @invitation.email
-      @user.skip_confirmation! 
+      @user.skip_confirmation!
     end
 
     if @user.save
       @invitation.accept! @user unless @invitation.nil?
 
-      invitations = Invitation.find(:all, :conditions => [ 'lower(email) = ?', @user.email.downcase ])
+      invitations = Invitation.find_by_email_downcase(@user.email)
       invitations.each do |invitation|
         invitation.user = @user
         invitation.email = nil
         invitation.save
       end
 
-      if @user.confirmed? 
+      if @user.confirmed?
         flash[:notice] = t('registrations.create.registered_and_confirmed')
       else
         flash[:notice] = t('registrations.create.confirm_registration')

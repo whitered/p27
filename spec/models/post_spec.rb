@@ -228,4 +228,73 @@ describe Post do
     
   end
 
+  it 'should have update_visit method' do
+    Post.new.should respond_to(:update_visit)
+  end
+
+  describe 'update_visit' do
+
+    before do
+      @post = Post.make!(:author => User.make!)
+      @user = User.make!
+    end
+
+    context 'on first visit' do
+
+      it 'should create new visit' do
+        lambda do
+          @post.update_visit(@user)
+        end.should change(Visit, :count).by(1)
+        visit = Visit.last
+        visit.user.should == @user
+      end
+
+      it 'should return post creation time' do
+        @post.update_visit(@user).should == @post.created_at
+      end
+    end
+
+    context 'on secondary visit' do
+
+      before do
+        @last_time = 1.day.ago
+        @user.visits.create(:visitable => @post, :created_at => @last_time, :updated_at => @last_time)
+        @post.comment_threads.create!(:user => User.make!, :body => 'blablabla')
+        @post.reload
+      end
+
+      it 'should update visit time' do
+        lambda do
+          @post.update_visit(@user)
+        end.should change{ Visit.last.existing_comments }.from(0).to(1)
+      end
+
+      it 'should return previous visit update time' do
+        @post.update_visit(@user).should == @last_time
+      end
+    end
+  end
+
+  it 'should have can_be_viewed_by? method' do
+    Post.new.should respond_to(:can_be_viewed_by?)
+  end
+
+  describe 'can_be_viewed_by?' do
+
+    before do
+      @group = Group.make!(:private => true)
+      @post = Post.make!(:group => @group, :author => User.make!)
+      @post.stub(:group) { @group }
+    end
+
+    it 'should be true if user can view group' do
+      @group.should_receive(:user_can_view?).and_return(true)
+      @post.can_be_viewed_by?(nil).should == true
+    end
+
+    it 'should be false if user cannot view group' do
+      @group.should_receive(:user_can_view?).and_return(false)
+      @post.can_be_viewed_by?(nil).should == false
+    end
+  end
 end

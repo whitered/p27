@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110506111101) do
+ActiveRecord::Schema.define(:version => 20110512181414) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -24,7 +24,9 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
   end
 
+  add_index "comments", ["commentable_id", "commentable_type"], :name => "index_comments_on_commentable_id_and_commentable_type"
   add_index "comments", ["commentable_id"], :name => "index_comments_on_commentable_id"
+  add_index "comments", ["parent_id"], :name => "index_comments_on_parent_id"
   add_index "comments", ["user_id"], :name => "index_comments_on_user_id"
 
   create_table "games", :force => true do |t|
@@ -41,15 +43,19 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.boolean  "archived",     :default => false, :null => false
   end
 
+  add_index "games", ["announcer_id"], :name => "index_games_on_announcer_id"
+  add_index "games", ["group_id"], :name => "index_games_on_group_id"
+
   create_table "groups", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "owner_id"
     t.boolean  "private",    :default => false, :null => false
-    t.boolean  "open",       :default => true
     t.boolean  "hospitable", :default => true,  :null => false
   end
+
+  add_index "groups", ["owner_id"], :name => "index_groups_on_owner_id"
 
   create_table "invitations", :force => true do |t|
     t.integer  "user_id"
@@ -64,6 +70,11 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
   end
 
+  add_index "invitations", ["group_id"], :name => "index_invitations_on_group_id"
+  add_index "invitations", ["inviter_id"], :name => "index_invitations_on_inviter_id"
+  add_index "invitations", ["membership_id"], :name => "index_invitations_on_membership_id"
+  add_index "invitations", ["user_id"], :name => "index_invitations_on_user_id"
+
   create_table "memberships", :force => true do |t|
     t.integer  "user_id"
     t.integer  "group_id"
@@ -72,6 +83,10 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
     t.integer  "inviter_id"
   end
+
+  add_index "memberships", ["group_id"], :name => "index_memberships_on_group_id"
+  add_index "memberships", ["inviter_id"], :name => "index_memberships_on_inviter_id"
+  add_index "memberships", ["user_id"], :name => "index_memberships_on_user_id"
 
   create_table "participations", :force => true do |t|
     t.integer  "user_id"
@@ -84,6 +99,9 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.integer  "win"
   end
 
+  add_index "participations", ["game_id"], :name => "index_participations_on_game_id"
+  add_index "participations", ["user_id"], :name => "index_participations_on_user_id"
+
   create_table "posts", :force => true do |t|
     t.string   "title"
     t.text     "body"
@@ -93,6 +111,9 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
     t.integer  "comment_threads_count", :default => 0
   end
+
+  add_index "posts", ["author_id"], :name => "index_posts_on_author_id"
+  add_index "posts", ["group_id"], :name => "index_posts_on_group_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                               :default => "", :null => false
@@ -125,5 +146,8 @@ ActiveRecord::Schema.define(:version => 20110506111101) do
     t.datetime "updated_at"
     t.integer  "existing_comments", :default => 0, :null => false
   end
+
+  add_index "visits", ["user_id"], :name => "index_visits_on_user_id"
+  add_index "visits", ["visitable_id", "visitable_type"], :name => "index_visits_on_visitable_id_and_visitable_type"
 
 end

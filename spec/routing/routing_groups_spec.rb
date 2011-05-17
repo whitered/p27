@@ -18,33 +18,9 @@ describe GroupsController do
                                             :id => '2')
   end
 
-  it 'should route remove_member' do
-    { :post => '/groups/3/remove_member' }.should route_to(:controller => 'groups',
-                                                          :action => 'remove_member',
-                                                          :id => '3')
-  end
-
-  it 'should route manage_admins' do
-    { :post => '/groups/3/manage_admins' }.should route_to(:controller => 'groups',
-                                                           :action => 'manage_admins',
-                                                           :id => '3')
-  end
-
-  it 'should route leave' do
-    { :post => '/groups/1/leave' }.should route_to(:controller => 'groups',
-                                                   :action => 'leave',
-                                                   :id => '1')
-  end
-
   it 'should route index' do
     { :get => '/groups' }.should route_to(:controller => 'groups',
                                           :action => 'index')
-  end
-
-  it 'should route join' do
-    { :post => '/groups/5/join' }.should route_to(:controller => 'groups',
-                                                  :action => 'join',
-                                                  :id => '5')
   end
 
   it 'should route edit' do

@@ -7,37 +7,41 @@ describe 'comments/_form.html.haml' do
     @comment = Comment.new
   end
 
+  def do_render 
+    render 'comments/form', :comment => @comment, :post => @post
+  end
+
   let(:page) { Capybara.string rendered }
 
   it 'should have id "comment_form"' do
-    render 
+    do_render 
     page.should have_selector('#comment_form')
   end
 
   it 'should have proper action' do
-    render 
+    do_render 
     page.find('form')[:action].should eq(post_comments_path(@post))
   end
 
   it 'should have field for body' do
-    render 
+    do_render 
     page.should have_field(t('activerecord.attributes.comment.body'))
   end
 
   it 'should have submit button' do
-    render 
+    do_render 
     page.should have_button(t('comments.form.submit'))
   end
 
   it 'should have hidden field for parent_id if it was specified' do
     @comment.parent_id = '543'
-    render
+    do_render
     page.should have_xpath('.//form//input[@type = "hidden" and @value = "543"]')
   end
 
-  it 'should render comment errors' do
+  it 'should do_render comment errors' do
     @comment.errors.add(:commentable, 'Vai-vai-vai, error!')
-    render 
+    do_render 
     page.should have_content('Vai-vai-vai, error!')
   end
 end

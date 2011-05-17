@@ -1,14 +1,18 @@
 - indent = [indent || 0, 9].min
-%div{ :class => 'indent_' + indent.to_s + ' ' + novelty_class(comment, @last_visit) }[comment]
+%div{ :class => 'indent_' + indent.to_s + ' ' + novelty_class(comment, last_visit) }[comment]
   %p= comment.body.html_safe
   = render comment.user
   = l comment.created_at
-  = link_to t('.reply'), polymorphic_path(comment.commentable, :comment_id => comment.id) unless @comment.nil?
+  = link_to t('.reply'), polymorphic_path(comment.commentable, :comment_id => comment.id) unless new_comment.nil?
   = link_to t('.parent'), '#comment_' + parent_id if defined?(parent_id)
-- if @comment.present? && @comment.parent == comment
+-#- if new_comment_for?(comment)
+- if new_comment.present? && new_comment.parent == comment
   %div{ :class => 'indent_' + indent.to_s }
-    = render 'comments/form' 
+    = render 'comments/form', :post => post, :comment => new_comment
 
-= render :partial => 'comments/comment', 
-  :collection => comment.children,
-  :locals => { :indent => indent + 1, :parent_id => comment.id.to_s }
+= render comment.children,
+  :partial => 'comments/comment',
+  :indent => indent + 1,
+  :parent_id => comment.id.to_s,
+  :new_comment => new_comment,
+  :last_visit => last_visit

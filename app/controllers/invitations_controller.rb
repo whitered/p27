@@ -1,18 +1,16 @@
 class InvitationsController < ApplicationController
 
+  before_filter :find_group, :only => [:new, :create]
+  before_filter :find_invitation, :only => [:accept, :decline]
+
   def new
-    @group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
   end
 
-  def create
-    @group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
-
+  def create # ignore_rbp
     sent_invitations = 0
     wrong_emails = []
     members = []
-    
+
     recipients = params[:recipients].blank? ? [] : params[:recipients].split(/[\s;,]+/)
 
     if recipients.empty?
@@ -30,15 +28,15 @@ class InvitationsController < ApplicationController
           end
         elsif user.groups.exists?(@group)
           members << name
-        else 
+        else
           invitation = Invitation.create(:user => user, :group => @group, :inviter => current_user)
           sent_invitations += 1
         end
       end
 
       if sent_invitations == recipients.size
-        flash[:notice] = sent_invitations > 1 ? 
-          t('invitations.create.invitations_sent') : 
+        flash[:notice] = sent_invitations > 1 ?
+          t('invitations.create.invitations_sent') :
           t('invitations.create.invitation_sent')
       elsif wrong_emails.size + members.size > 1
         flash[:alert] = t('invitations.create.invitations_failed', :recipients => [wrong_emails + members].join(', '))
@@ -46,27 +44,37 @@ class InvitationsController < ApplicationController
         flash[:alert] = t('invitations.create.wrong_email', :recipient => wrong_emails.first)
       elsif members.any?
         flash[:alert] = t('invitations.create.user_is_member', :recipient => members.first)
-      end                  
+      end
     end
 
     render :new
   end
 
   def index
-    @invitations = Invitation.find(:all, :conditions => { :user_id => current_user.id })
+    @invitations = Invitation.find_all_by_user_id(current_user.id)
   end
 
   def accept
-    invitation = current_user.invitations.find(params[:id])
-    invitation.accept!
-    flash[:notice] = t('invitations.accept.successful', :group => invitation.group.name)
+    @invitation.accept!
+    flash[:notice] = t('invitations.accept.successful', :group => @invitation.group_name)
     redirect_to invitations_url
   end
 
   def decline
-    invitation = current_user.invitations.find(params[:id])
-    invitation.destroy
-    flash[:notice] = t('invitations.decline.successful', :group => invitation.group.name)
+    @invitation.destroy
+    flash[:notice] = t('invitations.decline.successful', :group => @invitation.group_name)
     redirect_to invitations_url
   end
+
+private
+
+  def find_group
+    @group = Group.find(params[:group_id])
+    raise ActiveRecord::RecordNotFound unless @group.user_is_admin?(current_user)
+  end
+
+  def find_invitation
+    @invitation = current_user.invitations.find(params[:id])
+  end
+
 end

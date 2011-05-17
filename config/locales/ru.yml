@@ -28,11 +28,6 @@ ru:
         not_permitted: Исключить из группы может только администратор
         user_not_found: 'Пользователь с ником %{username} не найден'
         user_not_member: '%{username} не состоит в группе'
-    manage_admins:
-      errors:
-        wrong_names: 'Таких пользователей нет в группе: %{names}'
-        not_permitted: Только владелец группы может назначить администратора
-        no_name_given: Не указано имя пользователя
     show:
       join: Вступить в группу
       leave: Выйти из группы
@@ -140,3 +135,10 @@ ru:
     edit:
       submit: Сохранить
     addon: Аддон
+  memberships:
+    create:
+      not_hospitable: Вступить в эту группу можно только по приглашению
+    destroy:
+      leave_successful: 'Вы вышли из группы %{group}'
+      user_removed_successful: '%{username} удален из группы'
+      not_permitted: Исключить из группы может только администратор

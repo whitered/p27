@@ -7,7 +7,7 @@ class InvitationMailer < ActionMailer::Base
   #   en.invitations.invite_user.subject
   #
   def invite_user invitation, link
-    
+
     @invitation = invitation
     @link = link
 

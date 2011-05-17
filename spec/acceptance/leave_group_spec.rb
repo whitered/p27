@@ -14,15 +14,16 @@ feature 'Leave Group' do
     @group.update_attribute(:private, false)
     visit group_path(@group)
     click_link_or_button t('groups.show.leave')
-    page.should have_content(@group.name)
+    current_path.should == root_path
+    page.should have_content(t('memberships.destroy.leave_successful', :group => @group.name))
+    visit group_path(@group)
     page.find('#group_users').should have_no_content(@user.username)
-    page.should have_content(t('groups.leave.success', :group => @group.name))
   end
 
   scenario 'group members leaves private group' do
     @group.update_attribute(:private, true)
     visit group_path(@group)
     click_link_or_button t('groups.show.leave')
-    page.should have_content(t('groups.leave.success', :group => @group.name))
+    page.should have_content(t('memberships.destroy.leave_successful', :group => @group.name))
   end
 end
