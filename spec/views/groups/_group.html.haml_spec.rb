@@ -14,10 +14,6 @@ describe 'groups/_group.html.haml' do
     page.should have_content(@group.name)
   end
 
-  it 'should have number of group members' do
-    page.should have_content(@group.users.count.to_s)
-  end
-
   it 'should have link to group page' do
     page.should have_xpath(".//a[@href='#{group_path(@group)}']")
   end
