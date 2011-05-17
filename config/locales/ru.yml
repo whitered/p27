@@ -4,6 +4,10 @@ ru:
       new:
         title: Вход
         submit: Войти
+    passwords:
+      new:
+        title: 'Восстановление пароля'
+        submit: 'Восстановить'
   layouts:
     header:
       registration: Регистрация
