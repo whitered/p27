@@ -71,10 +71,25 @@ header {
   }
 }
 
+nav#sidebar {
+  background-color: #eee;
+  float: left;
+  padding: 3em;
+  width: 15%;
+}
+
 #main {
-  margin: 1em 3em;
+  float: left;
+  padding: 1em 3em;
+  width: 70%;
 
   h1 { font-size: 1.5em; }
+
+  #flashes {
+    div { padding: 0.5em 2em; margin: 1em 0; }
+    .alert { background-color: $alert-color; }
+    .notice { background-color: $notice-color; }
+  }
 
   .post { margin: 3em 0; } 
   .comment { margin-top: 2em; }
@@ -94,4 +109,6 @@ header {
 
 }
 
-footer {}
+footer {
+  clear: both;
+}

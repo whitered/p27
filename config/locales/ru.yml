@@ -17,6 +17,8 @@ ru:
       posts: Посты
       games: Игры
       archive: Архив
+    sidebar:
+      my_groups: Мои группы
   home:
     index:
       new_group: Создать новую группу
