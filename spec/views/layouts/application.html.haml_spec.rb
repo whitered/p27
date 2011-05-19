@@ -5,10 +5,12 @@ describe 'layouts/application' do
   let(:page) { Capybara.string rendered }
 
   before do
+    @title = 'title'
     stub_template 'layouts/header' => ''
     stub_template 'layouts/flashes' => ''
     stub_template 'layouts/footer' => ''
     stub_template 'layouts/javascripts' => ''
+    stub_template 'layouts/sidebar' => ''
     render
   end
 
@@ -26,6 +28,10 @@ describe 'layouts/application' do
 
   it 'should render javascripts partial' do
     page.should render_template('layouts/_javascripts')
+  end
+
+  it 'should render sidebar partial' do
+    page.should render_template('layouts/_sidebar')
   end
 
 end

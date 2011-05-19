@@ -7,7 +7,7 @@
   %meta{ :content => "IE=edge,chrome=1", "http-equiv" => "X-UA-Compatible" }/
 
   %title
-    == p27
+    = (title.empty? ? '' : title + ' | ') + 'p27'
 
   %meta{ :content => "", :name => "description" }/
   %meta{ :content => "", :name => "author" }/

@@ -9,11 +9,6 @@ describe "games/new.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    render
-    page.should have_content(t('games.new.title'))
-  end
-  
   it 'should have fields for game date' do
     render
     page.should have_field(t('activerecord.attributes.game.date'))

@@ -71,10 +71,25 @@ header {
   }
 }
 
+nav#sidebar {
+  background-color: #eee;
+  float: left;
+  padding: 3em;
+  width: 15%;
+}
+
 #main {
-  margin: 1em 3em;
+  float: left;
+  padding: 1em 3em;
+  width: 70%;
 
   h1 { font-size: 1.5em; }
+
+  #flashes {
+    div { padding: 0.5em 2em; margin: 1em 0; }
+    .alert { background-color: $alert-color; }
+    .notice { background-color: $notice-color; }
+  }
 
   .post { margin: 3em 0; } 
   .comment { margin-top: 2em; }
@@ -86,10 +101,14 @@ header {
 
   form.simple_form {
     margin: 2em 0;
-    label { width: 12em; float: left; }
-    .input { margin: 1em 0; }
+
+    p.input { margin: 1em 0; }
+    label { width: 12em; display: inline-block; }
+    input.boolean { margin: 0 0.5em 0 12em; }
   }
 
 }
 
-footer {}
+footer {
+  clear: both;
+}

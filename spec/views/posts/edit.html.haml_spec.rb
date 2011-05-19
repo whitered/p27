@@ -9,10 +9,6 @@ describe 'posts/edit.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    page.should have_content(t('posts.edit.title'))
-  end
-
   it 'should have title field' do
     page.should have_field(t('activerecord.attributes.post.title'), :value => 'nonono')
   end

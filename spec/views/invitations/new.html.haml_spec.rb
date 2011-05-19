@@ -9,10 +9,6 @@ describe 'invitations/new.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    page.should have_content(t('invitations.new.title', :group => @group.name))
-  end
-
   it 'should have form for invitation' do
     page.should have_selector('form', :action => group_invitations_path(@group))
   end
@@ -31,10 +27,6 @@ describe 'invitations/new.html.haml' do
 
   it 'should have hint text' do
     page.should have_content(t('invitations.new.hint'))
-  end
-
-  it 'should have group name' do
-    page.should have_content(@group.name)
   end
 
 end

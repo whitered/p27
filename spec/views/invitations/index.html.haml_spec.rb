@@ -16,10 +16,6 @@ describe 'invitations/index.html.haml' do
       render
     end
 
-    it 'should render page title' do
-      page.should have_content(t('invitations.index.title'))
-    end
-
     it 'should render template :invitation for each invitation' do
       page.all('.stubbed_template').size.should eq(3)
     end

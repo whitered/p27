@@ -27,6 +27,7 @@ class GamesController < ApplicationController
   end
 
   def index
+    @title = params[:archive] ? t('games.index.archive_title') : t('games.index.title')
     if params[:group_id].nil?
       @games = Game.current.joins(:group).where(:groups => { :private => false }).order('date')
     else
@@ -54,7 +55,7 @@ class GamesController < ApplicationController
 
   def update
     @game.update_attributes(params[:game])
-    render :show
+    redirect_to @game
   end
 
 private

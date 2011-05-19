@@ -1,0 +1,4 @@
+%nav#sidebar
+  - if user_signed_in?
+    %h1= t('.my_groups')
+    = render current_user.groups

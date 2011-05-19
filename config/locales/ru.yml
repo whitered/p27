@@ -8,6 +8,11 @@ ru:
       new:
         title: 'Восстановление пароля'
         submit: 'Восстановить'
+    confirmations:
+      new: 
+        title: Повторный запрос подтверждения регистрации
+      show: 
+        title: ''
   layouts:
     header:
       registration: Регистрация
@@ -17,8 +22,11 @@ ru:
       posts: Посты
       games: Игры
       archive: Архив
+    sidebar:
+      my_groups: Мои группы
   home:
     index:
+      title: ''
       new_group: Создать новую группу
       posts: Последние посты
   groups:
@@ -56,6 +64,7 @@ ru:
       title: Настройки группы
       submit: Сохранить изменения
     update:
+      title: Настройки группы
       success: Настройки группы сохранены
   invitations:
     new:
@@ -65,6 +74,8 @@ ru:
       submit: Пригласить
       hint: Вы можете указать ники пользователя или почтовые адреса. Незарегистрированные пользователи получат приглашения по почте и будут добавлены в группу при регистрации. Зарегистрированные пользователи увидят приглашения в своем аккаунте.
     create:
+      title: 'Приглашение новых участников в группу %{group}'
+      recipients: Ник или емейл пользователей
       invitation_sent: Приглашение выслано
       no_recipients: Кого приглашаем?
       wrong_email: '%{recipient} не зарегистрирован на сайте и не очень то похож на адрес электронной почты'
@@ -84,6 +95,7 @@ ru:
       successful: 'Приглашение отклонено'
   registrations:
     create:
+      title: Регистрация
       confirm_registration: На указанный адрес электронной почты выслано письмо со ссылкой для подтверждения регистрации
       registered_and_confirmed: Вы успешно зарегистрированы
     new:
@@ -134,9 +146,11 @@ ru:
       leave: '-1'
       show: Подробнее
     show:
+      title: Игра
       edit: Изменить
       archived: '[Архив]'
     edit:
+      title: Условия игры
       submit: Сохранить
     addon: Аддон
   memberships:
@@ -146,3 +160,6 @@ ru:
       leave_successful: 'Вы вышли из группы %{group}'
       user_removed_successful: '%{username} удален из группы'
       not_permitted: Исключить из группы может только администратор
+  users:
+    show:
+      title: 'Профиль %{username}'

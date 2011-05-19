@@ -514,9 +514,9 @@ describe GamesController do
         assigns[:game].should eq(@game)
       end
 
-      it 'should render :show' do
+      it 'should redirect to game' do
         do_update
-        response.should render_template(:show)
+        response.should redirect_to(game_path(@game))
       end
 
     end

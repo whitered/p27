@@ -9,10 +9,6 @@ describe 'groups/edit.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    page.should have_content(t('groups.edit.title'))
-  end
-
   it 'should have group name field' do
     page.should have_field(t('activerecord.attributes.group.name'), :with => @group.name)
   end
