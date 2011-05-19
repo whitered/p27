@@ -363,4 +363,42 @@ describe GroupsController do
       end
     end
   end
+
+  describe 'my_groups' do
+
+    it 'should require user authentication' do
+      get :my_groups
+      response.should redirect_to(new_user_session_path)
+    end
+
+    context 'for logged in user' do
+
+      before do
+        @user = User.make!
+        @user.groups << Group.make!(2)
+        sign_in @user
+      end
+
+      it 'should assign @groups' do
+        get :my_groups
+        assigns[:groups].should == @user.groups
+      end
+
+      it 'should not assign @my_groups' do
+        get :my_groups
+        assigns[:my_groups].should be_nil
+      end
+
+      it 'should render :index' do
+        get :my_groups
+        response.should render_template(:index)
+      end
+
+      it 'should be successful' do
+        get :my_groups
+        response.should be_successful
+      end
+
+    end
+  end
 end

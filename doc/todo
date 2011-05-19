@@ -27,6 +27,7 @@ forms:
 other:
   use paranoid mass assignment protection
   dependent => :destroy on joining models (railscast 167)
+  refactor locales
 
 
 VULNERABILITIES:

@@ -21,6 +21,12 @@ describe 'groups/index.html.haml' do
       sign_in User.make!
     end
 
+    it 'should render link to create new group on the sidebar' do
+      render
+      sidebar = Capybara.string view.instance_variable_get(:@_content_for)[:sidebar]
+      sidebar.should have_link(t('groups.index.new_group'), :href => new_group_path)
+    end
+
   end
 
   context 'for not logged in user' do

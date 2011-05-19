@@ -12,6 +12,8 @@ P27::Application.routes.draw do
     get '/profile' => 'registrations#edit', :as => :edit_user_registration
   end
 
+  get '/my_groups' => 'groups#my_groups', :as => :my_groups
+
   resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do
     resources :invitations, :only => [:new, :create]
     resources :posts, :only => [:new, :create]

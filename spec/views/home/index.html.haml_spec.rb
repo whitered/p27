@@ -24,11 +24,6 @@ describe "home/index.html.haml" do
       sign_in User.make!
     end
 
-    it 'should have new_group link' do
-      render
-      page.should have_link(t('home.index.new_group'), :href => new_group_path)
-    end
-
     it 'should have posts title' do
       render
       page.should have_content(t('home.index.posts'))
