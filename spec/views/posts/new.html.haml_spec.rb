@@ -10,10 +10,6 @@ describe "posts/new.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    page.should have_content(t('posts.new.title'))
-  end
-
   it 'should have field for post title' do
     page.should have_field(t('activerecord.attributes.post.title'))
   end

@@ -5,6 +5,7 @@ describe 'layouts/application' do
   let(:page) { Capybara.string rendered }
 
   before do
+    @title = 'title'
     stub_template 'layouts/header' => ''
     stub_template 'layouts/flashes' => ''
     stub_template 'layouts/footer' => ''

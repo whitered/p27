@@ -19,6 +19,10 @@ def t_error(klass, attribute, type = :invalid, options = {})
   ActiveModel::Errors.new(klass.new).generate_message(attribute, type, options)
 end 
 
+#def content_for name
+  #view.instance_variable_get(:@content_for)[name]
+#end
+
 RSpec.configure do |config|
   # == Mock Framework
   #

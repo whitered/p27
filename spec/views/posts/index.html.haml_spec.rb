@@ -10,10 +10,6 @@ describe 'posts/index.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    page.should have_content(t('posts.index.title'))
-  end
-
   it 'should render posts' do
     page.should render_template('posts/_post')
     page.all('#posts .post').count.should == 3

@@ -9,11 +9,6 @@ describe 'groups/index.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have page title' do
-    render
-    page.should have_content(t('groups.index.title'))
-  end
-
   it 'should render _group template for each group' do
     render
     page.should have_selector('#groups')
@@ -24,11 +19,6 @@ describe 'groups/index.html.haml' do
 
     before do 
       sign_in User.make!
-    end
-
-    it 'should have new group link' do
-      render
-      page.should have_link(t('groups.index.new_group'), :href => new_group_path)
     end
 
   end

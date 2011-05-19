@@ -1,4 +1,3 @@
-%h1= t('invitations.new.title', :group => @group.name)
 %p= t('.hint')
 = form_tag group_invitations_path(@group) do
   = label_tag :recipients, t('.recipients')

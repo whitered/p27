@@ -8,6 +8,7 @@
         = render 'layouts/header'
       #main{ :role => 'main' }
         = render 'layouts/flashes'
+        = content_tag :h1, title unless title == ''
         = yield
       = render 'layouts/sidebar'
       %footer#footer

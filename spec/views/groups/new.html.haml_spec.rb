@@ -8,11 +8,6 @@ describe 'groups/new.html.haml' do
     @group = Group.new
   end
 
-  it 'should render page title' do
-    render
-    page.should have_content(t('groups.new.title'))
-  end
-
   it 'should have group name field' do
     render
     page.should have_field(t('activerecord.attributes.group.name'))

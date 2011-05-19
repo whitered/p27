@@ -11,11 +11,6 @@ describe "posts/show.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should have post title' do
-    render
-    page.should have_content(@post.title)
-  end
-
   it 'should have post body' do
     render
     page.should have_content(@post.body)
