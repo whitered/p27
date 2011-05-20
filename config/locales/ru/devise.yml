@@ -56,4 +56,7 @@ ru:
       title: Регистрация
       submit: Зарегистрироваться
       wrong_invitation: Неверный код приглашения
+    edit:
+      title: Профиль
+      submit: Сохранить
 
