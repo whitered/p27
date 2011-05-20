@@ -14,17 +14,6 @@ describe 'layouts/_header' do
       page.should have_xpath(".//a[@href='#{root_path}']")
     end
 
-    it 'should have link to groups' do
-      page.should have_link(t('layouts.header.groups'), :href => groups_path)
-    end
-
-    it 'should have link to posts' do
-      page.should have_link(t('layouts.header.posts'), :href => posts_path)
-    end
-
-    it 'should have link to games' do
-      page.should have_link(t('layouts.header.games'), :href => games_path)
-    end
   end
 
   context 'for guest' do

@@ -2,5 +2,6 @@ ru:
   home:
     index:
       title: ''
-      posts: Последние посты
-
+      groups: Группы
+      posts: Посты
+      games: Игры

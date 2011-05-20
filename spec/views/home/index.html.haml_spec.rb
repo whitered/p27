@@ -24,11 +24,6 @@ describe "home/index.html.haml" do
       sign_in User.make!
     end
 
-    it 'should have posts title' do
-      render
-      page.should have_content(t('home.index.posts'))
-    end
-
     it 'should render posts' do
       render
       page.should have_selector('#posts')
@@ -38,6 +33,20 @@ describe "home/index.html.haml" do
         page.should have_content(p.title)
       end
     end
+  end
+
+  describe 'submenu' do
+
+    subject do
+      render
+      Capybara.string view.instance_variable_get(:@_content_for)[:submenu]
+    end
+
+    it { should have_link(t('home.index.groups'), :href => groups_path) }
+
+    it { should have_link(t('home.index.posts'), :href => posts_path) }
+
+    it { should have_link(t('home.index.games'), :href => games_path) }
   end
 
 end
