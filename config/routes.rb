@@ -19,6 +19,7 @@ P27::Application.routes.draw do
     resources :posts, :only => [:new, :create]
     resources :games, :only => [:new, :create, :index]
     resources :memberships, :only => [:create]
+    get :archive, :controller => :games
   end
 
   resources :users, :only => [:show]

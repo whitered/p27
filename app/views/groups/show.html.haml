@@ -2,7 +2,7 @@
   %p= @group.name
   = link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
   = link_to t('.games'), group_games_path(@group)
-  = link_to t('.archive'), group_games_path(@group, :archive => true)
+  = link_to t('.archive'), group_archive_path(@group)
   #group_users
     - if user_signed_in?
       - if @membership.present?

@@ -5,7 +5,8 @@ ru:
       submit: Сохранить
     index:
       title: Игры
-      archive_title: Архив
+    archive:
+      title: Архив
     game:
       join: '+1'
       leave: '-1'
