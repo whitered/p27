@@ -9,6 +9,8 @@
       #main{ :role => 'main' }
         = render 'layouts/flashes'
         = content_tag :h1, title unless title == ''
+        - if content_for? :submenu
+          %nav#submenu= yield :submenu
         = yield
       = render 'layouts/sidebar'
       %footer#footer

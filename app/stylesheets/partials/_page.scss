@@ -76,6 +76,14 @@ nav#sidebar {
   float: left;
   padding: 3em;
   width: 15%;
+
+  h2 {
+    margin: 2em 0 0.5em;
+  }
+
+  ul {
+    margin: 0 0 1em;
+  }
 }
 
 #main {
@@ -84,6 +92,13 @@ nav#sidebar {
   width: 70%;
 
   h1 { font-size: 1.5em; }
+
+  nav#submenu {
+    li {
+      display: inline;
+      margin: 0 1em 0 0;
+    }
+  }
 
   #flashes {
     div { padding: 0.5em 2em; margin: 1em 0; }
