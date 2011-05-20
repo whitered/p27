@@ -1,6 +1,6 @@
 class GamesController < ApplicationController
 
-  skip_before_filter :authenticate_user!, :only => [:show, :index]
+  skip_before_filter :authenticate_user!, :only => [:show, :index, :archive]
 
   before_filter :find_game, :only => [:show, :edit, :update]
   before_filter :find_group, :only => [:new, :create]
@@ -27,15 +27,20 @@ class GamesController < ApplicationController
   end
 
   def index
-    @title = params[:archive] ? t('games.index.archive_title') : t('games.index.title')
     if params[:group_id].nil?
       @games = Game.current.joins(:group).where(:groups => { :private => false }).order('date')
     else
       group = Group.find(params[:group_id])
       raise ActiveRecord::RecordNotFound unless group.user_can_view?(current_user)
-      games = group.games
-      @games = params[:archive] ? games.archive.order('date DESC') : games.current.order('date')
+      @games = group.games.current.order('date')
     end
+  end
+
+  def archive
+    group = Group.find(params[:group_id])
+    raise ActiveRecord::RecordNotFound unless group.user_can_view?(current_user)
+    @games = group.games.archive.order('date DESC')
+    render :index
   end
 
   def join

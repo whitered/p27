@@ -30,7 +30,7 @@ feature "View Games" do
       click_link t('groups.show.archive')
     end
 
-    current_path.should include(group_games_path(@group))
+    current_path.should include(group_archive_path(@group))
     within '#games' do
       page.should have_selector('article#game_' + @archive_game.id.to_s)
     end

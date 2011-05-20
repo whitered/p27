@@ -57,5 +57,11 @@ describe GamesController do
                                                     :group_id => '3')
     end
 
+    it 'should route archive' do
+      { :get => '/groups/4/archive' }.should route_to(:controller => 'games',
+                                                      :action => 'archive',
+                                                      :group_id => '4')
+    end
+
   end
 end

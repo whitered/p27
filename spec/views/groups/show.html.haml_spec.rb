@@ -240,6 +240,6 @@ describe "groups/show.html.haml" do
 
   it 'should have lint to archive' do
     render
-    page.should have_link(t('groups.show.archive'), :href => group_games_path(@group, :archive => true))
+    page.should have_link(t('groups.show.archive'), :href => group_archive_path(@group))
   end
 end
