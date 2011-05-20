@@ -1,14 +1,15 @@
-#group
-  %p= @group.name
-  = link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
-  = link_to t('.games'), group_games_path(@group)
-  = link_to t('.archive'), group_archive_path(@group)
+- content_for :submenu do
+  %ul
+    %li= link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
+    %li= link_to t('.games'), group_games_path(@group)
+    %li= link_to t('.archive'), group_archive_path(@group)
+
+- content_for :sidebar do
+  %ul
+    %li= link_to t('.new_post'), new_group_post_path(@group) if @group.user_can_post?(current_user)
+    %li= link_to t('.new_game'), new_group_game_path(@group) if @group.user_can_announce_game?(current_user)
+  %h2= t('.group_users')
   #group_users
-    - if user_signed_in?
-      - if @membership.present?
-        = link_to t('.leave'), membership_path(@membership), :method => :delete
-      - elsif @group.hospitable?
-        = link_to t('.join'), group_memberships_path(@group), :method => :post
     %ul
       - @group.memberships.each do |membership|
         %li
@@ -20,8 +21,13 @@
             - else
               = link_to t('.set_admin'), membership_path(membership, :membership => { :is_admin => true }), :method => :put
     = link_to t('.new_invitation'), new_group_invitation_path(@group) if user_signed_in? && @group.user_is_admin?(current_user)
+    - if user_signed_in?
+      - if @membership.present?
+        = link_to t('.leave'), membership_path(@membership), :method => :delete
+      - elsif @group.hospitable?
+        = link_to t('.join'), group_memberships_path(@group), :method => :post
+
+#group
   #posts
     = render @group.posts
-    = link_to t('.new_post'), new_group_post_path(@group) if @group.user_can_post?(current_user)
-  #games
-    = link_to t('.new_game'), new_group_game_path(@group) if @group.user_can_announce_game?(current_user)
+

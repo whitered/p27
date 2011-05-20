@@ -1,5 +1,5 @@
 %nav#sidebar
   = yield :sidebar
-  - if defined?(@my_groups)
+  - unless my_groups.nil?
     %h2= link_to t('.my_groups'), my_groups_path
-    = render @my_groups
+    = render my_groups

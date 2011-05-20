@@ -9,8 +9,10 @@
       #main{ :role => 'main' }
         = render 'layouts/flashes'
         = content_tag :h1, title unless title == ''
+        - if content_for? :submenu
+          %nav#submenu= yield :submenu
         = yield
-      = render 'layouts/sidebar'
+      = render 'layouts/sidebar', :my_groups => @my_groups
       %footer#footer
         = render 'layouts/footer'
     -# Javascript at the bottom for fast page loading

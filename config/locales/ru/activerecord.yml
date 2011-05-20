@@ -108,7 +108,7 @@ ru:
         title: Заголовок
         body: Текст
       comment:
-        body: Текст
+        body: Комментарий
       game:
         date: Дата
         time: Время

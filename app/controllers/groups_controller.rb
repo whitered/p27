@@ -37,7 +37,7 @@ class GroupsController < ApplicationController
 
   def update
     @group.update_attributes(params[:group])
-    flash[:notice] = t('groups.update.success')
+    flash.now[:notice] = t('groups.update.success')
     render :edit
   end
 

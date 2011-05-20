@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
 
 private
 
-  def find_my_groups 
+  def find_my_groups
     @my_groups = current_user.groups if user_signed_in?
   end
 end

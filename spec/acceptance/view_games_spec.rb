@@ -12,7 +12,7 @@ feature "View Games" do
 
   scenario 'view current games' do
     visit group_path(@group)
-    within '#group' do
+    within '#submenu' do
       click_link t('groups.show.games')
     end
 
@@ -26,7 +26,7 @@ feature "View Games" do
 
   scenario 'view archive' do
     visit group_path(@group)
-    within '#group' do
+    within '#submenu' do
       click_link t('groups.show.archive')
     end
 

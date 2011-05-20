@@ -13,7 +13,7 @@ ru:
     show:
       join: Вступить в группу
       leave: Выйти из группы
-      edit: Hастройки группы
+      edit: Hастройки
       remove_member: '[x]'
       set_admin: '[+A]'
       unset_admin: '[-A]'
@@ -22,6 +22,7 @@ ru:
       new_game: Объявить игру
       games: Игры
       archive: Архив
+      group_users: Участники
     join:
       errors:
         not_hospitable: Вступить в эту группу можно только по приглашению
