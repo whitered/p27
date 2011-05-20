@@ -4,8 +4,8 @@ feature "Create Group" do
 
   scenario 'user should be able to create new group' do
     login
-    visit root_path
-    click_link t('home.index.new_group')
+    visit groups_path
+    click_link t('groups.index.new_group')
     fill_in t('activerecord.attributes.group.name'), :with => 'Alpha Group'
     click_link_or_button t('groups.new.submit')
     page.should have_content('Alpha Group')

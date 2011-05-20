@@ -1,4 +1,5 @@
 %nav#sidebar
-  - if user_signed_in?
-    %h1= t('.my_groups')
-    = render current_user.groups
+  = yield :sidebar
+  - if defined?(@my_groups)
+    %h2= link_to t('.my_groups'), my_groups_path
+    = render @my_groups

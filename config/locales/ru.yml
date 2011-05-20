@@ -27,7 +27,6 @@ ru:
   home:
     index:
       title: ''
-      new_group: Создать новую группу
       posts: Последние посты
   groups:
     new:
@@ -60,6 +59,8 @@ ru:
     index:
       title: Группы
       new_group: Создать новую группу
+    my_groups:
+      title: Мои группы
     edit:
       title: Настройки группы
       submit: Сохранить изменения

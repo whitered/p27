@@ -1,6 +1,7 @@
 class GroupsController < ApplicationController
 
   skip_before_filter :authenticate_user!, :only => [:show, :index]
+  skip_before_filter :find_my_groups, :only => [:my_groups]
 
   before_filter :find_own_group, :only => [:edit, :update]
 
@@ -24,6 +25,11 @@ class GroupsController < ApplicationController
 
   def index
     @groups = Group.find_all_by_private(false)
+  end
+
+  def my_groups
+    @groups = current_user.groups
+    render :index
   end
 
   def edit

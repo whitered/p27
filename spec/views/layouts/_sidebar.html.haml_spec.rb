@@ -8,17 +8,16 @@ describe 'layouts/_sidebar' do
 
   let(:page) { Capybara.string rendered }
 
-  context 'for logged in user' do
-
-    before do
-      @user = User.make!
-      sign_in @user
-    end
-
-    it 'should render user groups' do
-      @user.groups << Group.make!(2)
-      render
-      page.all('.group').size.should == 2
-    end
+  it 'should render user groups' do
+    @my_groups = Group.make!(2)
+    render
+    page.all('.group').size.should == 2
   end
+
+  it 'should have link to my groups' do
+    @my_groups = []
+    render
+    page.should have_link(t('layouts.sidebar.my_groups', :href => my_groups_path))
+  end
+
 end

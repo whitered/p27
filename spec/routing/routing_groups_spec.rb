@@ -24,15 +24,20 @@ describe GroupsController do
   end
 
   it 'should route edit' do
-    { :get => 'groups/1/edit' }.should route_to(:controller => 'groups',
+    { :get => '/groups/1/edit' }.should route_to(:controller => 'groups',
                                                 :action => 'edit',
                                                 :id => '1')
   end
 
   it 'should route update' do
-    { :put => 'groups/1' }.should route_to(:controller => 'groups',
+    { :put => '/groups/1' }.should route_to(:controller => 'groups',
                                            :action => 'update',
                                            :id => '1')
+  end
+
+  it 'should route my_groups' do
+    { :get => '/my_groups' }.should route_to(:controller => 'groups',
+                                             :action => 'my_groups')
   end
 
 end
