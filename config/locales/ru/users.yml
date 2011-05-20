@@ -1,0 +1,4 @@
+ru:
+  users:
+    show:
+      title: 'Профиль %{username}'

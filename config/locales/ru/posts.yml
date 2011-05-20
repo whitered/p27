@@ -1,0 +1,34 @@
+ru:
+  posts:
+    new:
+      title: Новый пост
+      submit: Написать
+    show:
+      edit: Редактировать
+    edit:
+      title: Редактировать пост
+      submit: Сохранить
+    update:
+      successful: Изменения сохранены
+    post:
+      comment:
+        one: %{count} комментарий
+        few: %{count} комментария
+        many: %{count} комментариев
+        other: %{count} комментария
+      new_comment:
+        one: %{count} новый
+        few: %{count} новых
+        many: %{count} новыx
+        other: %{count} новых
+    index:
+      title: Посты
+  comments:
+    form:
+      submit: Написать
+    comment:
+      reply: Ответить
+      parent: ↑
+    create:
+      failure: Не удалось сохранить комментарий
+
