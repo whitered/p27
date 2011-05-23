@@ -1,1 +1,2 @@
-%p= @user.username
+- content_for :submenu do
+  = link_to t('.edit_profile'), edit_user_registration_path
