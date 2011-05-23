@@ -21,4 +21,10 @@ describe "users/show.html.haml" do
     submenu.should have_link(t('users.show.edit_profile'), :href => edit_user_registration_path)
   end
 
+  it 'should have user name' do
+    @user.update_attribute(:name, 'Bill C')
+    render
+    page.should have_content(@user.name)
+  end
+
 end

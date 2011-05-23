@@ -32,4 +32,14 @@ feature 'Update User Profile' do
     page.should have_content(t('devise.registrations.updated'))
   end
 
+  scenario 'user updates his name' do
+    visit edit_user_registration_path
+    fill_in t('activerecord.attributes.user.name'), :with => 'John Doe'
+    fill_in t('activerecord.attributes.user.current_password'), :with => 'secret'
+    click_link_or_button t('registrations.edit.submit')
+
+    current_path.should == user_path(@user)
+    page.should have_content('John Doe')
+  end
+
 end
