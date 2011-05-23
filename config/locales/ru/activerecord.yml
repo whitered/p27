@@ -99,7 +99,9 @@ ru:
         email: Емейл
         password: Пароль
         password_confirmation: Подтверждение
+        current_password: Текущий пароль
         remember_me: Запомнить меня
+        name: Имя
       group:
         name: Название
         private: Приватная группа

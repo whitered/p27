@@ -8,7 +8,4 @@ describe 'layouts/_stylesheets' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should include formtastic css' do
-    page.should have_xpath('//link[contains(@href, "formtastic")]')
-  end
 end

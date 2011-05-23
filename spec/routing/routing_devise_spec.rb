@@ -12,6 +12,16 @@ describe Devise::RegistrationsController do
                                                  :action => 'create' )
   end
 
+  it 'should route edit' do
+    { :get => '/profile' }.should route_to(:controller => 'registrations',
+                                           :action => 'edit')
+  end
+
+  it 'should route update' do
+    { :put => '/registration' }.should route_to(:controller => 'registrations',
+                                                :action => 'update')
+  end
+
 end
 
 

@@ -32,10 +32,6 @@ describe 'layouts/_header' do
                                         :href => new_user_registration_path)
     end
 
-    #it 'should not have profile link' do
-      #authentication.should have_no_xpath("//a[@href = '#{user_profile_path}']")
-    #end
-
     it 'should not have logout link' do
       authentication.should have_no_xpath(".//a[@href='#{destroy_user_session_path}']")
     end
@@ -45,14 +41,15 @@ describe 'layouts/_header' do
   context 'for user' do
 
     before do
-      @view.should_receive(:user_signed_in?).and_return(true)
+      @user = User.make!
+      sign_in @user
       render
     end
 
-    #it 'should have profile link' do
-      #authentication.should have_link(t('authentication.profile'),
-                                      #:href => user_profile_path)
-    #end
+    it 'should have profile link' do
+      authentication.should have_link(@user.username,
+                                      :href => user_path(@user))
+    end
 
     it 'should have logout link' do
       authentication.should have_link(t('layouts.header.logout'),
