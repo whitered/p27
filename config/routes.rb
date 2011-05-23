@@ -10,6 +10,7 @@ P27::Application.routes.draw do
     get '/registration' => 'registrations#new', :as => :new_user_registration
     post '/registration' => 'registrations#create', :as => :user_registration
     get '/profile' => 'registrations#edit', :as => :edit_user_registration
+    put '/registration' => 'registrations#update', :as => nil
   end
 
   get '/my_groups' => 'groups#my_groups', :as => :my_groups
