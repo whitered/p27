@@ -2,7 +2,8 @@
   = link_to 'P27', root_path
 %nav#authentication
   - if user_signed_in?
-    = link_to current_user.username, user_path(current_user)
+    -#= render current_user   <-- this line fails in acceptance/user_registration_confirmation_spec, maybe this is a bug?
+    = render :partial => 'users/user', :locals => { :user => current_user }
     = link_to t('.logout'), destroy_user_session_path
   - else
     = link_to t('.login'), new_user_session_path
