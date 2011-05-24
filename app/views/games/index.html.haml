@@ -1,2 +1,6 @@
+- if @group && @group.user_can_announce_game?(current_user)
+  - content_for :sidebar do
+    %ul
+      %li= link_to t('.new_game'), new_group_game_path(@group)
 #games
   = render @games

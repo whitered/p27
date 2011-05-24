@@ -273,6 +273,11 @@ describe GamesController do
           assigns[:games].should_not be_nil
         end
 
+        it 'should assign @group' do
+          get_index
+          assigns[:group].should == @group
+        end
+
         it 'should not find games that belong to another group' do
           game = Game.make!(:announcer => User.make!, :group => Group.make!)
           get_index
