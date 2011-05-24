@@ -13,11 +13,6 @@ describe 'registrations/new.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
-  it 'should contain page title' do
-    render
-    page.should have_content(t('registrations.new.title'))
-  end
-
   it 'should contain email field if no invitation is given' do
     render
     page.should have_field(t('activerecord.attributes.user.email'))
