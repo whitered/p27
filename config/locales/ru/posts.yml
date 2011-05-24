@@ -4,6 +4,7 @@ ru:
       title: Новый пост
       submit: Написать
     show:
+      title: Пост
       edit: Редактировать
     edit:
       title: Редактировать пост

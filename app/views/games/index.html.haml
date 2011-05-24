@@ -1,5 +1,5 @@
 - if @group
-  - content_for :title_prefix, link_to(@group.name, @group)
+  - inside_group @group
   - if @group.user_can_announce_game?(current_user)
     - content_for :sidebar do
       %ul

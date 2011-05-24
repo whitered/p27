@@ -31,4 +31,8 @@ module ApplicationHelper
     end
   end
 
+  def inside_group group
+    content_for :title_prefix, link_to(group.name, group)
+  end
+
 end

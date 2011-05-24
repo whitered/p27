@@ -20,6 +20,11 @@ describe "posts/show.html.haml" do
     content_for(:title).should include(@post.title)
   end
 
+  it 'should have group name in post title prefix' do
+    render
+    content_for(:title_prefix).should include(@post.group.name)
+  end
+
   it 'should have post body' do
     render
     page.should have_content(@post.body)
@@ -33,11 +38,6 @@ describe "posts/show.html.haml" do
   it 'should have author' do
     render
     page.find('.user').should have_content(@post.author.username)
-  end
-
-  it 'should have group' do
-    render
-    page.should have_link(@post.group.name, :href => group_path(@post.group))
   end
 
   it 'should have link to edit page if user is authorized for editing' do
