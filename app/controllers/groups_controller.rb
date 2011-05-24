@@ -19,7 +19,6 @@ class GroupsController < ApplicationController
   def show
     @group = Group.find(params[:id])
     raise ActiveRecord::RecordNotFound unless @group.user_can_view?(current_user)
-    @title = @group.name
     @membership = user_signed_in? ? current_user.memberships.find_by_group_id(@group.id) : nil
   end
 

@@ -3,10 +3,6 @@ class InvitationsController < ApplicationController
   before_filter :find_group, :only => [:new, :create]
   before_filter :find_invitation, :only => [:accept, :decline]
 
-  def new
-    @title = t('invitations.new.title', :group => @group.name)
-  end
-
   def create # ignore_rbp
     sent_invitations = 0
     wrong_emails = []

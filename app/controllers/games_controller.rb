@@ -37,9 +37,9 @@ class GamesController < ApplicationController
   end
 
   def archive
-    group = Group.find(params[:group_id])
-    raise ActiveRecord::RecordNotFound unless group.user_can_view?(current_user)
-    @games = group.games.archive.order('date DESC')
+    @group = Group.find(params[:group_id])
+    raise ActiveRecord::RecordNotFound unless @group.user_can_view?(current_user)
+    @games = @group.games.archive.order('date DESC')
     render :index
   end
 

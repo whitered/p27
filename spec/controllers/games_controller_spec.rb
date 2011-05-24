@@ -548,6 +548,11 @@ describe GamesController do
         assigns[:games].should == @group.games[0..1]
       end
 
+      it 'should assign @group' do
+        get_archive
+        assigns[:group].should == @group
+      end
+
       it 'should render :index' do
         get_archive
         response.should render_template(:index)

@@ -11,6 +11,15 @@ describe "posts/show.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
+  def content_for name
+    view.instance_variable_get(:@_content_for)[name]
+  end
+
+  it 'should set page title to post title' do
+    render
+    content_for(:title).should include(@post.title)
+  end
+
   it 'should have post body' do
     render
     page.should have_content(@post.body)

@@ -13,18 +13,25 @@ describe "groups/show.html.haml" do
     sign_in @user
   end
 
+  def content_for name
+    Capybara.string view.instance_variable_get(:@_content_for)[name]
+  end
+
   let(:page) { Capybara.string rendered }
-  let(:sidebar) { Capybara.string view.instance_variable_get(:@_content_for)[:sidebar] }
-  let(:submenu) { Capybara.string view.instance_variable_get(:@_content_for)[:submenu] }
 
   it 'should render group users' do
     render
-    sidebar.should have_selector('#group_users')
+    content_for(:sidebar).should have_selector('#group_users')
+  end
+
+  it 'should set page title to group name' do
+    render
+    content_for(:title).should have_content(@group.name)
   end
 
   describe '#group_users' do
 
-    let(:group_users) { sidebar.find('#group_users') }
+    let(:group_users) { content_for(:sidebar).find('#group_users') }
 
     def find_user_item name
       group_users.find(:xpath, ".//li[contains(.,'#{name}')]")
@@ -190,19 +197,19 @@ describe "groups/show.html.haml" do
   it 'should show edit link for group owner' do
     @group.update_attribute(:owner_id, @user.id)
     render
-    submenu.should have_link(t('groups.show.edit', :href => edit_group_path(@group)))
+    content_for(:submenu).should have_link(t('groups.show.edit', :href => edit_group_path(@group)))
   end
 
   it 'should not show edit link for admin' do
     @group.set_admin_status @user, true
     render
-    submenu.should have_no_link(t('groups.show.edit'))
+    content_for(:submenu).should have_no_link(t('groups.show.edit'))
   end
 
   it 'should not show edit link for guest' do
     @group.users.delete @user
     render
-    submenu.should have_no_link(t('groups.show.edit'))
+    content_for(:submenu).should have_no_link(t('groups.show.edit'))
   end
 
   it 'should render group posts' do
@@ -215,28 +222,28 @@ describe "groups/show.html.haml" do
   it 'should have new post link for authorized user' do
     @group.set_admin_status @user, true
     render
-    sidebar.should have_link(t('groups.show.new_post'), :href => new_group_post_path(@group))
+    content_for(:sidebar).should have_link(t('groups.show.new_post'), :href => new_group_post_path(@group))
   end
     
   it 'should not have new post link for not authorized user' do
     @group.users.delete @user
     render
-    sidebar.should have_no_link(t('groups.show.new_post'))
-    sidebar.should have_no_xpath("//a[@href = '#{new_group_post_path(@group)}']")
+    content_for(:sidebar).should have_no_link(t('groups.show.new_post'))
+    content_for(:sidebar).should have_no_xpath("//a[@href = '#{new_group_post_path(@group)}']")
   end
 
   it 'should have link to create new game' do
     render
-    sidebar.should have_link(t('groups.show.new_game'), :href => new_group_game_path(@group))
+    content_for(:sidebar).should have_link(t('groups.show.new_game'), :href => new_group_game_path(@group))
   end
 
   it 'should have link to games' do
     render
-    submenu.should have_link(t('groups.show.games'), :href => group_games_path(@group))
+    content_for(:submenu).should have_link(t('groups.show.games'), :href => group_games_path(@group))
   end
 
   it 'should have link to archive' do
     render
-    submenu.should have_link(t('groups.show.archive'), :href => group_archive_path(@group))
+    content_for(:submenu).should have_link(t('groups.show.archive'), :href => group_archive_path(@group))
   end
 end

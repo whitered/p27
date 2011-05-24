@@ -36,7 +36,6 @@ describe 'games/index.html.haml' do
 
       it 'should have link to create new game' do
         render
-        puts view.instance_variable_get(:@_content_for)[:sidebar]
         sidebar.should have_link(t('games.index.new_game'), :href => new_group_game_path(@group))
       end
     end
