@@ -9,9 +9,19 @@ describe "games/new.html.haml" do
 
   let(:page) { Capybara.string rendered }
 
+  def content_for name
+    view.instance_variable_get(:@_content_for)[name]
+  end
+
   it 'should have fields for game date' do
     render
     page.should have_field(t('activerecord.attributes.game.date'))
+  end
+
+  it 'should have link to group in title prefix' do
+    render
+    prefix = Capybara.string(content_for(:title_prefix))
+    prefix.should have_link(@group.name, :href => group_path(@group))
   end
 
   #it 'should have fields for game time' do

@@ -12,15 +12,13 @@ post authoring:
   restrict post editing
   post privacy should be independent of group privacy
 
-styling:
-  use nicer dates format
-
 forms:
   hints in forms
   required fields
   input time in a textfield with chronic gem (railscast 32)
 
 other:
+  pagination
   use paranoid mass assignment protection
   dependent => :destroy on joining models (railscast 167)
 

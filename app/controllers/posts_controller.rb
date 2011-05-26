@@ -19,7 +19,6 @@ class PostsController < ApplicationController
 
   def show
     raise ActiveRecord::RecordNotFound unless @post.can_be_viewed_by?(current_user)
-    @title = @post.title
 
     if user_signed_in?
       if @post.can_be_commented_by?(current_user)

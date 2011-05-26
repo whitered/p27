@@ -7,7 +7,15 @@ describe 'groups/edit.html.haml' do
     render
   end
 
+  def content_for name
+    view.instance_variable_get(:@_content_for)[name]
+  end
+
   let(:page) { Capybara.string rendered }
+
+  it 'should have group name in title prefix' do
+    content_for(:title_prefix).should include(@group.name)
+  end
 
   it 'should have group name field' do
     page.should have_field(t('activerecord.attributes.group.name'), :with => @group.name)

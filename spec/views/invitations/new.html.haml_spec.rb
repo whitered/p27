@@ -9,6 +9,14 @@ describe 'invitations/new.html.haml' do
 
   let(:page) { Capybara.string rendered }
 
+  def content_for name
+    view.instance_variable_get(:@_content_for)[name]
+  end
+
+  it 'should have group name in page title' do
+    content_for(:title).should include(@group.name)
+  end
+
   it 'should have form for invitation' do
     page.should have_selector('form', :action => group_invitations_path(@group))
   end

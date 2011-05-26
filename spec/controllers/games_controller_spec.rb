@@ -273,6 +273,11 @@ describe GamesController do
           assigns[:games].should_not be_nil
         end
 
+        it 'should assign @group' do
+          get_index
+          assigns[:group].should == @group
+        end
+
         it 'should not find games that belong to another group' do
           game = Game.make!(:announcer => User.make!, :group => Group.make!)
           get_index
@@ -541,6 +546,11 @@ describe GamesController do
       it 'should assign archived groups to @groups' do
         get_archive
         assigns[:games].should == @group.games[0..1]
+      end
+
+      it 'should assign @group' do
+        get_archive
+        assigns[:group].should == @group
       end
 
       it 'should render :index' do

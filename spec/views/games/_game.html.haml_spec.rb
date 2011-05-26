@@ -3,6 +3,7 @@ require 'spec_helper'
 describe 'games/_game.html.haml' do
 
   before do
+    stub_template 'shared/_date.html.haml' => '= date.to_s'
     stub_template 'users/_user.html.haml' => '= user.username'
     @game = Game.make!(:announcer => User.make!, :group => Group.make!)
   end
@@ -40,7 +41,7 @@ describe 'games/_game.html.haml' do
 
   it 'should render game date' do
     do_render
-    page.should have_content(l(@game.date))
+    page.should have_content(@game.date.to_s)
   end
 
   it 'should have link to game page' do

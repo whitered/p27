@@ -1,5 +1,6 @@
+- inside_group @group
 = simple_form_for [@group, @game] do |f|
   = f.input :date
-  = f.input :description
+  = f.input :description, :input_html => { :rows => 4 }
   = f.input :place
   = f.submit t('.submit')

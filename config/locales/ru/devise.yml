@@ -1,10 +1,10 @@
 ru:
   errors:
     messages:
-      not_found: "не найдена"
-      already_confirmed: "уже подтверждена"
-      not_locked: "не заблокирована"
-      not_saved: "не сохранена"
+      not_found: "не найдено"
+      already_confirmed: "уже подтверждено"
+      not_locked: "не заблокировано"
+      not_saved: "не сохранено"
   devise:
     failure:
       unauthenticated: "Вам необходимо войти в систему или зарегистрироваться."
@@ -21,17 +21,25 @@ ru:
       new:
         title: Вход
         submit: Войти
+        new_password: Восстановление пароля
+        new_confirmation: Повторный запрос подтверждения регистрации
     passwords:
       send_instructions: "В течение нескольких минут вы получите e-mail с инструкциями по восстановлению вашего пароля."
       updated: "Ваш пароль изменён. Теперь вы вошли в систему."
       new:
         title: 'Восстановление пароля'
         submit: 'Восстановить'
+      edit:
+        title: Изменение пароля
+        submit: Сохранить
+      update: 
+        title: Изменение пароля
     confirmations:
       send_instructions: "В течение нескольких минут вы получите e-mail с инструкциями по подтверждению вашей учётной записи."
       confirmed: "Ваша учётная запись подтверждена. Теперь вы вошли в систему."
       new: 
         title: Повторный запрос подтверждения регистрации
+        submit: Отправить
       show: 
         title: ''
     registrations:

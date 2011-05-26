@@ -20,4 +20,24 @@ describe 'games/index.html.haml' do
       page.find('#games').should have_xpath(".//*[@class = 'game' and . = '#{game.id}']")
     end
   end
+
+  describe 'sidebar' do
+    
+    let(:sidebar) { Capybara.string view.instance_variable_get(:@_content_for)[:sidebar] }
+
+    context 'when @group is defined and user is authenticated to announce games' do
+
+      before do
+        @group = @games.first.group
+        user = User.make!
+        @group.users << user
+        sign_in user
+      end
+
+      it 'should have link to create new game' do
+        render
+        sidebar.should have_link(t('games.index.new_game'), :href => new_group_game_path(@group))
+      end
+    end
+  end
 end

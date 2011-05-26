@@ -5,6 +5,7 @@ ru:
       submit: Сохранить
     index:
       title: Игры
+      new_game: Объявить игру
     archive:
       title: Архив
     game:

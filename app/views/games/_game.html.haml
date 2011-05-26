@@ -1,7 +1,7 @@
 %article[game]
   %p= game.description
   %p
-    = l game.date
+    = render 'shared/date', :date => game.date
     = game.place
     = render game.announcer
     = participation_link game, current_user

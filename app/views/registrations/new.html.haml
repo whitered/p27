@@ -1,8 +1,7 @@
-%h2= t('.title')
 = simple_form_for(resource, :url => registration_path(resource_name)) do |form|
-  = form.input :username
-  = form.input :email if @invitation.nil?
-  = form.input :password
-  = form.input :password_confirmation, :required => true
+  = form.input :username, :required => false
+  = form.input :email, :required => false if @invitation.nil?
+  = form.input :password, :required => false
+  = form.input :password_confirmation, :required => false
   = hidden_field_tag :invitation, @invitation.code unless @invitation.nil?
   = form.submit t('.submit')

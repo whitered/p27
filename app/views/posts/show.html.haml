@@ -1,4 +1,5 @@
-#sub_header= render @post.group
+- inside_group @post.group
+- content_for :title, @post.title
 #post.post
   %p= @post.body.html_safe
   .post_data

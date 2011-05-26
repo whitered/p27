@@ -1,3 +1,5 @@
+- content_for :title, @group.name
+
 - content_for :submenu do
   %ul
     %li= link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user

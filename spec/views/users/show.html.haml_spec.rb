@@ -10,10 +10,14 @@ describe "users/show.html.haml" do
     @user = User.make
   end
 
-  #it 'should contain username' do
-    #render
-    #page.should have_content(@user.username)
-  #end
+  def content_for name
+    view.instance_variable_get(:@_content_for)[name]
+  end
+
+  it 'should contain username in page title' do
+    render
+    content_for(:title).should include(@user.username)
+  end
 
   it 'should have link to edit profile page if user is logged in' do
     sign_in @user
