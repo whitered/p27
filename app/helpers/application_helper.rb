@@ -35,4 +35,13 @@ module ApplicationHelper
     content_for :title_prefix, link_to(group.name, group)
   end
 
+  def time_in_words time
+    span = distance_of_time_in_words Time.now, time, true, { :highest_measures => 2 }
+    if time.future?
+      t('helpers.application.time_in_future', :time => span)
+    else
+      t('helpers.application.time_in_past', :time => span)
+    end
+  end
+
 end

@@ -1,0 +1,5 @@
+ru:
+  helpers:
+    application:
+      time_in_future: 'через %{time}'
+      time_in_past: '%{time} назад'

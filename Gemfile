@@ -31,7 +31,7 @@ gem 'sqlite3'
 # end
 
 gem 'devise'
-gem 'russian'
+gem 'russian', :git => 'https://github.com/yaroslav/russian.git'
 gem 'haml-rails'
 gem 'compass'
 gem 'html5-boilerplate'
@@ -39,6 +39,7 @@ gem 'acts_as_commentable_with_threading'
 gem 'sanitize'
 gem 'validates_timeliness'
 gem 'simple_form'
+gem 'dotiw', :git => 'https://github.com/whitered/dotiw.git'
 
 
 group :test, :development do
