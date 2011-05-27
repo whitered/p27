@@ -21,7 +21,6 @@ feature 'Create Game' do
     game = page.find('#game')
     game.should have_content('New Year Tourney')
     game.should have_content('Blogistan')
-    game.should have_content(l(datetime))
   end
 
 end

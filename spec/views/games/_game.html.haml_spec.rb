@@ -5,6 +5,7 @@ describe 'games/_game.html.haml' do
   before do
     stub_template 'shared/_date.html.haml' => '= date.to_s'
     stub_template 'users/_user.html.haml' => '= user.username'
+    stub_template 'games/_game_type.html.haml' => 'games/game_type'
     @game = Game.make!(:announcer => User.make!, :group => Group.make!)
   end
 
@@ -19,9 +20,14 @@ describe 'games/_game.html.haml' do
     page.should have_selector('.game#game_' + @game.id.to_s)
   end
 
-  it 'should render game description' do
+  #it 'should render game description' do
+    #do_render
+    #page.should have_content(@game.description)
+  #end
+
+  it 'should render game_type' do
     do_render
-    page.should have_content(@game.description)
+    page.should have_content('games/game_type')
   end
 
   it 'should render game place' do
@@ -29,15 +35,15 @@ describe 'games/_game.html.haml' do
     page.should have_content(@game.place)
   end
 
-  it 'should render game announcer' do
-    do_render
-    page.should have_content(@game.announcer.username)
-  end
+  #it 'should render game announcer' do
+    #do_render
+    #page.should have_content(@game.announcer.username)
+  #end
 
-  it 'should render _user template for announcer' do
-    do_render
-    page.should render_template('users/_user')
-  end
+  #it 'should render _user template for announcer' do
+    #do_render
+    #page.should render_template('users/_user')
+  #end
 
   it 'should render game date' do
     do_render
@@ -49,18 +55,18 @@ describe 'games/_game.html.haml' do
     page.should have_xpath(".//a[@href = '#{game_path(@game)}']")
   end
 
-  context 'for group member' do
+  #context 'for group member' do
 
-    before do
-      user = User.make!
-      @game.group.users << user
-      sign_in user
-    end
+    #before do
+      #user = User.make!
+      #@game.group.users << user
+      #sign_in user
+    #end
 
-    it 'should have link to join game' do
-      do_render
-      page.should have_link(t('games.game.join'), :href => join_game_path(@game), :method => :post)
-    end
+    #it 'should have link to join game' do
+      #do_render
+      #page.should have_link(t('games.game.join'), :href => join_game_path(@game), :method => :post)
+    #end
 
-  end
+  #end
 end

@@ -1,21 +1,17 @@
+- inside_group @game.group
 #game
-  %p
+  %h2
     = t('.archived') if @game.archived?
-    = t('activerecord.attributes.game.type.' + @game.game_type.to_s)
-  %p= @game.description
+    = render 'game_type', :game => @game
   %p
-    - unless @game.buyin.zero?
-      = t('activerecord.attributes.game.buyin') + ': ' + @game.buyin.to_s
-    - unless @game.rebuy.zero?
-      = t('activerecord.attributes.game.rebuy') + ': ' + @game.rebuy.to_s
-    - unless @game.addon.zero?
-      = t('activerecord.attributes.game.addon') + ': ' + @game.addon.to_s
-  %p= @game.place
-  %p
-    = l @game.date
-    = link_to @game.group_name, @game.group
-    = render @game.announcer
-    = participation_link @game, current_user
+    = render 'shared/date', :date => @game.date
+    %span{ :title => t('activerecord.attributes.game.place') }= @game.place
     = link_to t('.edit'), edit_game_path(@game) if @game.can_be_edited_by?(current_user)
+  %p#description
+    = render(@game.announcer)
+    = @game.description
+
   #players
+    %h2= t('.participations')
     = render @game.participations
+    = participation_link @game, current_user

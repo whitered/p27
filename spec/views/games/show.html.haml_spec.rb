@@ -5,7 +5,12 @@ describe "games/show.html.haml" do
   before do
     stub_template 'participations/_participation.html.haml' => '%div[participation.user]'
     stub_template 'users/_user.html.haml' => '= user.username'
+    stub_template 'shared/_date.html.haml' => '= date.to_s'
     @game = Game.make!(:announcer => User.make!, :group => Group.make!)
+  end
+
+  def content_for name
+    Capybara.string view.instance_variable_get(:@_content_for)[name]
   end
 
   let(:page) { Capybara.string rendered }
@@ -17,7 +22,7 @@ describe "games/show.html.haml" do
 
   it 'should have game date' do
     render
-    page.should have_content(l(@game.date))
+    page.should have_content(@game.date.to_s)
   end
 
   it 'should have game description' do
@@ -30,9 +35,11 @@ describe "games/show.html.haml" do
     page.should have_content(@game.place)
   end
 
-  it 'should have link to group' do
-    render
-    page.should have_link(@game.group.name, :href => group_path(@game.group))
+  describe 'title' do
+    it 'should have link to group' do
+      render
+      content_for(:title_prefix).should have_link(@game.group.name, :href => group_path(@game.group))
+    end
   end
 
   it 'should render game announcer' do
@@ -64,22 +71,26 @@ describe "games/show.html.haml" do
   it 'should render non-zero buyin' do
     @game.buyin = 120
     render
-    page.should have_content(t('activerecord.attributes.game.buyin'))
-    page.should have_content(@game.buyin.to_s)
+    page.should have_xpath(".//span[@title='#{t('activerecord.attributes.game.buyin')}' and .='#{@game.buyin.to_s}']")
   end
 
   it 'should render non-zero rebuy' do
+    @game.buyin = 120
     @game.rebuy = 220
     render
-    page.should have_content(t('activerecord.attributes.game.rebuy'))
-    page.should have_content(@game.rebuy.to_s)
+    title = t('activerecord.attributes.game.rebuy')
+    content = @game.rebuy.to_s
+    page.should have_xpath(".//span[@title='#{title}' and .='#{content}']")
   end
 
   it 'should render non-zero addon' do
+    @game.buyin = 120
+    @game.rebuy = 220
     @game.addon = 300
     render
-    page.should have_content(t('activerecord.attributes.game.addon'))
-    page.should have_content(@game.addon.to_s)
+    title = t('activerecord.attributes.game.addon')
+    content = @game.addon.to_s
+    page.should have_xpath(".//span[@title='#{title}' and .='#{content}']")
   end
 
   it 'should render game type' do

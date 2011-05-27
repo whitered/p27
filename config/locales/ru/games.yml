@@ -14,7 +14,8 @@ ru:
       show: Подробнее
     show:
       title: Игра
-      edit: Изменить
+      edit: изменить
+      participations: 'Участники:'
       archived: '[Архив]'
     edit:
       title: Условия игры
