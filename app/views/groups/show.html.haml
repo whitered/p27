@@ -2,9 +2,10 @@
 
 - content_for :submenu do
   %ul
-    %li= link_to t('.edit'), edit_group_path(@group) if user_signed_in? && @group.owner == current_user
     %li= link_to t('.games'), group_games_path(@group)
     %li= link_to t('.archive'), group_archive_path(@group)
+    - if user_signed_in? && @group.owner == current_user
+      %li= link_to t('.edit'), edit_group_path(@group)
 
 - content_for :sidebar do
   %ul
