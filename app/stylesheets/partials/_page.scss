@@ -84,10 +84,11 @@ nav#sidebar {
   padding: 1em 3em;
   width: 70%;
 
-  h1 { font-size: 1.5em; }
+  h1 { font-size: 1.5em; margin: 0 0 20px 0; }
   h2 { margin: 1em 0 0; }
 
   nav#submenu {
+    margin: -20px 0 20px 0;
     li {
       display: inline;
       margin: 0 1em 0 0;

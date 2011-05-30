@@ -3,3 +3,4 @@ ru:
     show:
       title: 'Профиль %{username}'
       edit_profile: Редактировать
+      invitations: Приглашения
