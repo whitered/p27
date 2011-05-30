@@ -47,12 +47,13 @@ describe 'games/edit.html.haml' do
     @game.update_attributes(:buyin => 200, :rebuy => 100)
     @game.players << User.make!(2)
     render
-    @game.players.each do |player|
+    @game.players.each_with_index do |player, i|
       selector = '#user_' + player.id.to_s
       page.should have_selector(selector)
       node = page.find(selector)
-      node.should have_field(t('activerecord.attributes.participation.rebuys'))
-      node.should have_field(t('activerecord.attributes.participation.addon'))
+      node.should have_field("game_participations_attributes_#{i}_rebuys")
+      node.should have_field("game_participations_attributes_#{i}_addon")
+      node.should have_field("game_participations_attributes_#{i}_win")
     end
   end
 end

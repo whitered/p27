@@ -125,6 +125,7 @@ ru:
           tourney_with_rebuys: Турнир с ребаями
         archived: Архив
       participation:
+        player: Игрок
         win: Выигрыш
         addon: Аддон
         rebuys: Ребаи

@@ -123,6 +123,31 @@ nav#sidebar {
     margin: 2em 0 0;
   }
 
+  #game.active {
+    #players {
+      margin: 0 0 1em 0;
+      span.user {
+        display: block;
+      }
+    }
+  }
+
+  .game {
+    form {
+      table {
+        margin: 2em 0 2em 12em;
+        td, th {
+          text-align: center;
+          padding: 0 1em 1em 0;
+          input.boolean {
+            margin: 0;
+          }
+        }
+      }
+    }
+  }
+
+
 }
 
 footer {

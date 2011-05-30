@@ -3,8 +3,8 @@ require 'spec_helper'
 describe "games/show.html.haml" do
 
   before do
-    stub_template 'participations/_participation.html.haml' => '%div[participation.user]'
-    stub_template 'users/_user.html.haml' => '= user.username'
+    stub_template 'participations/_participation.html.haml' => '%div[participation]'
+    stub_template 'users/_user.html.haml' => '%div[user]'
     stub_template 'shared/_date.html.haml' => '= date.to_s'
     @game = Game.make!(:announcer => User.make!, :group => Group.make!)
   end
@@ -44,7 +44,7 @@ describe "games/show.html.haml" do
 
   it 'should render game announcer' do
     render
-    page.should have_content(@game.announcer.username)
+    page.should have_selector('#user_' + @game.announcer.id.to_s)
   end
 
   it 'should render link to edit game if user authorized to' do
@@ -99,11 +99,19 @@ describe "games/show.html.haml" do
     page.should have_content(t('activerecord.attributes.game.type.' + @game.game_type.to_s))
   end
 
-  it 'should render participations' do
+  it 'should render players if game is active' do
     @game.players << User.make!(3)
     render
-    page.should render_template('participations/_participation')
+    page.should render_template('users/_user')
     page.all('#game #players .user').size.should == 3
+  end
+
+  it 'should render participations if game is archived' do
+    @game.players << User.make!(3)
+    @game.update_attribute(:archived, true)
+    render
+    page.should render_template('participations/_participation')
+    page.all('#game #players .participation').size.should == 3
   end
 
   it 'should mark archived game' do

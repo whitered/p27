@@ -4,7 +4,7 @@ describe "games/new.html.haml" do
 
   before do
     @group = Group.make!
-    @game = Game.new
+    @game = Game.new(:date => Date.tomorrow)
   end
 
   let(:page) { Capybara.string rendered }

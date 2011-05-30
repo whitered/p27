@@ -1,5 +1,5 @@
 - inside_group @game.group
-#game
+#game{ :class => @game.archived? ? 'archived' : 'active' }
   %h2
     = t('.archived') if @game.archived?
     = render 'game_type', :game => @game
@@ -13,5 +13,8 @@
 
   #players
     %h2= t('.participations')
-    = render @game.participations
-    = participation_link @game, current_user
+    - if @game.archived?
+      = render @game.participations
+    - else
+      = render @game.players
+  = participation_link @game, current_user unless @game.archived?
