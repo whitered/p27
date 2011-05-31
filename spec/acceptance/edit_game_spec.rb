@@ -18,7 +18,6 @@ feature 'Edit Game' do
     scenario 'sets cash game' do
       visit game_path(@game)
       click_link t('games.show.edit')
-      #select(t('activerecord.attributes.game.type.cash'), :from => t('activerecord.attributes.game.type'))
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
       within('#game') do
@@ -28,36 +27,31 @@ feature 'Edit Game' do
 
     scenario 'sets tourney' do
       visit edit_game_path(@game)
-      #select(t('activerecord.attributes.game.type.tourney'), :from => t('activerecord.attributes.game.type'))
       fill_in t('activerecord.attributes.game.buyin'), :with => '200'
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
       within('#game') do
         page.should have_content(t('activerecord.attributes.game.type.tourney'))
-        page.should have_content(t('activerecord.attributes.game.buyin'))
-        page.should have_content('200')
+        title = t('activerecord.attributes.game.buyin')
+        page.should have_xpath(".//span[@title='#{title}' and .='200']")
       end
     end
 
     scenario 'sets tourney with rebuys' do
       visit edit_game_path(@game)
-      #select(t('activerecord.attributes.game.type.tourney_with_rebuys'), :from => t('activerecord.attributes.game.type'))
       fill_in t('activerecord.attributes.game.buyin'), :with => '150'
       fill_in t('activerecord.attributes.game.rebuy'), :with => '200'
       fill_in t('activerecord.attributes.game.addon'), :with => '400'
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
+      page.should have_content(t('activerecord.attributes.game.type.tourney_with_rebuys'))
       within('#game') do
         [
-          t('activerecord.attributes.game.type.tourney_with_rebuys'),
-          t('activerecord.attributes.game.buyin'),
-          '150',
-          t('activerecord.attributes.game.rebuy'),
-          '200',
-          t('activerecord.attributes.game.addon'),
-          '400'
-        ].each do |content|
-          page.should have_content(content)
+          [t('activerecord.attributes.game.buyin'), '150'],
+          [t('activerecord.attributes.game.rebuy'), '200'],
+          [t('activerecord.attributes.game.addon'), '400']
+        ].each do |title, value|
+          page.should have_xpath(".//span[@title='#{title}' and .='#{value}']")
         end
       end
 
@@ -75,11 +69,12 @@ feature 'Edit Game' do
 
     scenario 'enter game results' do
       visit edit_game_path(@game)
+      check t('activerecord.attributes.game.archived')
       within '#user_' + @game.players.first.id.to_s do
-        fill_in t('activerecord.attributes.participation.win'), :with => 250
+        fill_in 'game_participations_attributes_0_win', :with => 250
       end
       within '#user_' + @game.players.second.id.to_s do
-        fill_in t('activerecord.attributes.participation.win'), :with => 50
+        fill_in 'game_participations_attributes_1_win', :with => 50
       end
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
@@ -98,6 +93,7 @@ feature 'Edit Game' do
       check t('activerecord.attributes.game.archived')
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
+      page.should have_selector('#game.archived')
       page.find('#game').should have_content(t('games.show.archived'))
     end
   end

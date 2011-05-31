@@ -4,7 +4,7 @@ describe "games/new.html.haml" do
 
   before do
     @group = Group.make!
-    @game = Game.new
+    @game = Game.new(:date => Date.tomorrow)
   end
 
   let(:page) { Capybara.string rendered }
@@ -37,6 +37,21 @@ describe "games/new.html.haml" do
   it 'should have field for game place' do
     render
     page.should have_field(t('activerecord.attributes.game.place'))
+  end
+
+  it 'should have field for buyin' do
+    render
+    page.should have_field(t('activerecord.attributes.game.buyin'))
+  end
+
+  it 'should have field for rebuy' do
+    render
+    page.should have_field(t('activerecord.attributes.game.rebuy'))
+  end
+
+  it 'should have field for addon' do
+    render
+    page.should have_field(t('activerecord.attributes.game.addon'))
   end
 
   it 'should have submit button' do

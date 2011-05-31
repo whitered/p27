@@ -23,7 +23,7 @@ class MembershipsController < ApplicationController
     else
       flash[:alert] = t('memberships.destroy.not_permitted')
     end
-    redirect_to leaving ? root_path : group_path(@membership.group)
+    redirect_to leaving ? root_url : @membership.group
   end
 
   def update

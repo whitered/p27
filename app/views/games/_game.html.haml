@@ -1,8 +1,6 @@
 %article[game]
-  %p= game.description
-  %p
+  %p= render 'game_type', :game => game
+  %p 
     = render 'shared/date', :date => game.date
     = game.place
-    = render game.announcer
-    = participation_link game, current_user
     = link_to t('.show'), game_path(game)

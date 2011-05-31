@@ -1,3 +1,6 @@
+misc:
+  migrate from haml to slim
+
 groups:
   group avatars
   group renderers

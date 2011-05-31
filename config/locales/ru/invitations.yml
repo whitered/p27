@@ -19,8 +19,8 @@ ru:
       title: Приглашения
       none: У вас нет приглашений
     invitation:
-      accept: Принять
-      decline: Отказаться
+      accept: принять
+      decline: отказаться
       from: от
     accept:
       successful: 'Вы вступили в группу %{group}'

@@ -88,7 +88,7 @@ describe "groups/show.html.haml" do
       it 'should have links to remove any user from the group' do
         render
         group_users.all(:xpath, ".//a[. = '#{t('groups.show.remove_member')}']").count.should == @group.users.count
-        group_users.all('li').each do |node|
+        group_users.all('ul#users li').each do |node|
           username = node.first('.stub_template_user').text
           node.should have_link(t('groups.show.remove_member'), :href => membership_path(@group.memberships.find_by_user_id(User.find_by_username(username).id)), :method => :delete)
         end

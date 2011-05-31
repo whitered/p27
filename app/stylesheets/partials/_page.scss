@@ -48,9 +48,9 @@ input:invalid, textarea:invalid {
 
 body {}
 
-#container {}
-
 header {
+  margin: 0 0 2em 0;
+
   #logo {
     font-size: 2em;
     display: inline;
@@ -62,66 +62,103 @@ header {
     margin: 1em;
   }
 
-}
-
-nav#sidebar {
-  background-color: #eee;
-  float: left;
-  padding: 3em;
-  width: 15%;
-
-  h2 {
-    margin: 2em 0 0.5em;
-  }
-
-  ul {
-    margin: 0 0 1em;
-  }
-}
-
-#main {
-  float: left;
-  padding: 1em 3em;
-  width: 70%;
-
-  h1 { font-size: 1.5em; }
-
-  nav#submenu {
-    li {
-      display: inline;
-      margin: 0 1em 0 0;
-    }
-  }
-
   #flashes {
     div { padding: 0.5em 2em; margin: 1em 0; }
     .alert { background-color: $alert-color; }
     .notice { background-color: $notice-color; }
   }
 
-  .post { margin: 3em 0; } 
-  .comment { margin-top: 2em; }
-  .new { background-color: $new-comment-background-color; }
+  #page_header {
 
-  @for $i from 0 through 9 {
-    .indent_#{$i} { margin-left: 1em * $i; }
+    margin: 1em 0 0 3em;
+
+    h1 { font-size: 1.5em; }
+
+    nav#submenu {
+      li {
+        display: inline;
+        margin: 0 1em 0 0;
+      }
+    }
+
   }
 
-  form.simple_form {
-    margin: 2em 0;
+}
 
-    p.input { margin: 1em 0; }
-    label { width: 12em; display: inline-block; }
-    input.boolean { margin: 0 0.5em 0 12em; }
-    input[type=submit] { margin: 0 0 0 12em; }
+nav#sidebar {
+  background-color: #eee;
+  float: right;
+  padding: 0 15px;
+  width: $sidebar-width - 30px;
 
-    div#error_explanation { background-color: $alert-color; }
+  h2 {
+    margin: 0 0 0.5em;
   }
 
-  article {
-    margin: 2em 0 0;
+  ul:last-child {
+    margin: 0 0 1em;
   }
+}
 
+#main {
+  float: left;
+  margin-left: -$sidebar-width;
+  width: 100%;
+
+  #content {
+    margin: 0 0 0 270px;
+    background-color: #efe;
+    padding: 0 3em;
+
+    h2 { margin: 1em 0 0; }
+
+    .post { margin: 0 0 3em 0; } 
+    .comment { margin-top: 2em; }
+    .new { background-color: $new-comment-background-color; }
+
+    @for $i from 0 through 9 {
+      .indent_#{$i} { margin-left: 1em * $i; }
+    }
+
+    form.simple_form {
+      margin: 2em 0;
+
+      p.input { margin: 1em 0; }
+      label { width: 12em; display: inline-block; }
+      input.boolean { margin: 0 0.5em 0 12em; }
+      input[type=submit] { margin: 0 0 0 12em; }
+
+      div#error_explanation { background-color: $alert-color; }
+    }
+
+    article {
+      margin: 0 0 2em 0;
+    }
+
+    #game.active {
+      #players {
+        margin: 0 0 1em 0;
+        span.user {
+          display: block;
+        }
+      }
+    }
+
+    .game {
+      form {
+        table {
+          margin: 2em 0 2em 12em;
+          td, th {
+            text-align: center;
+            padding: 0 1em 1em 0;
+            input.boolean {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
 }
 
 footer {

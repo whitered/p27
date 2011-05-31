@@ -8,3 +8,9 @@
   - else
     = link_to t('.login'), new_user_session_path
     = link_to t('.registration'), new_user_registration_path
+= render 'layouts/flashes'
+#page_header
+  = content_tag :h1, body_title unless body_title.blank?
+  - if content_for? :submenu
+    %nav#submenu= yield :submenu
+

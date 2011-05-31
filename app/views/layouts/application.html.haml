@@ -3,17 +3,13 @@
 -ie_html :class => 'no-js' do
   = render 'layouts/head'
   %body{ :lang => I18n.locale.to_s, :class => "#{controller.controller_name}" }
-    #container
-      %header#header
-        = render 'layouts/header'
-      #main{ :role => 'main' }
-        = render 'layouts/flashes'
-        = content_tag :h1, body_title unless body_title.blank?
-        - if content_for? :submenu
-          %nav#submenu= yield :submenu
+    %header#header
+      = render 'layouts/header'
+    #main{ :role => 'main' }
+      #content
         = yield
-      = render 'layouts/sidebar', :my_groups => @my_groups
-      %footer#footer
-        = render 'layouts/footer'
+    = render 'layouts/sidebar', :my_groups => @my_groups
+    %footer#footer
+      = render 'layouts/footer'
     -# Javascript at the bottom for fast page loading
     = render 'layouts/javascripts'

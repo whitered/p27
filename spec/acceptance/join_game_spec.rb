@@ -16,8 +16,8 @@ feature "Join Game" do
 
     scenario 'joins game from games index page' do
       login @user
-      visit group_games_path(@group)
-      within('#game_' + @game.id.to_s) do
+      visit game_path(@game)
+      within('#game') do
         click_link(t('games.game.join'))
       end
       current_path.should eq(game_path(@game))
@@ -45,8 +45,8 @@ feature "Join Game" do
 
     scenario 'leaves game from the group games page' do
       login @user
-      visit group_games_path(@group)
-      within('#game_' + @game.id.to_s) do
+      visit game_path(@game)
+      within('#game') do
         click_link(t('games.game.leave'))
       end
       current_path.should eq(game_path(@game))
