@@ -54,4 +54,5 @@ group :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'autotest-rails'
+  gem 'test_notifier'
 end
