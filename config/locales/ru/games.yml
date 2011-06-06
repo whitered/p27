@@ -20,6 +20,7 @@ ru:
     edit:
       title: Условия игры
       submit: Сохранить
+      add_dummy: Добавить
     addon: Аддон
   memberships:
     create:

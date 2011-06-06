@@ -59,8 +59,14 @@ class GamesController < ApplicationController
   end
 
   def update
-    @game.update_attributes(params[:game])
-    redirect_to @game
+    case params[:commit]
+    when t('games.edit.add_dummy') then
+      @game.participations.create!(:dummy_name => params[:dummy_name])
+      render :edit
+    when t('games.edit.submit') then
+      @game.update_attributes(params[:game])
+      redirect_to @game
+    end
   end
 
 private

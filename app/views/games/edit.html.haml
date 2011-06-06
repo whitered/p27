@@ -16,8 +16,12 @@
         %th= t('activerecord.attributes.participation.win')
       = f.simple_fields_for :participations do |p|
         %tr[p.object.user]
-          %td= render p.object.user
+          %td= p.object.user.nil? ? p.object.dummy_name : render(p.object.user)
           = p.input :rebuys, :label => false, :wrapper_tag => :td, :input_html => { :size => 2 }
           = p.input :addon, :label => false, :wrapper_tag => :td
           = p.input :win, :label => false, :wrapper_tag => :td, :input_html => { :size => 8 }
+    %p
+      = label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
+      = text_field_tag :dummy_name
+      = f.submit t('.add_dummy')
     = f.submit t('.submit')

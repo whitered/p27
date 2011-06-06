@@ -54,7 +54,13 @@ feature 'Edit Game' do
           page.should have_xpath(".//span[@title='#{title}' and .='#{value}']")
         end
       end
+    end
 
+    scenario 'adds fake player' do
+      visit edit_game_path(@game)
+      fill_in t('activerecord.attributes.participation.dummy_name'), :with => 'Obama'
+      click_link_or_button t('games.edit.add_dummy')
+      page.find('form.game').should have_content('Obama')
     end
 
   end

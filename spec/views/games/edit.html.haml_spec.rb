@@ -56,4 +56,14 @@ describe 'games/edit.html.haml' do
       node.should have_field("game_participations_attributes_#{i}_win")
     end
   end
+
+  it 'should have field for dummy name' do
+    render
+    page.should have_field(t('activerecord.attributes.participation.dummy_name'))
+  end
+
+  it 'should have button to add dummy' do
+    render
+    page.should have_button(t('games.edit.add_dummy'))
+  end
 end

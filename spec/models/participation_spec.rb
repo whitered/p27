@@ -9,11 +9,37 @@ describe Participation do
   end
 
   describe 'user' do
-    it 'should present' do
-      p = Participation.make(:user => nil, :game_id => 1)
+    it 'should be unique in scope of game' do
+      user = User.make!
+      Participation.make!(:user => user, :game => game)
+      p = Participation.make(:user => user, :game => game)
       p.should be_invalid
       p.errors[:user_id].should_not be_empty
       p.user = User.make!
+      p.should be_valid
+    end
+  end
+
+  it 'should have dummy_name' do
+    Participation.new.should respond_to(:dummy_name)
+  end
+
+  describe 'dummy_name' do
+    it 'should be unique in scope of game' do
+      dname = 'Dummy'
+      Participation.make!(:dummy_name => dname, :game => game)
+      p = Participation.make(:dummy_name => dname, :game => game)
+      p.should be_invalid
+      p.errors[:dummy_name].should_not be_empty
+      p.dummy_name = 'Another name'
+      p.should be_valid
+    end
+
+    it 'should present if user is not assigned' do
+      p = Participation.make(:game => game)
+      p.should be_invalid
+      p.errors[:dummy_name].should_not be_empty
+      p.dummy_name = 'Dummy'
       p.should be_valid
     end
   end
@@ -29,14 +55,6 @@ describe Participation do
       p.errors[:game_id].should_not be_empty
       p.game = game
       p.should be_valid
-    end
-
-    it 'should be unique for current user' do
-      user = User.make!
-      Participation.make!(:game => game, :user => user)
-      p = Participation.make(:game => game, :user => user)
-      p.should be_invalid
-      p.errors[:game_id].should_not be_empty
     end
   end
 

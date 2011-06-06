@@ -13,8 +13,5 @@
 
   #players
     %h2= t('.participations')
-    - if @game.archived?
-      = render @game.participations
-    - else
-      = render @game.players
+    = render @game.participations
   = participation_link @game, current_user unless @game.archived?

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110523133058) do
+ActiveRecord::Schema.define(:version => 20110531135313) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -97,6 +97,7 @@ ActiveRecord::Schema.define(:version => 20110523133058) do
     t.boolean  "addon",      :default => false, :null => false
     t.integer  "place"
     t.integer  "win"
+    t.string   "dummy_name"
   end
 
   add_index "participations", ["game_id"], :name => "index_participations_on_game_id"
