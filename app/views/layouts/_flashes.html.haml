@@ -1,5 +1,6 @@
 - unless flash.empty?
   #flashes
-    - flash.each do |key, value|
-      %div{ :title => key.to_s.humanize, :class => key }
-        %p= value
+    - [:alert, :notice].each do |key|
+      - if flash[key]
+        %div{ :title => key.to_s.humanize, :class => key }
+          %p= flash[key]

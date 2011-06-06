@@ -105,6 +105,8 @@ nav#sidebar {
   margin-left: -$sidebar-width;
   width: 100%;
 
+  .error { background-color: $alert-color; }
+
   #content {
     margin: 0 0 0 270px;
     background-color: #efe;
@@ -138,16 +140,13 @@ nav#sidebar {
     #game.active {
       #players {
         margin: 0 0 1em 0;
-        span.user {
-          //display: block;
-        }
       }
     }
 
     .game {
       form {
         table {
-          margin: 2em 0 2em 12em;
+          margin: 2em 0 0em 12em;
           td, th {
             text-align: center;
             padding: 0 1em 1em 0;
@@ -155,6 +154,12 @@ nav#sidebar {
               margin: 0;
             }
           }
+        }
+
+        #dummy {
+          margin: 0 0 2em 12em;
+          label { width: auto; }
+          * { margin: 0; }
         }
       }
     }

@@ -61,7 +61,11 @@ class GamesController < ApplicationController
   def update
     case params[:commit]
     when t('games.edit.add_dummy') then
-      @game.participations.create!(:dummy_name => params[:dummy_name])
+      p = @game.participations.build(:dummy_name => params[:dummy_name])
+      unless p.save
+        flash.now[:new_participation_errors] = p.errors.full_messages.join
+        @game.participations.delete p
+      end
       render :edit
     when t('games.edit.submit') then
       @game.update_attributes(params[:game])

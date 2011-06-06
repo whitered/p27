@@ -20,8 +20,11 @@
           = p.input :rebuys, :label => false, :wrapper_tag => :td, :input_html => { :size => 2 }
           = p.input :addon, :label => false, :wrapper_tag => :td
           = p.input :win, :label => false, :wrapper_tag => :td, :input_html => { :size => 8 }
-    %p
-      = label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
-      = text_field_tag :dummy_name
-      = f.submit t('.add_dummy')
+    #dummy
+      - if flash[:new_participation_errors]
+        %p.error= flash[:new_participation_errors]
+      %p
+        = label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
+        = text_field_tag :dummy_name
+        = f.submit t('.add_dummy')
     = f.submit t('.submit')

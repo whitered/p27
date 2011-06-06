@@ -506,19 +506,45 @@ describe GamesController do
 
         before do
           @params[:commit] = t('games.edit.add_dummy')
-          @params[:dummy_name] = 'Dummy'
         end
 
-        it 'should create new participation' do
-          lambda do
+        context 'with correct name' do
+          
+          before do
+            @params[:dummy_name] = 'Dummy'
+          end
+
+          it 'should create new participation' do
+            lambda do
+              do_update
+            end.should change(Participation, :count).by(1)
+            Participation.last.dummy_name.should == 'Dummy'
+          end
+
+          it 'should render :edit' do
             do_update
-          end.should change(Participation, :count).by(1)
-          Participation.last.dummy_name.should == 'Dummy'
+            response.should render_template(:edit)
+          end
+
         end
 
-        it 'should render :edit' do
-          do_update
-          response.should render_template(:edit)
+        context 'with wrong name' do
+
+          before do
+            @params[:dummy_name] = nil
+          end
+
+          it 'should not create new participation' do
+            lambda do
+              do_update
+            end.should_not change(Participation, :count)
+          end
+
+          it 'should set :new_participation_errors flash' do
+            do_update
+            flash[:new_participation_errors].should_not be_empty
+          end
+
         end
 
       end
