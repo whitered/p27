@@ -102,5 +102,18 @@ feature 'Edit Game' do
       page.should have_selector('#game.archived')
       page.find('#game').should have_content(t('games.show.archived'))
     end
+
+    scenario 'remove player' do
+      player = @game.players.second
+      participation = player.participations.first
+      visit edit_game_path(@game)
+      within 'table #participation_' + participation.id.to_s do
+        check 'game_participations_attributes_1__destroy'
+      end
+      click_link_or_button t('games.edit.submit')
+      page.all('#players .participation').size.should == 2
+      page.should_not have_content(player.username)
+    end
+
   end
 end

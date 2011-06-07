@@ -54,6 +54,7 @@ describe 'games/edit.html.haml' do
       node.should have_field("game_participations_attributes_#{i}_rebuys")
       node.should have_field("game_participations_attributes_#{i}_addon")
       node.should have_field("game_participations_attributes_#{i}_win")
+      node.should have_field("game_participations_attributes_#{i}__destroy")
     end
   end
 

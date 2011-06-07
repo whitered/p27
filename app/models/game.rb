@@ -14,7 +14,7 @@ class Game < ActiveRecord::Base
   validates_presence_of :addon
   validates_inclusion_of :archived, :in => [true, false]
 
-  accepts_nested_attributes_for :participations
+  accepts_nested_attributes_for :participations, :allow_destroy => true
 
   scope :current, where(:archived => false)
   scope :archive, where(:archived => true)

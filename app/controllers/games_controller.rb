@@ -55,9 +55,6 @@ class GamesController < ApplicationController
     redirect_to @game
   end
 
-  def edit
-  end
-
   def update
     case params[:commit]
     when t('games.edit.add_dummy') then
