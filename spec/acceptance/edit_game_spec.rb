@@ -76,25 +76,25 @@ feature 'Edit Game' do
     scenario 'enter game results' do
       visit edit_game_path(@game)
       check t('activerecord.attributes.game.archived')
-      within '#user_' + @game.players.first.id.to_s do
+      within '#participation_' + @game.participations.first.id.to_s do
         fill_in 'game_participations_attributes_0_win', :with => 250
       end
-      within '#user_' + @game.players.second.id.to_s do
+      within '#participation_' + @game.participations.second.id.to_s do
         fill_in 'game_participations_attributes_1_win', :with => 50
       end
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
       within '#players' do
-        within '#user_' + @game.players.first.id.to_s do
+        within '#participation_' + @game.participations.first.id.to_s do
           page.should have_content('250')
         end
-        within '#user_' + @game.players.second.id.to_s do
+        within '#participation_' + @game.participations.second.id.to_s do
           page.should have_content('50')
         end
       end
     end
 
-    scenario 'archieves game' do
+    scenario 'archieve game' do
       visit edit_game_path(@game)
       check t('activerecord.attributes.game.archived')
       click_link_or_button t('games.edit.submit')

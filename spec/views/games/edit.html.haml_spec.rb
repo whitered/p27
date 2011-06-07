@@ -47,8 +47,8 @@ describe 'games/edit.html.haml' do
     @game.update_attributes(:buyin => 200, :rebuy => 100)
     @game.players << User.make!(2)
     render
-    @game.players.each_with_index do |player, i|
-      selector = '#user_' + player.id.to_s
+    @game.participations.each_with_index do |participation, i|
+      selector = '#participation_' + participation.id.to_s
       page.should have_selector(selector)
       node = page.find(selector)
       node.should have_field("game_participations_attributes_#{i}_rebuys")

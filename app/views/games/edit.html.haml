@@ -15,7 +15,7 @@
         %th= t('activerecord.attributes.participation.addon')
         %th= t('activerecord.attributes.participation.win')
       = f.simple_fields_for :participations do |p|
-        %tr[p.object.user]
+        %tr[p.object]
           %td= p.object.user.nil? ? p.object.dummy_name : render(p.object.user)
           = p.input :rebuys, :label => false, :wrapper_tag => :td, :input_html => { :size => 2 }
           = p.input :addon, :label => false, :wrapper_tag => :td
