@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110531135313) do
+ActiveRecord::Schema.define(:version => 20110609133943) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -37,9 +37,9 @@ ActiveRecord::Schema.define(:version => 20110531135313) do
     t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "buyin",        :default => 0,     :null => false
-    t.integer  "rebuy",        :default => 0,     :null => false
-    t.integer  "addon",        :default => 0,     :null => false
+    t.integer  "buyin"
+    t.integer  "rebuy"
+    t.integer  "addon"
     t.boolean  "archived",     :default => false, :null => false
   end
 

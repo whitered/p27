@@ -132,16 +132,8 @@ describe Game do
   end
 
   describe 'buyin' do
-    it 'should not be nil' do
-      game = Game.make(:announcer => User.make!, :group => Group.make!, :buyin => nil)
-      game.should be_invalid
-      game.errors[:buyin].should_not be_empty
-      game.buyin = 0
-      game.should be_valid
-    end
-
     it 'should be zero by default' do
-      Game.new.buyin.should eq(0)
+      Game.new.buyin.should == 0
     end
   end
 
@@ -150,16 +142,8 @@ describe Game do
   end
 
   describe 'rebuy' do
-    it 'should not be nil' do
-      game = Game.make(:announcer => User.make!, :group => Group.make!, :rebuy => nil)
-      game.should be_invalid
-      game.errors[:rebuy].should_not be_empty
-      game.rebuy = 0
-      game.should be_valid
-    end
-
     it 'should be zero by default' do
-      Game.new.rebuy.should eq(0)
+      Game.new.rebuy.should == 0
     end
   end
 
@@ -168,16 +152,8 @@ describe Game do
   end
 
   describe 'addon' do
-    it 'should not be nil' do
-      game = Game.make(:announcer => User.make!, :group => Group.make!, :addon => nil)
-      game.should be_invalid
-      game.errors[:addon].should_not be_empty
-      game.addon = 0
-      game.should be_valid
-    end
-
     it 'should be zero by default' do
-      Game.new.addon.should eq(0)
+      Game.new.addon.should == 0
     end
   end
 
@@ -188,17 +164,17 @@ describe Game do
   describe 'game_type' do
     it 'should be cash if all costs are zeroes' do
       game = Game.make(:buyin => 0, :rebuy => 0, :addon => 0)
-      game.game_type.should eq(:cash)
+      game.game_type.should == :cash
     end
 
     it 'should be tourney if buyin is present' do
       game = Game.make(:buyin => 100, :rebuy => 0, :addon => 0)
-      game.game_type.should eq(:tourney)
+      game.game_type.should == :tourney
     end
 
     it 'should be tourney with rebuys if rebuy is present' do
       game = Game.make(:buyin => 100, :rebuy => 100, :addon => 0)
-      game.game_type.should eq(:tourney_with_rebuys)
+      game.game_type.should == :tourney_with_rebuys
     end
   end
 
