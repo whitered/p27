@@ -1,3 +1,4 @@
+# encoding: utf-8
 ru:
   activerecord:
     # Сообщения об ошибке (валидации) ActiveRecord
