@@ -1,9 +1,9 @@
 GIT
   remote: https://github.com/whitered/dotiw.git
-  revision: 47f71f914fc7b1a41192b0c43b7ea89abc18d568
+  revision: 3bef7ca8282237dd499741879b601e2b054173eb
   specs:
     dotiw (1.1.0)
-      actionpack (~> 3.0.0)
+      actionpack (~> 3.0)
 
 GIT
   remote: https://github.com/yaroslav/russian.git
@@ -84,7 +84,7 @@ GEM
     ffi (1.0.9)
     ffi (1.0.9-x86-mingw32)
     fssm (0.2.7)
-    haml (3.1.1)
+    haml (3.1.2)
     haml-rails (0.3.4)
       actionpack (~> 3.0)
       activesupport (~> 3.0)
@@ -129,12 +129,12 @@ GEM
       activesupport (= 3.0.6)
       rake (>= 0.8.7)
       thor (~> 0.14.4)
-    rake (0.9.1)
+    rake (0.9.2)
     rspec (2.6.0)
       rspec-core (~> 2.6.0)
       rspec-expectations (~> 2.6.0)
       rspec-mocks (~> 2.6.0)
-    rspec-core (2.6.3)
+    rspec-core (2.6.4)
     rspec-expectations (2.6.0)
       diff-lcs (~> 1.1.2)
     rspec-mocks (2.6.0)

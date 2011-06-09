@@ -46,20 +46,8 @@ describe Visit do
   end
 
   describe 'existing_comments' do
-
     it 'should be 0 by default' do
       Visit.new.existing_comments.should eq(0)
-    end
-
-    it 'should not be nil' do
-      user = User.make!
-      post = Post.make!(:author => user)
-      v = Visit.make(:visitable => post, :user => user)
-      v.existing_comments = nil
-      v.should be_invalid
-      v.errors[:existing_comments].should_not be_empty
-      v.existing_comments = 0
-      v.should be_valid
     end
   end
 
