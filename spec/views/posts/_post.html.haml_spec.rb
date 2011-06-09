@@ -36,7 +36,7 @@ describe 'posts/post' do
 
   it 'should render group name' do
     do_render
-    page.should have_link(@post.group.name, group_path(@post.group))
+    page.should have_link(@post.group.name, :href => group_path(@post.group))
   end
 
   it 'should not render group name if group is defined' do

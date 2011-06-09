@@ -15,9 +15,9 @@ feature 'View Posts On Homepage' do
   scenario 'view posts' do
     login @user
     visit root_path
-    page.should have_link(@postA.title, post_path(@postA))
-    page.should have_link(@postB1.title, post_path(@postB1))
-    page.should have_link(@postB2.title, post_path(@postB2))
+    page.should have_link(@postA.title, :href => post_path(@postA))
+    page.should have_link(@postB1.title, :href => post_path(@postB1))
+    page.should have_link(@postB2.title, :href => post_path(@postB2))
     page.should have_no_link(@postC.title)
   end
 
