@@ -63,14 +63,6 @@ describe Participation do
   end
 
   describe 'rebuys' do
-    it 'should not be nil' do
-      p = Participation.make(:game => game, :user => User.make!, :rebuys => nil)
-      p.should be_invalid
-      p.errors[:rebuys].should_not be_empty
-      p.rebuys = 0
-      p.should be_valid
-    end
-    
     it 'should be 0 by default' do
       Participation.new.rebuys.should eq(0)
     end

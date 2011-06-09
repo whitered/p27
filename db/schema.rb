@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110609133943) do
+ActiveRecord::Schema.define(:version => 20110609141318) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -93,7 +93,7 @@ ActiveRecord::Schema.define(:version => 20110609133943) do
     t.integer  "game_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "rebuys",     :default => 0,     :null => false
+    t.integer  "rebuys"
     t.boolean  "addon",      :default => false, :null => false
     t.integer  "place"
     t.integer  "win"
@@ -146,7 +146,7 @@ ActiveRecord::Schema.define(:version => 20110609133943) do
     t.string   "visitable_type"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "existing_comments", :default => 0, :null => false
+    t.integer  "existing_comments"
   end
 
   add_index "visits", ["user_id"], :name => "index_visits_on_user_id"
