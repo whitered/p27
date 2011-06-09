@@ -5,7 +5,7 @@ describe 'participations/_participation.html.haml' do
   before do
     stub_template 'users/_user.html.haml' => '%div[user]'
     game = Game.make!(:announcer => User.make!, :group => Group.make!)
-    @participation = Participation.make!(:user => User.make!, 
+    @participation = Participation.make(:user => User.make!, 
                                          :game => game,
                                          :rebuys => 12,
                                          :addon => true,
@@ -21,6 +21,14 @@ describe 'participations/_participation.html.haml' do
   it 'should render user' do
     do_render
     page.should render_template('users/_user')
+  end
+
+  it 'should render dummy_name if user is nil' do
+    @participation.user = nil
+    @participation.dummy_name = 'Dummy_name'
+    do_render
+    page.should have_content('Dummy_name')
+    page.should_not render_template('users/_user')
   end
 
   it 'should render rebuys' do

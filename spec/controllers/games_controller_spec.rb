@@ -467,17 +467,20 @@ describe GamesController do
       @group = Group.make!
       @user = User.make!
       @game = Game.make!(:announcer => @user, :group => @group)
-      @game_params = {
-        :date => 3.days.from_now,
-        :description => 'Completely new description',
-        :rebuy => 1,
-        :buyin => 4,
-        :addon => 7
+      @params = {
+        :game => {
+          :date => 3.days.from_now,
+          :description => 'Completely new description',
+          :rebuy => 1,
+          :buyin => 4,
+          :addon => 7
+        },
+        :id => @game.id
       }
     end
 
     def do_update
-      put :update, :id => @game.id, :game => @game_params
+      put :update, @params 
     end
 
     it 'should require user authentication' do
@@ -499,24 +502,93 @@ describe GamesController do
         sign_in @user
       end
 
-      it 'should update game' do
-        do_update
-        @game.reload
-        @game.date.should eq(@game_params[:date])
-        @game.description.should eq(@game_params[:description])
-        @game.rebuy.should eq(@game_params[:rebuy])
-        @game.buyin.should eq(@game_params[:buyin])
-        @game.addon.should eq(@game_params[:addon])
+      describe 'add_fake' do
+
+        before do
+          @params[:commit] = t('games.edit.add_dummy')
+        end
+
+        context 'with correct name' do
+          
+          before do
+            @params[:dummy_name] = 'Dummy'
+          end
+
+          it 'should create new participation' do
+            lambda do
+              do_update
+            end.should change(Participation, :count).by(1)
+            Participation.last.dummy_name.should == 'Dummy'
+          end
+
+          it 'should render :edit' do
+            do_update
+            response.should render_template(:edit)
+          end
+
+        end
+
+        context 'with wrong name' do
+
+          before do
+            @params[:dummy_name] = nil
+          end
+
+          it 'should not create new participation' do
+            lambda do
+              do_update
+            end.should_not change(Participation, :count)
+          end
+
+          it 'should set :new_participation_errors flash' do
+            do_update
+            flash[:new_participation_errors].should_not be_empty
+          end
+
+        end
+
       end
 
-      it 'should assign @game' do
-        do_update
-        assigns[:game].should eq(@game)
+      describe 'update' do
+
+        before do
+          @params[:commit] = t('games.edit.submit')
+        end
+
+        it 'should update game' do
+          do_update
+          @game.reload
+          @game.date.should eq(@params[:game][:date])
+          @game.description.should eq(@params[:game][:description])
+          @game.rebuy.should eq(@params[:game][:rebuy])
+          @game.buyin.should eq(@params[:game][:buyin])
+          @game.addon.should eq(@params[:game][:addon])
+        end
+
+        it 'should assign @game' do
+          do_update
+          assigns[:game].should eq(@game)
+        end
+
+        it 'should redirect to game' do
+          do_update
+          response.should redirect_to(game_path(@game))
+        end
+
       end
 
-      it 'should redirect to game' do
-        do_update
-        response.should redirect_to(game_path(@game))
+      describe 'unknown action' do
+
+        before do
+          @params[:commit] = 'unknown action'
+        end
+
+        it 'should raise exception' do
+          lambda do
+            do_update
+          end.should raise_exception
+        end
+
       end
 
     end

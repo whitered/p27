@@ -14,10 +14,19 @@
         %th= t('activerecord.attributes.participation.rebuys')
         %th= t('activerecord.attributes.participation.addon')
         %th= t('activerecord.attributes.participation.win')
+        %th= t('.destroy')
       = f.simple_fields_for :participations do |p|
-        %tr[p.object.user]
-          %td= render p.object.user
+        %tr[p.object]
+          %td= p.object.user.nil? ? p.object.dummy_name : render(p.object.user)
           = p.input :rebuys, :label => false, :wrapper_tag => :td, :input_html => { :size => 2 }
           = p.input :addon, :label => false, :wrapper_tag => :td
           = p.input :win, :label => false, :wrapper_tag => :td, :input_html => { :size => 8 }
+          = p.input :_destroy, :label => false, :wrapper_tag => :td, :as => :boolean
+    #dummy
+      - if flash[:new_participation_errors]
+        %p.error= flash[:new_participation_errors]
+      %p
+        = label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
+        = text_field_tag :dummy_name
+        = f.submit t('.add_dummy')
     = f.submit t('.submit')

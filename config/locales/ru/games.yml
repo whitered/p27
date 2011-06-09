@@ -20,7 +20,8 @@ ru:
     edit:
       title: Условия игры
       submit: Сохранить
-    addon: Аддон
+      add_dummy: Добавить
+      destroy: Удалить
   memberships:
     create:
       not_hospitable: Вступить в эту группу можно только по приглашению

@@ -54,7 +54,13 @@ feature 'Edit Game' do
           page.should have_xpath(".//span[@title='#{title}' and .='#{value}']")
         end
       end
+    end
 
+    scenario 'adds fake player' do
+      visit edit_game_path(@game)
+      fill_in t('activerecord.attributes.participation.dummy_name'), :with => 'Obama'
+      click_link_or_button t('games.edit.add_dummy')
+      page.find('form.game').should have_content('Obama')
     end
 
   end
@@ -70,25 +76,25 @@ feature 'Edit Game' do
     scenario 'enter game results' do
       visit edit_game_path(@game)
       check t('activerecord.attributes.game.archived')
-      within '#user_' + @game.players.first.id.to_s do
+      within '#participation_' + @game.participations.first.id.to_s do
         fill_in 'game_participations_attributes_0_win', :with => 250
       end
-      within '#user_' + @game.players.second.id.to_s do
+      within '#participation_' + @game.participations.second.id.to_s do
         fill_in 'game_participations_attributes_1_win', :with => 50
       end
       click_link_or_button t('games.edit.submit')
       current_path.should eq(game_path(@game))
       within '#players' do
-        within '#user_' + @game.players.first.id.to_s do
+        within '#participation_' + @game.participations.first.id.to_s do
           page.should have_content('250')
         end
-        within '#user_' + @game.players.second.id.to_s do
+        within '#participation_' + @game.participations.second.id.to_s do
           page.should have_content('50')
         end
       end
     end
 
-    scenario 'archieves game' do
+    scenario 'archieve game' do
       visit edit_game_path(@game)
       check t('activerecord.attributes.game.archived')
       click_link_or_button t('games.edit.submit')
@@ -96,5 +102,18 @@ feature 'Edit Game' do
       page.should have_selector('#game.archived')
       page.find('#game').should have_content(t('games.show.archived'))
     end
+
+    scenario 'remove player' do
+      player = @game.players.second
+      participation = player.participations.first
+      visit edit_game_path(@game)
+      within 'table #participation_' + participation.id.to_s do
+        check 'game_participations_attributes_1__destroy'
+      end
+      click_link_or_button t('games.edit.submit')
+      page.all('#players .participation').size.should == 2
+      page.should_not have_content(player.username)
+    end
+
   end
 end

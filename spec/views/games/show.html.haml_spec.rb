@@ -99,14 +99,7 @@ describe "games/show.html.haml" do
     page.should have_content(t('activerecord.attributes.game.type.' + @game.game_type.to_s))
   end
 
-  it 'should render players if game is active' do
-    @game.players << User.make!(3)
-    render
-    page.should render_template('users/_user')
-    page.all('#game #players .user').size.should == 3
-  end
-
-  it 'should render participations if game is archived' do
+  it 'should render participations' do
     @game.players << User.make!(3)
     @game.update_attribute(:archived, true)
     render

@@ -47,13 +47,24 @@ describe 'games/edit.html.haml' do
     @game.update_attributes(:buyin => 200, :rebuy => 100)
     @game.players << User.make!(2)
     render
-    @game.players.each_with_index do |player, i|
-      selector = '#user_' + player.id.to_s
+    @game.participations.each_with_index do |participation, i|
+      selector = '#participation_' + participation.id.to_s
       page.should have_selector(selector)
       node = page.find(selector)
       node.should have_field("game_participations_attributes_#{i}_rebuys")
       node.should have_field("game_participations_attributes_#{i}_addon")
       node.should have_field("game_participations_attributes_#{i}_win")
+      node.should have_field("game_participations_attributes_#{i}__destroy")
     end
+  end
+
+  it 'should have field for dummy name' do
+    render
+    page.should have_field(t('activerecord.attributes.participation.dummy_name'))
+  end
+
+  it 'should have button to add dummy' do
+    render
+    page.should have_button(t('games.edit.add_dummy'))
   end
 end
