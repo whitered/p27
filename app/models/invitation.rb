@@ -26,7 +26,7 @@ class Invitation < ActiveRecord::Base
   end
 
   def self.find_by_email_downcase email
-    where(['lower(email) = ?', email.downcase])
+    where('lower(email) = ?', email.downcase)
   end
 
 private
