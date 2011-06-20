@@ -40,6 +40,7 @@ gem 'sanitize'
 gem 'validates_timeliness'
 gem 'simple_form'
 gem 'dotiw', :git => 'https://github.com/whitered/dotiw.git'
+gem 'acts_as_money'
 
 
 group :test, :development do

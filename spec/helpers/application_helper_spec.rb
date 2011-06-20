@@ -16,6 +16,16 @@ describe ApplicationHelper do
         time_in_words(Time.now + time).should == output
       end
     end
+  end
 
+  describe 'money' do
+    [
+      ['1', '$1'],
+      ['10.45', '$10.45']
+    ].each do |value, output|
+      it "should format #{output}" do
+        money(value.to_money).should == output
+      end
+    end
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110609141318) do
+ActiveRecord::Schema.define(:version => 20110620102537) do
 
   create_table "comments", :force => true do |t|
     t.integer  "commentable_id",   :default => 0
@@ -37,10 +37,11 @@ ActiveRecord::Schema.define(:version => 20110609141318) do
     t.datetime "date"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.integer  "buyin"
-    t.integer  "rebuy"
-    t.integer  "addon"
+    t.integer  "buyin_cents"
+    t.integer  "rebuy_cents"
+    t.integer  "addon_cents"
     t.boolean  "archived",     :default => false, :null => false
+    t.string   "currency"
   end
 
   add_index "games", ["announcer_id"], :name => "index_games_on_announcer_id"

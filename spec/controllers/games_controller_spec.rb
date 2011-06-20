@@ -471,9 +471,9 @@ describe GamesController do
         :game => {
           :date => 3.days.from_now,
           :description => 'Completely new description',
-          :rebuy => 1,
-          :buyin => 4,
-          :addon => 7
+          :rebuy => '1',
+          :buyin => '4',
+          :addon => '7'
         },
         :id => @game.id
       }
@@ -560,9 +560,9 @@ describe GamesController do
           @game.reload
           @game.date.should eq(@params[:game][:date])
           @game.description.should eq(@params[:game][:description])
-          @game.rebuy.should eq(@params[:game][:rebuy])
-          @game.buyin.should eq(@params[:game][:buyin])
-          @game.addon.should eq(@params[:game][:addon])
+          @game.rebuy.should eq(@params[:game][:rebuy].to_money)
+          @game.buyin.should eq(@params[:game][:buyin].to_money)
+          @game.addon.should eq(@params[:game][:addon].to_money)
         end
 
         it 'should assign @game' do

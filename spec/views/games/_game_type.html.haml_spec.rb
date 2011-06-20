@@ -23,7 +23,7 @@ describe 'games/_game_type.html.haml' do
   context 'for tourney' do
 
     before do
-      @game.buyin = 100
+      @game.buyin = 100.to_money
       render 'games/game_type', :game => @game
     end
 
@@ -33,7 +33,7 @@ describe 'games/_game_type.html.haml' do
 
     it 'should render buyin value' do
       title = t('activerecord.attributes.game.buyin')
-      page.should have_xpath(".//span[@title = '#{title}' and .='100']")
+      page.should have_xpath(".//span[@title = '#{title}' and .='$100']")
     end
 
   end
@@ -41,9 +41,9 @@ describe 'games/_game_type.html.haml' do
   context 'for tourney with rebuys' do
 
     before do
-      @game.buyin = 100
-      @game.rebuy = 200
-      @game.addon = 300
+      @game.buyin = 100.to_money
+      @game.rebuy = 200.to_money
+      @game.addon = 300.to_money
       render 'games/game_type', :game => @game
     end
 
@@ -53,17 +53,17 @@ describe 'games/_game_type.html.haml' do
 
     it 'should render buyin value' do
       title = t('activerecord.attributes.game.buyin')
-      page.should have_xpath(".//span[@title='#{title}' and .='100']")
+      page.should have_xpath(".//span[@title='#{title}' and .='$100']")
     end
 
     it 'should render rebuy value' do
       title = t('activerecord.attributes.game.rebuy')
-      page.should have_xpath(".//span[@title='#{title}' and .='200']")
+      page.should have_xpath(".//span[@title='#{title}' and .='$200']")
     end
 
     it 'should render addon value' do
       title = t('activerecord.attributes.game.addon')
-      page.should have_xpath(".//span[@title='#{title}' and .='300']")
+      page.should have_xpath(".//span[@title='#{title}' and .='$300']")
     end
   end
 end

@@ -1,5 +1,7 @@
 class Game < ActiveRecord::Base
 
+  acts_as_money
+
   belongs_to :group
   belongs_to :announcer, :class_name => 'User'
 
@@ -18,17 +20,9 @@ class Game < ActiveRecord::Base
 
   delegate :name, :to => :group, :prefix => true
 
-  def buyin
-    self[:buyin] || 0
-  end
-
-  def rebuy
-    self[:rebuy] || 0
-  end
-
-  def addon
-    self[:addon] || 0
-  end
+  money :buyin, :cents => :buyin_cents
+  money :rebuy, :cents => :rebuy_cents
+  money :addon, :cents => :addon_cents
 
   def can_be_edited_by? user
     group.user_is_admin?(user) || (group.users.include?(user) && announcer == user)
@@ -43,4 +37,5 @@ class Game < ActiveRecord::Base
       :tourney_with_rebuys
     end
   end
+  
 end
