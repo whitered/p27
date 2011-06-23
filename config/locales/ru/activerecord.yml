@@ -117,6 +117,7 @@ ru:
         time: Время
         description: Описание
         place: Место
+        currency: Валюта
         buyin: Байин
         rebuy: Ребай
         addon: Аддон
