@@ -9,7 +9,7 @@ describe 'participations/_participation.html.haml' do
                                          :game => game,
                                          :rebuys => 12,
                                          :addon => true,
-                                         :win => 1200)
+                                         :win => '1200')
   end
 
   let(:page) { Capybara.string rendered }
@@ -43,6 +43,6 @@ describe 'participations/_participation.html.haml' do
 
   it 'should render win' do
     do_render
-    page.should have_content(@participation.win.to_s)
+    page.should have_content(money(@participation.win))
   end
 end

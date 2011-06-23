@@ -52,7 +52,7 @@ describe Participation do
     it 'should present' do
       p = Participation.make(:game => nil, :user => User.make!)
       p.should be_invalid
-      p.errors[:game_id].should_not be_empty
+      p.errors[:game].should_not be_empty
       p.game = game
       p.should be_valid
     end
@@ -92,5 +92,42 @@ describe Participation do
 
   it 'should have win' do
     Participation.new.should respond_to(:win)
+  end
+
+  describe 'win' do
+
+    it 'should be money' do
+      Participation.new(:game => game).win.should be_a(Money)
+    end
+
+    it 'should take currency from game' do
+      game.update_attribute(:currency, 'RUB')
+      p = game.participations.create(:user => User.make!, :win_cents => 12340)
+      p.win.should == 123.4.to_money(:rub)
+    end
+    
+  end
+
+  describe 'win=' do
+
+    before do
+      game.update_attribute(:currency, 'EUR')
+      @p = game.participations.create(:user => User.make!)
+    end
+
+    it 'should raise exception if currencies do not match' do
+      lambda do
+        @p.win = 3.to_money
+      end.should raise_exception(ArgumentError)
+    end
+
+    it 'should set win_cents' do
+      lambda do
+        @p.win = 3.to_money(:eur)
+        @p.save
+        @p.reload
+      end.should change{ @p.win_cents }.from(nil).to(300)
+    end
+      
   end
 end
