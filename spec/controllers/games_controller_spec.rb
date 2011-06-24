@@ -108,12 +108,12 @@ describe GamesController do
 
       it 'should set current user as announcer' do
         do_create
-        Game.last.announcer.should eq(@user)
+        Game.last.announcer.should == @user
       end
 
       it 'should set group for new game' do
         do_create
-        Game.last.group.should eq(@group)
+        Game.last.group.should == @group
       end
       
     end
@@ -159,7 +159,7 @@ describe GamesController do
     context 'for authorized user' do
       it 'should assign :game' do
         do_show
-        assigns[:game].should eq(@game)
+        assigns[:game].should == @game
       end
 
       it 'should be successful' do
@@ -347,8 +347,8 @@ describe GamesController do
           do_join
         end.should change(Participation, :count).by(1)
         p = Participation.last
-        p.user.should eq(@user)
-        p.game.should eq(@game)
+        p.user.should == @user
+        p.game.should == @game
       end
 
       it 'should redirect to game page' do
@@ -446,7 +446,7 @@ describe GamesController do
 
       it 'should assign @game' do
         do_edit
-        assigns[:game].should eq(@game)
+        assigns[:game].should == @game
       end
 
       it 'should render :edit template' do
@@ -471,6 +471,7 @@ describe GamesController do
         :game => {
           :date => 3.days.from_now,
           :description => 'Completely new description',
+          :currency => 'EUR',
           :rebuy => '1',
           :buyin => '4',
           :addon => '7'
@@ -558,16 +559,17 @@ describe GamesController do
         it 'should update game' do
           do_update
           @game.reload
-          @game.date.should eq(@params[:game][:date])
-          @game.description.should eq(@params[:game][:description])
-          @game.rebuy.should eq(@params[:game][:rebuy].to_money)
-          @game.buyin.should eq(@params[:game][:buyin].to_money)
-          @game.addon.should eq(@params[:game][:addon].to_money)
+          @game.date.should == @params[:game][:date]
+          @game.description.should == @params[:game][:description]
+          @game.currency.should == 'EUR'
+          @game.rebuy.should == @params[:game][:rebuy].to_money(:eur)
+          @game.buyin.should == @params[:game][:buyin].to_money(:eur)
+          @game.addon.should == @params[:game][:addon].to_money(:eur)
         end
 
         it 'should assign @game' do
           do_update
-          assigns[:game].should eq(@game)
+          assigns[:game].should == @game
         end
 
         it 'should redirect to game' do
