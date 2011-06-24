@@ -44,4 +44,8 @@ module ApplicationHelper
     end
   end
 
+  def money money
+    money.format :no_cents_if_whole => true
+  end
+
 end

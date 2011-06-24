@@ -179,7 +179,11 @@ describe Game do
   end
 
   it 'should accept nested attributes for participations' do
-    game = Game.new(:participations_attributes => [
+    game = Game.create!(
+      :group_id => 1,
+      :announcer_id => 2,
+      :date => Date.yesterday,
+      :participations_attributes => [
       {:user_id => 1, :rebuys => 10, :addon => true, :win => 120},
       {:user_id => 4, :rebuys => 0, :addon => false, :win => 200}
     ])
@@ -189,12 +193,12 @@ describe Game do
     first.user_id.should == 1
     first.rebuys.should == 10
     first.addon.should == true
-    first.win.should == 120
+    first.win.should == '120'.to_money
 
     second.user_id.should == 4
     second.rebuys.should == 0
     second.addon.should == false
-    second.win.should == 200
+    second.win.should == '200'.to_money
   end
 
   it 'should have archived attribute' do

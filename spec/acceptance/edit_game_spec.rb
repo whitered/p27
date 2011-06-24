@@ -33,7 +33,7 @@ feature 'Edit Game' do
       within('#game') do
         page.should have_content(t('activerecord.attributes.game.type.tourney'))
         title = t('activerecord.attributes.game.buyin')
-        page.should have_xpath(".//span[@title='#{title}' and .='200']")
+        page.should have_xpath(".//span[@title='#{title}' and .='$200']")
       end
     end
 
@@ -47,9 +47,9 @@ feature 'Edit Game' do
       page.should have_content(t('activerecord.attributes.game.type.tourney_with_rebuys'))
       within('#game') do
         [
-          [t('activerecord.attributes.game.buyin'), '150'],
-          [t('activerecord.attributes.game.rebuy'), '200'],
-          [t('activerecord.attributes.game.addon'), '400']
+          [t('activerecord.attributes.game.buyin'), '$150'],
+          [t('activerecord.attributes.game.rebuy'), '$200'],
+          [t('activerecord.attributes.game.addon'), '$400']
         ].each do |title, value|
           page.should have_xpath(".//span[@title='#{title}' and .='#{value}']")
         end

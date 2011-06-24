@@ -3,6 +3,7 @@
   = simple_form_for @game do |f|
     = f.input :date, :as => :string, :autofocus => true, :input_html => { :value => @game.date.to_s(:db) }
     = f.input :place
+    = f.input :currency, currency_select_options
     = f.input :buyin
     = f.input :rebuy
     = f.input :addon

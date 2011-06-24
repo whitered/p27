@@ -1,4 +1,12 @@
 GIT
+  remote: https://github.com/whitered/acts_as_money.git
+  revision: aac63cba6d2803a826e582a37146f6a0779f175f
+  specs:
+    acts_as_money (0.3.0)
+      activerecord
+      money
+
+GIT
   remote: https://github.com/whitered/dotiw.git
   revision: 3bef7ca8282237dd499741879b601e2b054173eb
   specs:
@@ -104,6 +112,8 @@ GEM
       mime-types (~> 1.16)
       treetop (~> 1.4.8)
     mime-types (1.16)
+    money (3.7.1)
+      i18n (~> 0.4)
     moretea-awesome_nested_set (1.4.3.1)
       activerecord (~> 3.0.0)
     nokogiri (1.4.4)
@@ -163,7 +173,7 @@ GEM
     timeliness (0.3.4)
     treetop (1.4.9)
       polyglot (>= 0.3.1)
-    tzinfo (0.3.27)
+    tzinfo (0.3.28)
     validates_timeliness (3.0.6)
       timeliness (~> 0.3.3)
     warden (1.0.4)
@@ -177,6 +187,7 @@ PLATFORMS
 
 DEPENDENCIES
   acts_as_commentable_with_threading
+  acts_as_money!
   autotest-rails
   capybara
   compass

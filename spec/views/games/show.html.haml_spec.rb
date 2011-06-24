@@ -69,32 +69,32 @@ describe "games/show.html.haml" do
   end
 
   it 'should render non-zero buyin' do
-    @game.buyin = 120
+    @game.buyin = '120'
     render
-    page.should have_xpath(".//span[@title='#{t('activerecord.attributes.game.buyin')}' and .='#{@game.buyin.to_s}']")
+    page.should have_xpath(".//span[@title='#{t('activerecord.attributes.game.buyin')}' and .='#{money @game.buyin}']")
   end
 
   it 'should render non-zero rebuy' do
-    @game.buyin = 120
-    @game.rebuy = 220
+    @game.buyin = '120'
+    @game.rebuy = '220'
     render
     title = t('activerecord.attributes.game.rebuy')
-    content = @game.rebuy.to_s
+    content = money(@game.rebuy)
     page.should have_xpath(".//span[@title='#{title}' and .='#{content}']")
   end
 
   it 'should render non-zero addon' do
-    @game.buyin = 120
-    @game.rebuy = 220
-    @game.addon = 300
+    @game.buyin = '120'
+    @game.rebuy = '220'
+    @game.addon = '300'
     render
     title = t('activerecord.attributes.game.addon')
-    content = @game.addon.to_s
+    content = money(@game.addon)
     page.should have_xpath(".//span[@title='#{title}' and .='#{content}']")
   end
 
   it 'should render game type' do
-    @game.buyin = 100
+    @game.buyin = '100'
     render
     page.should have_content(t('activerecord.attributes.game.type.' + @game.game_type.to_s))
   end

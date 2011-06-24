@@ -18,6 +18,11 @@ describe 'games/edit.html.haml' do
     page.should have_field(t('activerecord.attributes.game.date'))
   end
 
+  it 'should have selector for currency' do
+    render
+    page.should have_field(t('activerecord.attributes.game.currency'))
+  end
+
   it 'should have field for buyin' do
     render
     page.should have_field(t('activerecord.attributes.game.buyin'))
