@@ -3,4 +3,4 @@
     = link_to t('.new_group'), new_group_path
 
 #groups
-  = render @groups
+  = render :partial => 'groups/group', :collection => @groups, :spacer_template => 'shared/space'
