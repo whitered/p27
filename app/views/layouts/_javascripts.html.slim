@@ -15,10 +15,10 @@ javascript:
 = javascript_include_tag 'rails', 'plugins', 'application'
 
 / Fix any <img> or .png_bg bg-images. Also, please read goo.gl/mZiyb
-/![if lt IE 7 ]
+/[if lt IE 7 ]
   = javascript_include_tag 'dd_belatedpng.js'
   javascript:
-    /!/DD_belatedPNG.fix('img, .png_bg');
+    //DD_belatedPNG.fix('img, .png_bg');
 
 /  Append your own using content_for :javascripts
 = yield :javascripts

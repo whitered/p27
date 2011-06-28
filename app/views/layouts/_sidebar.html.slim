@@ -2,4 +2,4 @@ nav#sidebar
   = yield :sidebar
   - unless my_groups.nil?
     h2= link_to t('.my_groups'), my_groups_path
-    = render my_groups
+    = render :collection => my_groups, :partial => 'groups/group', :spacer_template => 'shared/br'

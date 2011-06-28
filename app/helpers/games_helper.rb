@@ -10,7 +10,7 @@ module GamesHelper
     end
   end
 
-  def currency_select_options 
+  def currency_select_options
     {
       :collection => Money::Currency::SORTED,
       :label_method => lambda { |currency| t(currency[:iso_code].downcase, :scope => :currency, :default => currency[:name]) },

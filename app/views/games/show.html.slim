@@ -4,11 +4,12 @@ div id='game' class=(@game.archived? ? 'archived' : 'active')
     = t('.archived') if @game.archived?
     = render 'game_type', :game => @game
   p
-    = render 'shared/date', :date => @game.date
-    span title=t('activerecord.attributes.game.place') = @game.place
+    =' render 'shared/date', :date => @game.date
+    span title=t('activerecord.attributes.game.place') 
+      =' @game.place
     = link_to t('.edit'), edit_game_path(@game) if @game.can_be_edited_by?(current_user)
   p#description
-    = render(@game.announcer)
+    =' render(@game.announcer)
     = @game.description
 
   #players

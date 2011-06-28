@@ -18,8 +18,8 @@
     ul#users
       - @group.memberships.each do |membership|
         li
-          = content_tag :span, render(membership.user), :class => (membership.is_admin? ? 'admin' : nil)
-          = link_to t('.remove_member'), membership_path(membership), :method => :delete if @membership.present? && @membership.is_admin?
+          =' content_tag :span, render(membership.user), :class => (membership.is_admin? ? 'admin' : nil)
+          =' link_to t('.remove_member'), membership_path(membership), :method => :delete if @membership.present? && @membership.is_admin?
           - if @group.owner == current_user
             - if membership.is_admin?
               = link_to t('.unset_admin'), membership_path(membership, :membership => { :is_admin => false }), :method => :put

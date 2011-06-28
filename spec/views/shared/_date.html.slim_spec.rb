@@ -16,4 +16,8 @@ describe 'shared/_date' do
   it 'should have real date in title' do
     page.first(:xpath, './/time/@title').text.should == l(@date, :format => :long)
   end
+
+  it 'should have time_in_words content' do
+    page.should have_content(time_in_words(@date))
+  end
 end

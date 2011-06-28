@@ -27,7 +27,7 @@ div class='game' id="game_#{@game.id}"
       - if flash[:new_participation_errors]
         p.error= flash[:new_participation_errors]
       p
-        = label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
-        = text_field_tag :dummy_name
+        =' label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
+        =' text_field_tag :dummy_name
         = f.submit t('.add_dummy')
     = f.submit t('.submit')
