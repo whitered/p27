@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'devise/sessions/new.html.haml' do
+describe 'devise/sessions/new' do
 
   let(:user) { stub_model(User).as_new_record }
 

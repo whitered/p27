@@ -1,9 +1,0 @@
-%div[participation]
-  - if participation.user.nil?
-    = participation.dummy_name
-  - else
-    = render participation.user
-  = t('activerecord.attributes.participation.rebuys') + ':' + participation.rebuys.to_s
-  = t('activerecord.attributes.participation.addon') + ':' + (participation.addon? ? '1' : '0')
-  = t('activerecord.attributes.participation.win') + ':' + money(participation.win)
-

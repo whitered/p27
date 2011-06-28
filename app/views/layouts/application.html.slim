@@ -1,0 +1,15 @@
+! doctype 5
+/ http://paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither
+ie_html class='no-js' 
+  = render 'layouts/head'
+  body lang=I18n.locale.to_s class=controller.controller_name 
+    header#header
+      = render 'layouts/header'
+    #main role='main' 
+      #content
+        = yield
+    = render 'layouts/sidebar', :my_groups => @my_groups
+    footer#footer
+      = render 'layouts/footer'
+    / Javascript at the bottom for fast page loading
+    = render 'layouts/javascripts'

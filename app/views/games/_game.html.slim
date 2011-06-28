@@ -1,0 +1,6 @@
+article class='game' id="game_#{game.id}"
+  p= render 'game_type', :game => game
+  p
+    = render 'shared/date', :date => game.date
+    = game.place
+    = link_to t('.show'), game_path(game)

@@ -32,7 +32,7 @@ gem 'sqlite3'
 
 gem 'devise'
 gem 'russian', :git => 'https://github.com/yaroslav/russian.git'
-gem 'haml-rails'
+gem 'slim-rails'
 gem 'compass'
 gem 'html5-boilerplate'
 gem 'acts_as_commentable_with_threading'

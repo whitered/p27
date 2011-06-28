@@ -1,8 +1,0 @@
-- content_for :title, t('.title', :group => @group.name)
-%p= t('.hint')
-= form_tag group_invitations_path(@group) do
-  = label_tag :recipients, t('.recipients')
-  = text_field_tag :recipients
-  = label_tag :message, t('.message')
-  = text_area_tag :message
-  = submit_tag t('.submit')
