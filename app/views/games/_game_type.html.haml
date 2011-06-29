@@ -1,9 +1,0 @@
-= t(game.game_type, :scope => 'activerecord.attributes.game.type')
-- unless game.buyin.zero?
-  %span{ :title => t('activerecord.attributes.game.buyin') }= money game.buyin
-  - unless game.rebuy.zero?
-    \/
-    %span{ :title => t('activerecord.attributes.game.rebuy') }= money game.rebuy
-    - unless game.addon.zero?
-      \/
-      %span{ :title => t('activerecord.attributes.game.addon') }= money game.addon

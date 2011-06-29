@@ -16,6 +16,13 @@ describe Group do
     group.should respond_to(:name)
   end
 
+  describe 'name' do
+    it 'should return group id if no name was defined' do
+      g = Group.make!(:name => nil)
+      g.name.should == g.id.to_s
+    end
+  end
+
   it 'should have users' do
     group.should respond_to(:users)
   end

@@ -1,9 +1,0 @@
-- content_for :submenu do
-  %ul
-    %li= link_to t('.groups'), groups_path
-    %li= link_to t('.posts'), posts_path
-    %li= link_to t('.games'), games_path
-- if user_signed_in?
-  - unless @posts.nil?
-    #posts
-      = render @posts

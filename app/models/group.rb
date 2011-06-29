@@ -40,4 +40,8 @@ class Group < ActiveRecord::Base
   def add_user user
     users << user unless users.include? user
   end
+
+  def name
+    self[:name] || id.to_s
+  end
 end

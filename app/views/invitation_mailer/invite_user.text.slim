@@ -1,0 +1,12 @@
+- if @invitation.message?
+  = t('.body_with_message',                   \
+    :inviter => @invitation.inviter_username, \
+    :group => @invitation.group_name,         \
+    :message => @invitation.message,          \
+    :registration_link => @link)
+- else
+  = t('.body',                                \
+    :inviter => @invitation.inviter_username, \
+    :group => @invitation.group_name,         \
+    :registration_link => @link)
+

@@ -1,0 +1,12 @@
+- inside_group @post.group
+- content_for :title, @post.title
+div class='post' id='post'
+  p = @post.body.html_safe
+  div class='post_data'
+    = render @post.author
+    = l @post.created_at
+    = link_to t('.edit'), edit_post_path(@post) if @post.can_be_edited_by?(current_user)
+div id='post_comments'
+  = render @post.root_comments, :last_visit => @last_visit, :new_comment => @comment, :post => @post
+= render 'comments/form', :post => @post, :comment => @comment if new_root_comment?
+

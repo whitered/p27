@@ -37,5 +37,5 @@ class Game < ActiveRecord::Base
       :tourney_with_rebuys
     end
   end
-  
+
 end

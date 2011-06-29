@@ -1,0 +1,8 @@
+- content_for :title do
+  = t('.title', :username => @user.username)
+- if @user == current_user
+  - content_for :submenu do
+    ul
+      li= link_to t('.edit_profile'), edit_user_registration_path
+      li= link_to t('.invitations'), invitations_path
+= @user.name if @user.name?

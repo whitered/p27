@@ -1,9 +1,0 @@
-= simple_form_for(resource, :url => session_path(resource_name)) do |f|
-  = f.input :login, :autofocus => true
-  = f.input :password, :required => false
-  - if devise_mapping.rememberable?
-    = f.input :remember_me, :as => :boolean
-  = f.submit t('.submit')
-= link_to t('.new_password'), new_password_path(resource_name)
-%br
-= link_to t('.new_confirmation'), new_confirmation_path(resource_name)
