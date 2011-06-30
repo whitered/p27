@@ -31,14 +31,17 @@ gem 'sqlite3'
 # end
 
 gem 'devise'
-gem 'russian'
-gem 'formtastic'
-gem 'haml-rails'
+gem 'russian', :git => 'https://github.com/yaroslav/russian.git'
+gem 'slim-rails'
+gem 'slim', :git => 'https://github.com/stonean/slim.git'
 gem 'compass'
 gem 'html5-boilerplate'
 gem 'acts_as_commentable_with_threading'
 gem 'sanitize'
 gem 'validates_timeliness'
+gem 'simple_form'
+gem 'dotiw', :git => 'https://github.com/whitered/dotiw.git'
+gem 'acts_as_money', :git => 'https://github.com/whitered/acts_as_money.git'
 
 
 group :test, :development do
@@ -53,4 +56,5 @@ group :test do
   gem 'database_cleaner'
   gem 'faker'
   gem 'autotest-rails'
+  gem 'test_notifier'
 end

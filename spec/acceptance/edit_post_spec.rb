@@ -14,7 +14,7 @@ feature "Edit Post" do
     click_link_or_button(t('posts.show.edit'))
     fill_in t('activerecord.attributes.post.title'), :with => 'New title'
     fill_in t('activerecord.attributes.post.body'), :with => 'New post body'
-    click_button t('posts.edit.commit')
+    click_button t('posts.edit.submit')
     current_path.should eq(post_path(@post))
     page.should have_content(t('posts.update.successful'))
     page.should have_content('New title')
@@ -29,7 +29,7 @@ feature "Edit Post" do
     visit edit_post_path(@post)
     fill_in t('activerecord.attributes.post.title'), :with => 'New title'
     fill_in t('activerecord.attributes.post.body'), :with => 'New post body'
-    click_button t('posts.edit.commit')
+    click_button t('posts.edit.submit')
     current_path.should eq(post_path(@post))
     page.should have_content(t('posts.update.successful'))
     page.should have_content('New title')

@@ -20,6 +20,23 @@ describe GamesController do
                                                  :id => '5')
   end
 
+  it 'should route edit' do
+    { :get => '/games/4/edit' }.should route_to(:controller => 'games',
+                                                :action => 'edit',
+                                                :id => '4')
+  end
+
+  it 'should route update' do
+    { :put => '/games/5' }.should route_to(:controller => 'games',
+                                           :action => 'update',
+                                           :id => '5')
+  end
+
+  it 'should route index' do
+    { :get => '/games' }.should route_to(:controller => 'games',
+                                         :action => 'index')
+  end
+
   context 'in group' do
 
     it 'should route new' do
@@ -38,6 +55,12 @@ describe GamesController do
       { :get => '/groups/3/games' }.should route_to(:controller => 'games',
                                                     :action => 'index',
                                                     :group_id => '3')
+    end
+
+    it 'should route archive' do
+      { :get => '/groups/4/archive' }.should route_to(:controller => 'games',
+                                                      :action => 'archive',
+                                                      :group_id => '4')
     end
 
   end

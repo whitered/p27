@@ -14,10 +14,10 @@ feature 'Edit Group' do
     fill_in t('activerecord.attributes.group.name'), :with => 'New name'
     uncheck t('activerecord.attributes.group.private')
     check t('activerecord.attributes.group.hospitable')
-    click_link_or_button t('groups.edit.commit')
+    click_link_or_button t('groups.edit.submit')
+    page.should have_content(t('groups.update.success'))
 
     visit edit_group_path(@group)
-    page.should have_content(t('groups.update.success'))
     page.find_field(t('activerecord.attributes.group.name')).value.should eq('New name')
     page.find_field(t('activerecord.attributes.group.private')).should_not be_checked
     page.find_field(t('activerecord.attributes.group.hospitable')).should be_checked

@@ -1,8 +1,0 @@
-#comment_form
-  - @comment.errors.full_messages.each do |message|
-    .error= message
-  = semantic_form_for [@post, @comment] do |f|
-    = f.inputs :body
-    = hidden_field_tag 'comment[parent_id]', @comment.parent_id unless @comment.parent_id.nil?
-    = f.buttons do
-      = f.commit_button t('comments.form.commit')

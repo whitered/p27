@@ -69,14 +69,14 @@ describe GroupsController do
       it 'should make user admin of the group' do
         do_create
         m = Membership.last
-        m.user.should eq(@user)
-        m.group.should eq(Group.last)
+        m.user.should == @user
+        m.group.should == Group.last
         m.is_admin?.should be_true
       end
 
       it "should set user group\'s owner" do
         do_create
-        Group.last.owner.should eq(@user)
+        Group.last.owner.should == @user
       end
 
     end
@@ -107,7 +107,12 @@ describe GroupsController do
 
       it 'should assign :group' do
         do_show @group.id
-        assigns[:group].should eq(@group)
+        assigns[:group].should == @group
+      end
+
+      it 'should assign :membership nil' do
+        do_show @group.id
+        assigns[:membership].should be_nil
       end
 
     end
@@ -139,7 +144,12 @@ describe GroupsController do
 
         it 'should assign :group' do
           do_show @group.id
-          assigns[:group].should eq(@group)
+          assigns[:group].should == @group
+        end
+
+        it 'should assign :membership' do
+          do_show @group.id
+          assigns[:membership].should == @group.memberships.find_by_user_id!(@user.id)
         end
 
       end
@@ -159,7 +169,12 @@ describe GroupsController do
 
         it 'should assign :group' do
           do_show @group.id
-          assigns[:group].should eq(@group)
+          assigns[:group].should == @group
+        end
+
+        it 'should assign :membership' do
+          do_show @group.id
+          assigns[:membership].should be_nil
         end
 
       end
@@ -191,281 +206,6 @@ describe GroupsController do
           do_show 0
         end.should raise_error(ActiveRecord::RecordNotFound)
       end
-    end
-
-  end
-
-
-  describe 'remove_member' do
-
-    before do
-      @group = Group.make!
-      @member, @admin, @outsider = User.make!(3)
-      @group.users << @member << @admin
-      @group.set_admin_status @admin, true
-    end
-
-    def do_remove_member username
-      post :remove_member, :id => @group.id, :username => username
-    end
-
-    it 'should require user authentication' do
-      do_remove_member @member.username
-      response.should redirect_to(new_user_session_path)
-    end
-
-    it 'should not admit outsiders' do
-      sign_in @outsider
-      lambda do
-        do_remove_member :remove => @member.username
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-      
-    it 'should not admit regular members' do
-      sign_in @member
-      lambda do
-        do_remove_member @admin.username
-      end.should_not change{ @group.users.exists? @admin }
-      flash[:alert].should eq(t('groups.remove_member.errors.not_permitted'))
-      response.should redirect_to(@group)
-    end
-
-    it 'should admit group owner' do
-      owner = User.make!
-      owner.own_groups << @group
-      sign_in owner
-      lambda do
-        do_remove_member @member.username
-      end.should change{ @group.users.exists? @member }.from(true).to(false)
-      flash[:alert].should be_nil
-      response.should redirect_to(@group)
-    end
-
-    describe 'group admin' do
-      
-      before do
-        sign_in @admin
-      end
-
-      it 'should be able to remove a member from the group' do
-        lambda do
-          do_remove_member @member.username
-        end.should change{ @group.users.exists? @member }.from(true).to(false)
-      end
-
-      it 'should destroy membership when removing user' do
-        lambda do
-          do_remove_member @member.username
-        end.should change(Membership, :count).by(-1)
-      end
-
-      it 'should ignore case in username' do
-        lambda do
-          do_remove_member @member.username.swapcase
-        end.should change{ @group.users.exists? @member }.from(true).to(false)
-      end
-
-      it 'should ignore not member users requested to be removed' do
-        lambda do
-          do_remove_member 'mr_nobody'
-        end.should_not change{ @group.users.count }
-      end
-
-      it 'should redirect to group page' do
-        do_remove_member @admin.username
-        response.should redirect_to(@group)
-      end
-
-      it 'should show notice when a member is removed' do
-        do_remove_member @admin.username
-        flash[:notice].should eq(t('groups.remove_member.success', :username => @admin.username))
-      end
-      
-      it 'should set error message if no names given' do
-        post :remove_member, :id => @group.id
-        flash[:alert].should eq(t('groups.remove_member.errors.name_not_given'))
-      end
-
-      it 'should set error message if wrong names were requested to be removed' do
-        do_remove_member 'mr_wrong'
-        flash[:alert].should eq(t('groups.remove_member.errors.user_not_member', :username => 'mr_wrong'))
-      end
-    end
-  end
-
-
-  describe 'manage_admins' do
-
-    def do_manage_admins options
-      post :manage_admins, :id => @group.id, :set => options[:set], :unset => options[:unset]
-    end
-
-    before do
-      @group = Group.make!
-      @member, @admin, @owner = User.make!(3)
-      @group.users << @member << @admin
-      @group.owner = @owner
-      @group.save!
-      @group.set_admin_status @admin, true
-    end
-
-    it 'should require user authentication' do
-      do_manage_admins :set => @member.username
-      response.should redirect_to(new_user_session_path)
-    end
-
-    it 'should require user to be group owner' do
-      sign_in @admin
-      do_manage_admins :set => @member.username
-      response.should redirect_to(@group)
-      flash[:alert].should eq(t('groups.manage_admins.errors.not_permitted'))
-    end
-
-    it 'should raise NotFound exception for outsider' do
-      sign_in User.make!
-      lambda do
-        do_manage_admins :set => @member.username
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-      
-
-    context 'for group owner' do
-
-      before do
-        sign_in @owner
-      end
-
-      it 'should turn regular user to admin' do
-        lambda do
-          do_manage_admins :set => @member.username
-        end.should change{ @group.user_is_admin? @member }.from(false).to(true)
-      end
-
-      it 'should turn admin to regular user' do
-        lambda do
-          do_manage_admins :unset => @admin.username
-        end.should change{ @group.user_is_admin? @admin }.from(true).to(false)
-      end
-
-      it 'should show error message if some users are not group members' do
-        outsider = User.make!
-        do_manage_admins :set => [@member.username, outsider.username].join(' ')
-        flash[:alert].should eq(t('groups.manage_admins.errors.wrong_names', :names => outsider.username))
-      end
-
-      it 'should change member status ignoring outsiders' do
-        outsider = User.make!
-        lambda do
-          do_manage_admins :unset => [@admin.username, outsider.username].join(',')
-        end.should change{ @group.user_is_admin? @admin }.from(true).to(false)
-      end
-
-      it 'should redirect to group page' do
-        do_manage_admins :set => @member.username
-        response.should redirect_to(@group)
-      end
-
-      it 'should show error message if no names were given' do
-        do_manage_admins :set => nil
-        flash[:alert].should eq(t('groups.manage_admins.errors.no_name_given'))
-      end
-
-      it 'should show error message if empty names were given' do
-        do_manage_admins :unset => ''
-        flash[:alert].should eq(t('groups.manage_admins.errors.no_name_given'))
-      end
-
-      it 'should not change member status if it equals requested one' do
-        lambda do
-          do_manage_admins :unset => @member.username
-        end.should_not change{ @group.user_is_admin? @member }
-      end
-
-      it 'should not change admin status if it equals requested one' do
-        lambda do
-          do_manage_admins :set => @admin.username
-        end.should_not change{ @group.user_is_admin? @admin }
-      end
-
-      it 'should be able to make different actions at same time' do
-        do_manage_admins :set => @member.username, :unset => @admin.username
-        @group.user_is_admin?(@member).should be_true
-        @group.user_is_admin?(@admin).should be_false
-      end
-
-    end
-
-  end
-
-
-  describe 'leave' do
-
-    before do
-      @user = User.make!
-      @group = Group.make!
-    end
-
-    def do_leave
-      post :leave, :id => @group.id
-    end
-
-    it 'should require user to be authenticated' do
-      do_leave
-      response.should redirect_to(new_user_session_path)
-    end
-
-    it 'should require user to be a member of the group' do
-      sign_in @user
-      lambda do
-        do_leave
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-      
-    
-    context 'for group member' do
-
-      before do
-        @group.users << @user
-        sign_in @user
-      end
-
-      it 'should remove user from group' do
-        lambda do
-          do_leave
-        end.should change{ @group.users.exists? @user }.from(true).to(false)
-      end
-
-      it 'should set flash notification' do
-        do_leave
-        flash[:notice].should eq(t('groups.leave.success', :group => @group.name))
-      end
-      
-      context 'of private group' do
-
-        before do
-          @group.update_attribute(:private, true)
-        end
-
-        it 'should redirect to root' do
-          do_leave
-          response.should redirect_to(root_path)
-        end
-
-      end
-
-      context 'of public group' do
-
-        before do
-          @group.update_attribute(:private, false)
-        end
-
-        it 'should redirect to group page' do
-          do_leave
-          response.should redirect_to(@group)
-        end
-
-      end
-
     end
 
   end
@@ -504,76 +244,6 @@ describe GroupsController do
     end
   end
 
-  describe 'join' do
-
-    before do 
-      @group = Group.make!
-      @user = User.make!
-    end
-
-    def do_join
-      post :join, :id => @group.id
-    end
-
-    it 'should require user authentication' do
-      do_join
-      response.should redirect_to(new_user_session_path)
-    end
-      
-    it 'should raise NotFound error for not existent group' do
-      sign_in @user
-      lambda do
-        post :join, :id => 0
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-
-    it 'should raise NotFound error for private group' do
-      @group.update_attribute(:private, true)
-      sign_in @user
-      lambda do
-        do_join
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-
-    it 'should show error message if group is not hospitable' do
-      @group.update_attributes({ :private => false, :hospitable => false })
-      sign_in @user
-      do_join
-      response.should redirect_to(group_path(@group))
-      flash[:alert].should eq(t('groups.join.errors.not_hospitable'))
-    end
-
-
-    context 'for hospitable public group' do
-
-      before do
-        @group.update_attributes :private => false, :hospitable => true
-        sign_in @user
-      end
-
-      it 'should do nothing if user is a member of the group already' do
-        @group.users << @user
-        lambda do
-          do_join
-        end.should_not change{ @group.users.count }
-      end
-
-      it 'should add user to the group if it is not a member' do
-        lambda do
-          do_join
-        end.should change{ @group.users.count }.by(1)
-        @group.users.should include(@user)
-      end
-
-      it 'should redirect to group page' do
-        do_join
-        response.should redirect_to(group_path(@group))
-      end
-    end
-
-  end
-
-
   describe 'edit' do 
 
     before do
@@ -607,7 +277,7 @@ describe GroupsController do
 
       it 'should assign :group' do
         do_edit
-        assigns[:group].should eq(@group)
+        assigns[:group].should == @group
       end
 
       it 'should render :edit template' do
@@ -684,13 +354,51 @@ describe GroupsController do
 
       it 'should set successful notification' do
         do_update :name => 'New name'
-        flash[:notice].should eq(t('groups.update.success'))
+        flash[:notice].should == t('groups.update.success')
       end
 
       it 'should render :edit template' do
         do_update :name => 'New name'
         response.should render_template(:edit)
       end
+    end
+  end
+
+  describe 'my_groups' do
+
+    it 'should require user authentication' do
+      get :my_groups
+      response.should redirect_to(new_user_session_path)
+    end
+
+    context 'for logged in user' do
+
+      before do
+        @user = User.make!
+        @user.groups << Group.make!(2)
+        sign_in @user
+      end
+
+      it 'should assign @groups' do
+        get :my_groups
+        assigns[:groups].should == @user.groups
+      end
+
+      it 'should not assign @my_groups' do
+        get :my_groups
+        assigns[:my_groups].should be_nil
+      end
+
+      it 'should render :index' do
+        get :my_groups
+        response.should render_template(:index)
+      end
+
+      it 'should be successful' do
+        get :my_groups
+        response.should be_successful
+      end
+
     end
   end
 end

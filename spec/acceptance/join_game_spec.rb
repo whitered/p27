@@ -16,12 +16,12 @@ feature "Join Game" do
 
     scenario 'joins game from games index page' do
       login @user
-      visit group_games_path(@group)
-      within('#game_' + @game.id.to_s) do
+      visit game_path(@game)
+      within('#game') do
         click_link(t('games.game.join'))
       end
       current_path.should eq(game_path(@game))
-      page.find('#game .game_players').should have_content(@user.username)
+      page.find('#game #players').should have_content(@user.username)
     end
 
     scenario 'joins game from game page' do
@@ -31,7 +31,7 @@ feature "Join Game" do
         click_link(t('games.game.join'))
       end
       current_path.should eq(game_path(@game))
-      page.find('#game .game_players').should have_content(@user.username)
+      page.find('#game #players').should have_content(@user.username)
     end
 
   end
@@ -40,17 +40,17 @@ feature "Join Game" do
 
     before do
       @group.users << @user
-      @game.users << @user
+      @game.players << @user
     end
 
     scenario 'leaves game from the group games page' do
       login @user
-      visit group_games_path(@group)
-      within('#game_' + @game.id.to_s) do
+      visit game_path(@game)
+      within('#game') do
         click_link(t('games.game.leave'))
       end
       current_path.should eq(game_path(@game))
-      page.find('#game .game_players').should have_no_content(@user.username)
+      page.find('#game #players').should have_no_content(@user.username)
     end
 
     scenario 'leaves game from the game page' do
@@ -60,7 +60,7 @@ feature "Join Game" do
         click_link(t('games.game.leave'))
       end
       current_path.should eq(game_path(@game))
-      page.find('#game .game_players').should have_no_content(@user.username)
+      page.find('#game #players').should have_no_content(@user.username)
     end
 
   end

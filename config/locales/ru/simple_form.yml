@@ -1,0 +1,5 @@
+# encoding: utf-8
+ru:
+  simple_form:
+    required:
+      html: '<span title="required">*</span>'

@@ -16,6 +16,13 @@ describe Group do
     group.should respond_to(:name)
   end
 
+  describe 'name' do
+    it 'should return group id if no name was defined' do
+      g = Group.make!(:name => nil)
+      g.name.should == g.id.to_s
+    end
+  end
+
   it 'should have users' do
     group.should respond_to(:users)
   end
@@ -212,5 +219,83 @@ describe Group do
 
   it 'should have games' do
     group.should respond_to(:games)
+  end
+
+  it 'should have user_can_view? method' do
+    group.should respond_to(:user_can_view?)
+  end
+
+  describe 'user_can_view?' do
+
+    before do
+      @group = Group.make!
+      @insider, @outsider = User.make!(2)
+      @group.users << @insider
+    end
+
+    context 'for private group' do
+
+      before do
+        @group.update_attribute(:private, true)
+      end
+
+      it 'should be false if user is outsider' do
+        @group.user_can_view?(@outsider).should be_false
+      end
+
+      it 'should be true if user is insider' do
+        @group.user_can_view?(@insider).should be_true
+      end
+
+      it 'should be false if user is nil' do
+        @group.user_can_view?(nil).should be_false
+      end
+
+    end
+
+    context 'for public group' do
+
+      before do
+        @group.update_attribute(:private, false)
+      end
+
+      it 'should be true if user is outsider' do
+        @group.user_can_view?(@outsider).should be_true
+      end
+
+      it 'should be true if user is insider' do
+        @group.user_can_view?(@insider).should be_true
+      end
+
+      it 'should be true if user is nil' do
+        @group.user_can_view?(nil).should be_true
+      end
+
+    end
+
+  end
+
+  it 'should have add_user method' do
+    Group.new.should respond_to(:add_user)
+  end
+
+  describe 'add_user' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+    end
+
+    it 'should add new user' do
+      @group.add_user @user
+      @group.users.should include(@user)
+    end
+
+    it 'should not add user twice' do
+      @group.users << @user
+      @group.add_user @user
+      @group.reload
+      @group.users.count.should == 1
+    end
   end
 end

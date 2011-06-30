@@ -1,19 +1,33 @@
-join game
-leave game
-add/remove user to game by admin
-add/remove fake player to game by admin
-close game providing results
-restrict game date created by regular group member
+misc:
+  migrate from haml to slim
 
-restrict post editing
-use nicer dates format
+groups:
+  group avatars
+  group renderers
 
-allow to change email after registration
+game management:
+  add/remove user to game by admin
+  add/remove fake player to game by admin
+  close game providing results
+  restrict game date created by regular group member
+  freeze archived game
 
-use paranoid mass assignment protection
-dependent => :destroy on joining models (railscast 167)
-use validation_reflection gem to review required fields in formtastic forms (railscast 185)
-use formtastic hints
-input time in a textfield with chronic gem (railscast 32)
+post authoring:
+  restrict post editing
+  post privacy should be independent of group privacy
+
+forms:
+  hints in forms
+  required fields
+  input time in a textfield with chronic gem (railscast 32)
+
+other:
+  pagination
+  use paranoid mass assignment protection
+  dependent => :destroy on joining models (railscast 167)
+
+
+VULNERABILITIES:
+  any user can be added to a game through nested attributes
 
 

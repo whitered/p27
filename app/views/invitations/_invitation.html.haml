@@ -1,6 +1,0 @@
-.invitation
-  = invitation.group.name
-  = t('.from')
-  = invitation.inviter.username
-  = link_to t('.accept'), accept_invitation_path(invitation), :method => :post
-  = link_to t('.decline'), decline_invitation_path(invitation), :method => :post

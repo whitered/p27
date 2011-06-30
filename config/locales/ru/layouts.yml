@@ -1,0 +1,10 @@
+# encoding: utf-8
+ru:
+  layouts:
+    header:
+      registration: Регистрация
+      login: Вход
+      logout: Выход
+    sidebar:
+      my_groups: Мои группы
+

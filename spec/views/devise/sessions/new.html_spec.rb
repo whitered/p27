@@ -1,6 +1,6 @@
 require 'spec_helper'
 
-describe 'devise/sessions/new.html.haml' do
+describe 'devise/sessions/new' do
 
   let(:user) { stub_model(User).as_new_record }
 
@@ -16,11 +16,6 @@ describe 'devise/sessions/new.html.haml' do
   let(:page) { Capybara.string rendered }
 
 
-  it 'should have page title' do
-    render
-    page.should have_content(t 'devise.sessions.new.title')
-  end
-
   it 'should have field for login' do
     render
     page.should have_field(t 'activerecord.attributes.user.login')
@@ -33,7 +28,7 @@ describe 'devise/sessions/new.html.haml' do
 
   it 'should have submit button' do
     render
-    page.should have_button(t 'devise.sessions.new.commit')
+    page.should have_button(t 'devise.sessions.new.submit')
   end
 
   it 'should render error for login' do
@@ -46,6 +41,16 @@ describe 'devise/sessions/new.html.haml' do
     user.errors.add(:password)
     render
     page.should have_content(t_error(User, :password))
+  end
+
+  it 'should have link to new password generation' do
+    render
+    page.should have_link(t('devise.sessions.new.new_password'), :href => new_user_password_path)
+  end
+
+  it 'should have link to new confirmation path' do
+    render
+    page.should have_link(t('devise.sessions.new.new_confirmation'), :href => new_user_confirmation_path)
   end
 
 end

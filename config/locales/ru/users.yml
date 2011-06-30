@@ -1,0 +1,7 @@
+# encoding: utf-8
+ru:
+  users:
+    show:
+      title: 'Профиль %{username}'
+      edit_profile: Редактировать
+      invitations: Приглашения

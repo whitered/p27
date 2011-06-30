@@ -6,23 +6,21 @@ P27::Application.routes.draw do
     get '/login' => 'devise/sessions#new', :as => :new_user_session
     post '/login' => 'devise/sessions#create', :as => :user_session
     get '/logout' => 'devise/sessions#destroy', :as => :destroy_user_session
-    
+
     get '/registration' => 'registrations#new', :as => :new_user_registration
     post '/registration' => 'registrations#create', :as => :user_registration
     get '/profile' => 'registrations#edit', :as => :edit_user_registration
+    put '/registration' => 'registrations#update', :as => nil
   end
 
-  resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do
-    member do
-      post :remove_member
-      post :manage_admins
-      post :leave
-      post :join
-    end
+  get '/my_groups' => 'groups#my_groups', :as => :my_groups
 
+  resources :groups, :only => [:new, :create, :show, :index, :edit, :update] do
     resources :invitations, :only => [:new, :create]
     resources :posts, :only => [:new, :create]
     resources :games, :only => [:new, :create, :index]
+    resources :memberships, :only => [:create]
+    get :archive, :controller => :games
   end
 
   resources :users, :only => [:show]
@@ -34,16 +32,18 @@ P27::Application.routes.draw do
     end
   end
 
-  resources :posts, :only => [:show, :edit, :update] do
+  resources :posts, :only => [:show, :edit, :update, :index] do
     resources :comments, :only => [:create]
   end
 
-  resources :games, :only => [:show] do
+  resources :games, :only => [:show, :edit, :update, :index] do
     member do
       post :join
       post :leave
     end
   end
+
+  resources :memberships, :only => [:destroy, :update]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

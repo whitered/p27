@@ -1,0 +1,10 @@
+- inside_group @group
+= simple_form_for [@group, @game] do |f|
+  = f.input :date, :as => :string, :autofocus => true, :input_html => { :value => @game.date.to_s(:db) }
+  = f.input :place
+  = f.input :currency, currency_select_options
+  = f.input :buyin, :required => false
+  = f.input :rebuy, :required => false
+  = f.input :addon, :required => false
+  = f.input :description, :input_html => { :rows => 4 }
+  = f.submit t('.submit')

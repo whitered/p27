@@ -15,7 +15,7 @@ feature "Send Invitation" do
     visit new_group_invitation_path(@group)
     fill_in t('invitations.new.recipients'), :with => recipients
     fill_in t('invitations.new.message'), :with => 'Join my group!'
-    click_link_or_button t('invitations.new.commit')
+    click_link_or_button t('invitations.new.submit')
   end
 
   scenario 'group admin visits invitations page' do

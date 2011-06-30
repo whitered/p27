@@ -1,0 +1,8 @@
+# encoding: utf-8
+ru:
+  home:
+    index:
+      title: ''
+      groups: Группы
+      posts: Посты
+      games: Игры

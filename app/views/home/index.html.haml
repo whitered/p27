@@ -1,6 +1,0 @@
-- if user_signed_in?
-  = link_to t('.new_group'), new_group_path
-  - unless @posts.nil?
-    #posts
-      %h2= t('.posts')
-      = render @posts

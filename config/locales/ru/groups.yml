@@ -1,0 +1,43 @@
+# encoding: utf-8
+ru:
+  groups:
+    new:
+      title: Новая группа
+      submit: Создать группу
+    remove_member:
+      success: '%{username} удален из группы'
+      errors:
+        name_not_given: Не указано имя пользователя
+        not_permitted: Исключить из группы может только администратор
+        user_not_found: 'Пользователь с ником %{username} не найден'
+        user_not_member: '%{username} не состоит в группе'
+    show:
+      join: Вступить в группу
+      leave: Выйти из группы
+      edit: Hастройки
+      remove_member: '[x]'
+      set_admin: '[+A]'
+      unset_admin: '[-A]'
+      new_invitation: Пригласить участника
+      new_post: Написать пост
+      new_game: Объявить игру
+      games: Игры
+      archive: Архив
+      group_users: Участники
+    join:
+      errors:
+        not_hospitable: Вступить в эту группу можно только по приглашению
+    leave:
+      success: 'Вы вышли из группы %{group}'
+    index:
+      title: Группы
+      new_group: Создать новую группу
+    my_groups:
+      title: Мои группы
+    edit:
+      title: Настройки группы
+      submit: Сохранить изменения
+    update:
+      title: Настройки группы
+      success: Настройки группы сохранены
+

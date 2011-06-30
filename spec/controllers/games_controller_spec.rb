@@ -108,12 +108,12 @@ describe GamesController do
 
       it 'should set current user as announcer' do
         do_create
-        Game.last.announcer.should eq(@user)
+        Game.last.announcer.should == @user
       end
 
       it 'should set group for new game' do
         do_create
-        Game.last.group.should eq(@group)
+        Game.last.group.should == @group
       end
       
     end
@@ -159,7 +159,7 @@ describe GamesController do
     context 'for authorized user' do
       it 'should assign :game' do
         do_show
-        assigns[:game].should eq(@game)
+        assigns[:game].should == @game
       end
 
       it 'should be successful' do
@@ -177,46 +177,127 @@ describe GamesController do
 
   describe 'index' do
 
-    before do
-      @group = Group.make!
-      announcer = User.make!
-      @games = (1..3).map do |n|
-        Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
-      end
-    end
-
-    def get_index
-      get :index, :group_id => @group.id
-    end
-
-    it 'should raise NotFound for not authenticated user' do
-      @group.update_attribute(:private, true)
-      lambda do
-        get_index
-      end.should raise_exception(ActiveRecord::RecordNotFound)
-    end
-
-    context 'for authorized user' do
+    context 'top level' do
 
       it 'should assign @games' do
-        get_index
-        assigns[:games].should eq(@games.reverse)
+        get :index
+        assigns[:games].should_not be_nil
       end
 
-      it 'should not find games that belong to another group' do
-        game = Game.make!(:announcer => User.make!, :group => Group.make!)
-        get_index
-        assigns[:games].should_not include(game)
+      describe '@games' do
+
+        before do 
+          public_groups = Group.make!(2, :private => false)
+          private_group = Group.make!(:private => true)
+          announcer = User.make!
+          games = (1..5).map do |day|
+            Game.make(:announcer => User.make!, :date => Date.today + day)
+          end
+          public_groups[0].games << games[0]
+          public_groups[1].games << games[1..2]
+          private_group.games << games[3..4]
+          games[2..3].each { |game| game.update_attribute(:archived, true) }
+          @public_games = games[0..2]
+          @private_games = games[3..4]
+          @archived_games = games[2..3]
+        end
+
+        let(:games) { assigns[:games] }
+
+        it 'should contain all public unarchived games' do
+          get :index
+          (@public_games - @archived_games).each do |game|
+            games.should include(game)
+          end
+        end
+
+        it 'should not contain any of the private games' do
+          get :index
+          @private_games.each do |game|
+            games.should_not include(game)
+          end
+        end
+
+        it 'should not contain any of the archived games' do
+          get :index
+          @archived_games.each do |game|
+            games.should_not include(game)
+          end
+        end
+
+        it 'should have games ordered by date' do
+          get :index
+          games.should == @public_games[0..1]
+        end
+
       end
 
       it 'should render :index template' do
-        get_index
+        get :index
         response.should render_template(:index)
       end
 
       it 'should be successful' do
-        get_index
+        get :index
         response.should be_successful
+      end
+
+    end
+
+    context 'inside a group' do
+
+      before do
+        @group = Group.make!
+        announcer = User.make!
+        @games = (1..3).map do |n|
+          Game.make!(:announcer => announcer, :group => @group, :date => DateTime.now + n)
+        end
+        @games[1].update_attribute(:archived, true)
+      end
+
+      def get_index
+        get :index, :group_id => @group.id
+      end
+
+      it 'should raise NotFound for not authenticated user' do
+        @group.update_attribute(:private, true)
+        lambda do
+          get_index
+        end.should raise_exception(ActiveRecord::RecordNotFound)
+      end
+
+      context 'for authorized user' do
+
+        it 'should assign @games' do
+          get_index
+          assigns[:games].should_not be_nil
+        end
+
+        it 'should assign @group' do
+          get_index
+          assigns[:group].should == @group
+        end
+
+        it 'should not find games that belong to another group' do
+          game = Game.make!(:announcer => User.make!, :group => Group.make!)
+          get_index
+          assigns[:games].should_not include(game)
+        end
+
+        it 'should not include archive games' do
+          get_index
+          assigns[:games].should == [@games[0], @games[2]]
+        end
+
+        it 'should render :index template' do
+          get_index
+          response.should render_template(:index)
+        end
+
+        it 'should be successful' do
+          get_index
+          response.should be_successful
+        end
       end
     end
   end
@@ -247,7 +328,7 @@ describe GamesController do
 
     it 'should raise MethodNotAllowed if user has already joined the game' do
       @group.users << @user
-      @game.users << @user
+      @game.players << @user
       sign_in @user
       lambda do
         do_join
@@ -266,8 +347,8 @@ describe GamesController do
           do_join
         end.should change(Participation, :count).by(1)
         p = Participation.last
-        p.user.should eq(@user)
-        p.game.should eq(@game)
+        p.user.should == @user
+        p.game.should == @game
       end
 
       it 'should redirect to game page' do
@@ -314,7 +395,7 @@ describe GamesController do
 
       before do
         @group.users << @user
-        @game.users << @user
+        @game.players << @user
         sign_in @user
       end
 
@@ -329,6 +410,233 @@ describe GamesController do
         do_leave
         response.should redirect_to(game_path(@game))
       end
+    end
+  end
+
+  describe 'edit' do
+
+    before do
+      @user = User.make!
+      @group = Group.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+    end
+
+    def do_edit
+      get :edit, :id => @game.id
+    end
+
+    it 'should require user authentication' do
+      do_edit
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authenticated to edit game' do
+      sign_in User.make!
+      lambda do
+        do_edit
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authenticated user' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      it 'should assign @game' do
+        do_edit
+        assigns[:game].should == @game
+      end
+
+      it 'should render :edit template' do
+        do_edit
+        response.should render_template(:edit)
+      end
+
+      it 'should be successful' do
+        do_edit
+        response.should be_successful
+      end
+    end
+  end
+
+  describe 'update' do
+
+    before do
+      @group = Group.make!
+      @user = User.make!
+      @game = Game.make!(:announcer => @user, :group => @group)
+      @params = {
+        :game => {
+          :date => 3.days.from_now,
+          :description => 'Completely new description',
+          :currency => 'EUR',
+          :rebuy => '1',
+          :buyin => '4',
+          :addon => '7'
+        },
+        :id => @game.id
+      }
+    end
+
+    def do_update
+      put :update, @params 
+    end
+
+    it 'should require user authentication' do
+      do_update
+      response.should redirect_to(new_user_session_path)
+    end
+
+    it 'should raise NotFound if user is not authorized for editing' do
+      sign_in User.make!
+      lambda do
+        do_update
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      before do
+        @group.users << @user
+        sign_in @user
+      end
+
+      describe 'add_fake' do
+
+        before do
+          @params[:commit] = t('games.edit.add_dummy')
+        end
+
+        context 'with correct name' do
+          
+          before do
+            @params[:dummy_name] = 'Dummy'
+          end
+
+          it 'should create new participation' do
+            lambda do
+              do_update
+            end.should change(Participation, :count).by(1)
+            Participation.last.dummy_name.should == 'Dummy'
+          end
+
+          it 'should render :edit' do
+            do_update
+            response.should render_template(:edit)
+          end
+
+        end
+
+        context 'with wrong name' do
+
+          before do
+            @params[:dummy_name] = nil
+          end
+
+          it 'should not create new participation' do
+            lambda do
+              do_update
+            end.should_not change(Participation, :count)
+          end
+
+          it 'should set :new_participation_errors flash' do
+            do_update
+            flash[:new_participation_errors].should_not be_empty
+          end
+
+        end
+
+      end
+
+      describe 'update' do
+
+        before do
+          @params[:commit] = t('games.edit.submit')
+        end
+
+        it 'should update game' do
+          do_update
+          @game.reload
+          @game.date.should == @params[:game][:date]
+          @game.description.should == @params[:game][:description]
+          @game.currency.should == 'EUR'
+          @game.rebuy.should == @params[:game][:rebuy].to_money(:eur)
+          @game.buyin.should == @params[:game][:buyin].to_money(:eur)
+          @game.addon.should == @params[:game][:addon].to_money(:eur)
+        end
+
+        it 'should assign @game' do
+          do_update
+          assigns[:game].should == @game
+        end
+
+        it 'should redirect to game' do
+          do_update
+          response.should redirect_to(game_path(@game))
+        end
+
+      end
+
+      describe 'unknown action' do
+
+        before do
+          @params[:commit] = 'unknown action'
+        end
+
+        it 'should raise exception' do
+          lambda do
+            do_update
+          end.should raise_exception
+        end
+
+      end
+
+    end
+  end
+
+  describe 'archive' do
+
+    before do 
+      @group = Group.make!
+      @group.games << Game.make(2, :announcer => User.make!, :archived => true)
+      @group.games << Game.make(:announcer => User.make!)
+    end
+
+    def get_archive
+      get :archive, :group_id => @group.id
+    end
+
+    it 'should raise NotFound exception if user cannot view requested group' do
+      @group.update_attribute(:private, true)
+      lambda do
+        get_archive
+      end.should raise_exception(ActiveRecord::RecordNotFound)
+    end
+
+    context 'for authorized user' do
+
+      it 'should assign archived groups to @groups' do
+        get_archive
+        assigns[:games].should == @group.games[0..1]
+      end
+
+      it 'should assign @group' do
+        get_archive
+        assigns[:group].should == @group
+      end
+
+      it 'should render :index' do
+        get_archive
+        response.should render_template(:index)
+      end
+
+      it 'should be successful' do
+        get_archive
+        response.should be_successful
+      end
+
     end
   end
 end

@@ -1,0 +1,33 @@
+# encoding: utf-8
+ru:
+  games:
+    new:
+      title: Новая игра
+      submit: Сохранить
+    index:
+      title: Игры
+      new_game: Объявить игру
+    archive:
+      title: Архив
+    game:
+      join: '+1'
+      leave: '-1'
+      show: Подробнее
+    show:
+      title: Игра
+      edit: изменить
+      participations: 'Участники:'
+      archived: '[Архив]'
+    edit:
+      title: Условия игры
+      submit: Сохранить
+      add_dummy: Добавить
+      destroy: Удалить
+  memberships:
+    create:
+      not_hospitable: Вступить в эту группу можно только по приглашению
+    destroy:
+      leave_successful: 'Вы вышли из группы %{group}'
+      user_removed_successful: '%{username} удален из группы'
+      not_permitted: Исключить из группы может только администратор
+

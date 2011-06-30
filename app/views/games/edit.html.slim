@@ -1,0 +1,33 @@
+- inside_group @game.group
+div class='game' id="game_#{@game.id}"
+  = simple_form_for @game do |f|
+    = f.input :date, :as => :string, :autofocus => true, :input_html => { :value => @game.date.to_s(:db) }
+    = f.input :place
+    = f.input :currency, currency_select_options
+    = f.input :buyin
+    = f.input :rebuy
+    = f.input :addon
+    = f.input :description, :input_html => { :rows => 4 }
+    = f.input :archived
+    table
+      tr
+        th= t('activerecord.attributes.participation.player')
+        th= t('activerecord.attributes.participation.rebuys')
+        th= t('activerecord.attributes.participation.addon')
+        th= t('activerecord.attributes.participation.win')
+        th= t('.destroy')
+      = f.simple_fields_for :participations do |p|
+        tr class='participation' id="participation_#{p.object.id}"
+          td= p.object.user.nil? ? p.object.dummy_name : render(p.object.user)
+          = p.input :rebuys, :label => false, :wrapper_tag => :td, :input_html => { :size => 2 }
+          = p.input :addon, :label => false, :wrapper_tag => :td
+          = p.input :win, :label => false, :wrapper_tag => :td, :input_html => { :size => 8 }
+          = p.input :_destroy, :label => false, :wrapper_tag => :td, :as => :boolean
+    #dummy
+      - if flash[:new_participation_errors]
+        p.error= flash[:new_participation_errors]
+      p
+        =' label_tag :dummy_name, t('activerecord.attributes.participation.dummy_name')
+        =' text_field_tag :dummy_name
+        = f.submit t('.add_dummy')
+    = f.submit t('.submit')

@@ -1,4 +1,4 @@
-module I18n 
+module I18n
   def self.just_raise_that_exception exception, locale, key, options
     raise exception
   end

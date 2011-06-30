@@ -55,5 +55,45 @@ describe Membership do
     Membership.new.should respond_to(:inviter)
   end
 
+  it 'should have user_can_destroy? method' do
+    Membership.new.should respond_to(:user_can_destroy?)
+  end
 
+  describe 'user_can_destroy?' do
+
+    before do
+      @group = Group.make!(:owner => User.make!)
+      @user = User.make!
+      @membership = @group.memberships.create(:user => @user)
+    end
+
+    it 'should be false for nil' do
+      @membership.user_can_destroy?(nil).should be_false
+    end
+
+    it 'should be false for outsider' do
+      @membership.user_can_destroy?(User.make!).should be_false
+    end
+
+    it 'should be false for member' do
+      member = User.make!
+      @group.users << member
+      @membership.user_can_destroy?(member).should be_false
+    end
+
+    it 'should be true for admin' do
+      admin = User.make!
+      @group.users << admin
+      @group.set_admin_status admin, true
+      @membership.user_can_destroy?(admin).should be_true
+    end
+
+    it 'should be true for group owner' do
+      @membership.user_can_destroy?(@group.owner).should be_true
+    end
+
+    it 'should be true for user himself' do
+      @membership.user_can_destroy?(@user).should be_true
+    end
+  end
 end

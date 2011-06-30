@@ -15,11 +15,18 @@ class Invitation < ActiveRecord::Base
 
   before_create :generate_code
 
+  delegate :username, :to => :inviter, :prefix => true
+  delegate :name, :to => :group, :prefix => true
+
   def accept! user=nil
     user ||= self.user
     raise ArgumentError if user.nil?
     Membership.create!(:user => user, :group => group, :inviter => inviter)
     destroy
+  end
+
+  def self.find_by_email_downcase email
+    where('lower(email) = ?', email.downcase)
   end
 
 private

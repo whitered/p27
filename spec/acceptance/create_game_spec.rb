@@ -12,16 +12,14 @@ feature 'Create Game' do
     login @user
     visit group_path(@group)
     click_link_or_button t('groups.show.new_game')
-    date = Date.today + 2
-    datetime = DateTime.civil(date.year, date.month, date.day, 21, 33)
-    select_datetime t('activerecord.attributes.game.date'), :with => datetime.to_s(:db)
+    fill_in t('activerecord.attributes.game.date'), :with => "2011-05-25 21:33"
     fill_in t('activerecord.attributes.game.description'), :with => 'New Year Tourney'
     fill_in t('activerecord.attributes.game.place'), :with => 'Blogistan'
-    click_link_or_button t('games.new.commit')
+    select t('currency.eur'), :from => t('activerecord.attributes.game.currency')
+    click_link_or_button t('games.new.submit')
     game = page.find('#game')
     game.should have_content('New Year Tourney')
     game.should have_content('Blogistan')
-    game.should have_content(l(datetime))
   end
 
 end

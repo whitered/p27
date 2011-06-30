@@ -1,0 +1,6 @@
+- if user_signed_in?
+  - content_for :sidebar do
+    = link_to t('.new_group'), new_group_path
+
+#groups
+  = render :partial => 'groups/group', :collection => @groups, :spacer_template => 'shared/space'
